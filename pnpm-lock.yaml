@@ -14,9 +14,6 @@ importers:
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
-      geist:
-        specifier: ^1.4.2
-        version: 1.4.2(next@15.4.6(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
       lucide-react:
         specifier: ^0.539.0
         version: 0.539.0(react@19.1.0)
@@ -403,11 +400,6 @@ packages:
   enhanced-resolve@5.18.3:
     resolution: {integrity: sha512-d4lC8xfavMeBjzGr2vECC3fsGXziXZQyJxD868h2M/mBI3PwAuODxAkLkq5HYuvrPYcUtiLzsTo8U3PgX3Ocww==}
     engines: {node: '>=10.13.0'}
-
-  geist@1.4.2:
-    resolution: {integrity: sha512-OQUga/KUc8ueijck6EbtT07L4tZ5+TZgjw8PyWfxo16sL5FWk7gNViPNU8hgCFjy6bJi9yuTP+CRpywzaGN8zw==}
-    peerDependencies:
-      next: '>=13.2.0'
 
   graceful-fs@4.2.11:
     resolution: {integrity: sha512-RbJ5/jmFcNNCcDV5o9eTnBLJ/HszWV0P73bc+Ff4nS/rJj+YaS6IGyiOL0VoBYX+l1Wrl3k63h/KrH+nhJ0XvQ==}
@@ -889,10 +881,6 @@ snapshots:
     dependencies:
       graceful-fs: 4.2.11
       tapable: 2.2.2
-
-  geist@1.4.2(next@15.4.6(react-dom@19.1.0(react@19.1.0))(react@19.1.0)):
-    dependencies:
-      next: 15.4.6(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
 
   graceful-fs@4.2.11: {}
 
