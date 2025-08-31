@@ -118,3 +118,103 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Override LaTeX CSS body styles for responsive layout */
+@layer utilities {
+  /* Base styles - mobile first */
+  html {
+    font-size: 0.875rem !important; /* 14px */
+  }
+  
+  body {
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 1rem !important;
+    overflow-x: hidden !important;
+    line-height: 1.6 !important;
+  }
+  
+  /* Mobile heading styles */
+  h1 {
+    font-size: 1.875rem !important;
+    line-height: 2.25rem !important;
+    margin-bottom: 1rem !important;
+  }
+  
+  h2 {
+    font-size: 1.375rem !important;
+    line-height: 1.625rem !important;
+    margin-top: 2rem !important;
+  }
+  
+  h3 {
+    font-size: 1.125rem !important;
+    margin-top: 1.5rem !important;
+  }
+  
+  h4 {
+    font-size: 1rem !important;
+    margin-top: 1.25rem !important;
+  }
+  
+  p {
+    margin-top: 0.75rem !important;
+  }
+  
+  /* Small screens (sm) - 640px+ */
+  @media (min-width: 640px) {
+    html {
+      font-size: 0.9375rem !important; /* 15px */
+    }
+    body {
+      padding: 1.5rem !important;
+      line-height: 1.7 !important;
+    }
+  }
+  
+  /* Medium screens (md) - 768px+ */
+  @media (min-width: 768px) {
+    html {
+      font-size: 1rem !important; /* 16px */
+    }
+    body {
+      padding: 2rem !important;
+      line-height: 1.8 !important;
+    }
+    
+    /* Reset headings to larger sizes on desktop */
+    h1 {
+      font-size: 2.5rem !important;
+      line-height: 1 !important;
+      margin-bottom: 1.5rem !important;
+    }
+    
+    h2 {
+      font-size: 1.7rem !important;
+      line-height: 1.2 !important;
+      margin-top: 2.5rem !important;
+    }
+    
+    h3 {
+      font-size: 1.4rem !important;
+      margin-top: 2rem !important;
+    }
+    
+    h4 {
+      font-size: 1.2rem !important;
+      margin-top: 1.5rem !important;
+    }
+    
+    p {
+      margin-top: 1rem !important;
+    }
+  }
+  
+  /* Large screens (lg) - 1024px+ */
+  @media (min-width: 1024px) {
+    body {
+      max-width: 896px !important;
+      margin: 0 auto !important;
+    }
+  }
+}

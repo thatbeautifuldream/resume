@@ -6,7 +6,18 @@ export function EducationItem({ item }: { item: Education }) {
   return (
     <div>
       <div className="flex justify-between items-baseline">
-        <strong>{item.institution}</strong>
+        {item.url ? (
+          <a
+            href={item.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-semibold hover:underline"
+          >
+            <strong>{item.institution}</strong>
+          </a>
+        ) : (
+          <strong>{item.institution}</strong>
+        )}
         <em>{range(item.startDate, item.endDate)}</em>
       </div>
       <div className="italic mb-2">{title}</div>
