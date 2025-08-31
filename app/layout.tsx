@@ -1,7 +1,7 @@
 import type React from "react";
 import type { Metadata } from "next";
 import { ClarityProvider } from "@/components/providers/clarity-provider";
-// import { GoogleAnalytics } from "@next/third-parties/google";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import "./globals.css";
 import { createMetadata } from "@/lib/metadata";
 
@@ -22,7 +22,7 @@ export default function RootLayout({
       </head>
       <body>
         {children}
-        {/* <GoogleAnalytics gaId="test" /> */}
+        <GoogleAnalytics gaId="G-G7VF0PLE22" />
         <ClarityProvider />
       </body>
     </html>
