@@ -3,12 +3,12 @@ import type { Metadata } from "next";
 import { ClarityProvider } from "@/components/providers/clarity-provider";
 // import { GoogleAnalytics } from "@next/third-parties/google";
 import "./globals.css";
+import { createMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Milind's Resume",
-  description:
-    "Milind's resume with LaTeX-inspired styling and dark/light mode support",
-};
+export const metadata: Metadata = createMetadata({
+  title: "Milind Mishra",
+  description: "Product Engineer based in India.",
+});
 
 export default function RootLayout({
   children,
