@@ -103,6 +103,14 @@ export const CertificatesSchema = z.object({
   url: url.optional(),
 });
 
+export const TalksSchema = z.object({
+  title: z.string(),
+  event: z.string().optional(),
+  date: isoDate.optional(),
+  url: url.optional(),
+  summary: z.string().optional(),
+});
+
 export const ReferenceSchema = z.object({
   name: z.string(),
   reference: z.string(),
@@ -118,6 +126,7 @@ export const ResumeSchema = z.object({
   languages: z.array(LanguageSchema).default([]),
   projects: z.array(ProjectSchema).default([]),
   certificates: z.array(CertificatesSchema).default([]),
+  talks: z.array(TalksSchema).default([]),
   references: z.array(ReferenceSchema).default([]),
 });
 
@@ -128,4 +137,5 @@ export type Education = z.infer<typeof EducationSchema>;
 export type Skill = z.infer<typeof SkillSchema>;
 export type Profile = z.infer<typeof ProfileSchema>;
 export type Certificates = z.infer<typeof CertificatesSchema>;
+export type Talks = z.infer<typeof TalksSchema>;
 export type Reference = z.infer<typeof ReferenceSchema>;

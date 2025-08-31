@@ -346,17 +346,14 @@ export const resume: Resume = {
       event: "React Play x React Bangalore Meetup",
       date: "2025-05-17",
       title: "Building Real-Time Applications with Reactive Databases",
-      website: "https://www.meetup.com/reactplay-bengaluru/events/307690438/",
-      slides:
-        "https://milindmishra.com/slide/building-realtime-applications-with-reactive-databases",
+      url: "https://www.meetup.com/reactplay-bengaluru/events/307690438/",
       summary: "Real-time applications with React and Convex.",
     },
     {
       event: "React Bangalore Meetup",
       date: "2025-04-12",
       title: "AI for React Developers",
-      website: "https://www.meetup.com/reactjs-bangalore/events/306320480/",
-      slides: "https://milindmishra.com/slide/ai-for-react-developers",
+      url: "https://www.meetup.com/reactjs-bangalore/events/306320480/",
       summary: "A deep-dive into Vercel's AI SDK.",
     },
   ],
@@ -367,4 +364,7 @@ export const resume: Resume = {
         "100% AGREE! Also, the way team has launched the project is commendable. This is by far the most successful project launch on Peerlist",
     },
   ],
+  volunteer: [],
+  awards: [],
+  languages: [],
 };
