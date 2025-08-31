@@ -4,9 +4,9 @@ import { range } from "@/lib/format";
 export function WorkItem({ item }: { item: Work }) {
   return (
     <div>
-      <div className="flex justify-between items-baseline">
+      <div className="flex justify-between items-baseline sm:flex-row flex-col sm:items-baseline items-start">
         <strong>{item.position || "Role"}</strong>
-        <em>{range(item.startDate, item.endDate)}</em>
+        <em className="sm:mt-0 mt-1">{range(item.startDate, item.endDate)}</em>
       </div>
       <div className="italic">{item.name}</div>
       {item.summary && <p>{item.summary}</p>}
