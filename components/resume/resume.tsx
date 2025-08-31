@@ -5,6 +5,7 @@ import { Section } from "./section";
 import { WorkItem } from "./work-item";
 import { EducationItem } from "./education-item";
 import { CertificateItem } from "./certificate-item";
+import { TalkItem } from "./talk-item";
 import { Skills } from "./skills";
 import { References } from "./references";
 import { DarkModeToggle } from "../dark-mode-toggle";
@@ -79,6 +80,18 @@ export function ResumeView({ data }: { data: Resume }) {
                 {data.certificates.map((c, i) => (
                   <div key={i} className="mb-5">
                     <CertificateItem item={c} />
+                  </div>
+                ))}
+              </div>
+            </Section>
+          )}
+
+          {!!data.talks?.length && (
+            <Section title="Talks">
+              <div>
+                {data.talks.map((t, i) => (
+                  <div key={i} className="mb-5">
+                    <TalkItem item={t} />
                   </div>
                 ))}
               </div>

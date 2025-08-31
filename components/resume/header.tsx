@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import {
   Mail,
@@ -14,6 +15,8 @@ import {
 import type { Basics, Profile } from "@/lib/resume-schema";
 
 export function ResumeHeader({ basics }: { basics: Basics }) {
+  const [emailCopied, setEmailCopied] = useState(false);
+
   const location = basics.location
     ? [
         basics.location.city,
@@ -23,6 +26,14 @@ export function ResumeHeader({ basics }: { basics: Basics }) {
         .filter(Boolean)
         .join(", ")
     : undefined;
+
+  const handleEmailClick = async () => {
+    if (basics.email) {
+      await navigator.clipboard.writeText(basics.email);
+      setEmailCopied(true);
+      setTimeout(() => setEmailCopied(false), 2000);
+    }
+  };
 
   return (
     <header className="text-center mb-8">
@@ -38,7 +49,13 @@ export function ResumeHeader({ basics }: { basics: Basics }) {
         {basics.email && (
           <div className="flex items-center gap-1">
             <Mail size={16} />
-            <Link href={`mailto:${basics.email}`}>{basics.email}</Link>
+            <Link
+              href="#"
+              onClick={handleEmailClick}
+              className="hover:underline cursor-pointer"
+            >
+              {emailCopied ? "Copied to clipboard!" : basics.email}
+            </Link>
           </div>
         )}
         {basics.phone && (
