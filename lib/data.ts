@@ -45,7 +45,7 @@ export const resume: Resume = {
       location: "Bengaluru, Karnataka, India",
       position: "Product Engineer",
       url: "https://getmerlin.in",
-      startDate: "2025-02-01",
+      startDate: "2025-02-21",
       summary:
         "Driving product engineering initiatives for Merlin AI, focused on seamless AI integration and next-gen chat experiences.",
       highlights: [
@@ -60,8 +60,8 @@ export const resume: Resume = {
       location: "Bengaluru, Karnataka, India",
       position: "Software Engineer",
       url: "https://getsaral.com",
-      startDate: "2025-01-01",
-      endDate: "2025-02-01",
+      startDate: "2024-12-28",
+      endDate: "2025-02-08",
       summary:
         "Built core features and internal tools improving efficiency and decision-making for influencer campaigns.",
       highlights: [
@@ -77,7 +77,7 @@ export const resume: Resume = {
       position: "Founding Product Engineer",
       url: "https://proofofskill.org",
       startDate: "2024-06-01",
-      endDate: "2024-12-31",
+      endDate: "2024-12-27",
       summary:
         "Architected and launched a decentralized skill validation protocol, revolutionizing unbiased, transparent candidate evaluation for tech hiring.",
       highlights: [
