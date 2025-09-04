@@ -4,8 +4,8 @@ import { range } from "@/lib/format"
 export function EducationItem({ item }: { item: Education }) {
   const title = [item.studyType, item.area].filter(Boolean).join(", ")
   return (
-    <div>
-      <div className="flex justify-between items-baseline sm:flex-row flex-col sm:items-baseline items-start">
+    <div className="space-y-1">
+      <div className="flex justify-between items-baseline sm:flex-row flex-col sm:items-baseline">
         {item.url ? (
           <a
             href={item.url}
@@ -20,7 +20,7 @@ export function EducationItem({ item }: { item: Education }) {
         )}
         <em className="sm:mt-0 mt-1">{range(item.startDate, item.endDate)}</em>
       </div>
-      <div className="italic mb-2">{title}</div>
+      <div className="italic">{title}</div>
       {item.score && <div>GPA: {item.score}</div>}
     </div>
   )

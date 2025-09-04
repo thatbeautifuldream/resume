@@ -27,9 +27,10 @@ export function ResumeHeader({ basics }: { basics: Basics }) {
 
   return (
     <header className="text-left mb-8">
-      <h2 className="font-semibold">{basics.name.toUpperCase()}</h2>
+      <div className="space-y-4">
+        <h2 className="font-semibold">{basics.name.toUpperCase()}</h2>
 
-      <div className="flex flex-wrap gap-3 text-sm mb-4">
+        <div className="flex flex-wrap gap-3 text-sm">
         {/* {location && <span>{location}</span>} */}
         {basics.email && (
           <Link
@@ -49,13 +50,14 @@ export function ResumeHeader({ basics }: { basics: Basics }) {
         {basics.profiles?.slice(0, 4).map((p, i) => (
           <ProfileLinkWithNetwork key={i} profile={p} />
         ))}
-      </div>
-
-      {basics.summary && (
-        <div className="mt-4">
-          <p>{basics.summary}</p>
         </div>
-      )}
+
+        {basics.summary && (
+          <div>
+            <p>{basics.summary}</p>
+          </div>
+        )}
+      </div>
     </header>
   );
 }

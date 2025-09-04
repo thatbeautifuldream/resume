@@ -20,11 +20,9 @@ export function ResumeView({ data }: { data: Resume }) {
 
           {!!data.work?.length && (
             <Section title="Experience">
-              <div>
+              <div className="space-y-8">
                 {data.work.map((w, i) => (
-                  <div key={i} className="mb-8">
-                    <WorkItem item={w} />
-                  </div>
+                  <WorkItem key={i} item={w} />
                 ))}
               </div>
             </Section>
@@ -32,23 +30,23 @@ export function ResumeView({ data }: { data: Resume }) {
 
           {!!data.projects?.length && (
             <Section title="Projects">
-              <div>
+              <div className="space-y-5">
                 {data.projects.map((p, i) => (
-                  <div key={i} className="mb-5">
+                  <div key={i} className="space-y-2">
                     <div className="flex justify-between items-baseline">
                       <strong>{p.name}</strong>
                       <em>{range(p.startDate, p.endDate)}</em>
                     </div>
                     {p.url && (
-                      <div className="mb-2">
+                      <div>
                         <a href={p.url} target="_blank" rel="noreferrer">
                           {p.url.replace(/^https?:\/\//, "")}
                         </a>
                       </div>
                     )}
-                    {p.description && <p className="mb-2">{p.description}</p>}
+                    {p.description && <p>{p.description}</p>}
                     {!!p.highlights?.length && (
-                      <ul className="list-disc pl-5 space-y-1 mt-2">
+                      <ul className="list-disc pl-5 space-y-1">
                         {p.highlights.map((h, j) => (
                           <li key={j} className="text-justify">
                             {h}
@@ -64,11 +62,9 @@ export function ResumeView({ data }: { data: Resume }) {
 
           {!!data.education?.length && (
             <Section title="Education">
-              <div>
+              <div className="space-y-5">
                 {data.education.map((e, i) => (
-                  <div key={i} className="mb-5">
-                    <EducationItem item={e} />
-                  </div>
+                  <EducationItem key={i} item={e} />
                 ))}
               </div>
             </Section>
@@ -76,11 +72,9 @@ export function ResumeView({ data }: { data: Resume }) {
 
           {!!data.certificates?.length && (
             <Section title="Certificates">
-              <div>
+              <div className="space-y-5">
                 {data.certificates.map((c, i) => (
-                  <div key={i} className="mb-5">
-                    <CertificateItem item={c} />
-                  </div>
+                  <CertificateItem key={i} item={c} />
                 ))}
               </div>
             </Section>
@@ -88,11 +82,9 @@ export function ResumeView({ data }: { data: Resume }) {
 
           {!!data.talks?.length && (
             <Section title="Talks">
-              <div>
+              <div className="space-y-5">
                 {data.talks.map((t, i) => (
-                  <div key={i} className="mb-5">
-                    <TalkItem item={t} />
-                  </div>
+                  <TalkItem key={i} item={t} />
                 ))}
               </div>
             </Section>

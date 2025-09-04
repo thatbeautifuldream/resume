@@ -1,17 +1,18 @@
-import type { Reference } from "@/lib/resume-schema"
+import type { Reference } from "@/lib/resume-schema";
 
 export function References({ items }: { items: Reference[] }) {
-  if (!items?.length) return null
+  if (!items?.length) return null;
   return (
-    <div>
+    <div className="space-y-4">
       {items.map((r, i) => (
-        <div key={i} className="mb-4">
-          <blockquote className="italic border-l-4 border-gray-300 pl-4 ml-2">
-            {r.reference}
-            <footer className="text-sm font-semibold mt-2">— {r.name}</footer>
-          </blockquote>
-        </div>
+        <blockquote
+          key={i}
+          className="italic border-l-4 border-border pl-4 space-y-2"
+        >
+          <div>{r.reference}</div>
+          <footer className="text-sm font-semibold">— {r.name}</footer>
+        </blockquote>
       ))}
     </div>
-  )
+  );
 }

@@ -3,7 +3,7 @@ import { formatDate } from "@/lib/format"
 
 export function TalkItem({ item }: { item: Talks }) {
   return (
-    <div>
+    <div className="space-y-1">
       <div className="flex justify-between items-baseline sm:flex-row flex-col sm:items-baseline items-start">
         {item.url ? (
           <a
@@ -19,7 +19,7 @@ export function TalkItem({ item }: { item: Talks }) {
         )}
         {item.date && <em className="sm:mt-0 mt-1">{formatDate(item.date)}</em>}
       </div>
-      {item.event && <div className="italic mb-2">{item.event}</div>}
+      {item.event && <div className="italic">{item.event}</div>}
       {item.summary && <p className="text-justify">{item.summary}</p>}
     </div>
   )

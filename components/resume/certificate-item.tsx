@@ -2,7 +2,7 @@ import type { Certificates } from "@/lib/resume-schema";
 
 export function CertificateItem({ item }: { item: Certificates }) {
   return (
-    <div>
+    <div className="space-y-1">
       <div className="flex justify-between items-baseline sm:flex-row flex-col sm:items-baseline">
         {item.url ? (
           <a
@@ -23,7 +23,7 @@ export function CertificateItem({ item }: { item: Certificates }) {
           {item.date && <em className="sm:mt-0 mt-1">{item.date}</em>}
         </div>
       </div>
-      {item.issuer && <div className="italic mb-2 sm:hidden">{item.issuer}</div>}
+      {item.issuer && <div className="italic sm:hidden">{item.issuer}</div>}
     </div>
   );
 }
