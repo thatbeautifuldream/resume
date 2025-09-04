@@ -1,9 +1,11 @@
 import type React from "react";
 import type { Metadata } from "next";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { ClarityProvider } from "@/components/providers/clarity-provider";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import "./globals.css";
 import { createMetadata } from "@/lib/metadata";
+import { ThemeSwitcher } from "@/components/theme-switcher";
 
 export const metadata: Metadata = createMetadata({
   title: "Milind Mishra",
@@ -21,7 +23,10 @@ export default function RootLayout({
         <link rel="stylesheet" href="https://latex.vercel.app/style.css" />
       </head>
       <body>
-        {children}
+        <NuqsAdapter>
+          {children}
+          <ThemeSwitcher />
+        </NuqsAdapter>
         <GoogleAnalytics gaId="G-G7VF0PLE22" />
         <ClarityProvider />
       </body>
