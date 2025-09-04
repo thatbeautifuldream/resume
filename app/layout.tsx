@@ -1,4 +1,5 @@
 import type React from "react";
+import { Suspense } from "react";
 import type { Metadata } from "next";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { ClarityProvider } from "@/components/providers/clarity-provider";
@@ -25,7 +26,9 @@ export default function RootLayout({
       <body>
         <NuqsAdapter>
           {children}
-          <ThemeSwitcher />
+          <Suspense fallback={null}>
+            <ThemeSwitcher />
+          </Suspense>
         </NuqsAdapter>
         <GoogleAnalytics gaId="G-G7VF0PLE22" />
         <ClarityProvider />
