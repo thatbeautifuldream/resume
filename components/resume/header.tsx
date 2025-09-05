@@ -31,25 +31,25 @@ export function ResumeHeader({ basics }: { basics: Basics }) {
         <h2 className="font-semibold">{basics.name.toUpperCase()}</h2>
 
         <div className="flex flex-wrap gap-3 text-sm">
-        {/* {location && <span>{location}</span>} */}
-        {basics.email && (
-          <Link
-            href="#"
-            onClick={handleEmailClick}
-            className="hover:underline cursor-pointer"
-          >
-            {emailCopied ? "Copied to clipboard!" : basics.email}
-          </Link>
-        )}
-        {basics.phone && <a href={`tel:${basics.phone}`}>{basics.phone}</a>}
-        {basics.url && (
-          <Link href={basics.url} target="_blank" rel="noreferrer">
-            {basics.url.replace(/^https?:\/\//, "")}
-          </Link>
-        )}
-        {basics.profiles?.slice(0, 4).map((p, i) => (
-          <ProfileLinkWithNetwork key={i} profile={p} />
-        ))}
+          {/* {location && <span>{location}</span>} */}
+          {basics.email && (
+            <Link
+              href="#"
+              onClick={handleEmailClick}
+              className="hover:underline cursor-pointer"
+            >
+              {emailCopied ? "Copied to clipboard!" : basics.email}
+            </Link>
+          )}
+          {basics.phone && <a href={`tel:${basics.phone}`}>{basics.phone}</a>}
+          {basics.url && (
+            <Link href={basics.url} target="_blank" rel="noreferrer">
+              {basics.url.replace(/^https?:\/\//, "")}
+            </Link>
+          )}
+          {basics.profiles?.map((p, i) => (
+            <ProfileLinkWithNetwork key={i} profile={p} />
+          ))}
         </div>
 
         {basics.summary && (
@@ -69,6 +69,7 @@ function ProfileLinkWithNetwork({ profile }: { profile: Profile }) {
     if (n.includes("twitter") || n === "x") return `x/${username || ""}`;
     if (n.includes("linkedin")) return `linkedin/${username || ""}`;
     if (n.includes("youtube")) return `youtube/${username || ""}`;
+    if (n.includes("cal")) return `cal.com/${username || ""}`;
     return username || profile.url || network;
   };
 

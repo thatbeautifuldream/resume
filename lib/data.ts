@@ -37,6 +37,11 @@ export const resume: Resume = {
         username: "milindmishra",
         url: "https://youtube.com/milindmishra",
       },
+      {
+        network: "Cal",
+        username: "milind",
+        url: "https://cal.com/milind",
+      },
     ],
   },
   work: [
