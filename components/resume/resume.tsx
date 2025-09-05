@@ -1,6 +1,7 @@
 import { range } from "@/lib/format";
 import type { Resume } from "@/lib/resume-schema";
 import { CertificateItem } from "./certificate-item";
+import { ContributionItem } from "./contribution-item";
 import { EducationItem } from "./education-item";
 import { ResumeHeader } from "./header";
 import { References } from "./references";
@@ -20,6 +21,16 @@ export function ResumeView({ data }: { data: Resume }) {
             <div className="space-y-8">
               {data.work.map((w, i) => (
                 <WorkItem key={i} item={w} />
+              ))}
+            </div>
+          </Section>
+        )}
+
+        {!!data.contributions?.length && (
+          <Section title="Open Source Contributions">
+            <div className="space-y-5">
+              {data.contributions.map((c, i) => (
+                <ContributionItem key={i} item={c} />
               ))}
             </div>
           </Section>

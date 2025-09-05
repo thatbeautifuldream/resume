@@ -364,6 +364,28 @@ export const resume: Resume = {
         "100% AGREE! Also, the way team has launched the project is commendable. This is by far the most successful project launch on Peerlist",
     },
   ],
+  contributions: [
+    {
+      organisation: "Vercel",
+      repository: "https://github.com/vercel/streamdown",
+      prs: [
+        {
+          title:
+            "feat: add table markdown copy and csv/markdown download options #99",
+          url: "https://github.com/vercel/streamdown/pull/99",
+        },
+        {
+          title: "feat: add download functionality to code blocks #102",
+          url: "https://github.com/vercel/streamdown/pull/102",
+        },
+        {
+          title:
+            "feat: add image download functionality with hover controls #103",
+          url: "https://github.com/vercel/streamdown/pull/103",
+        },
+      ],
+    },
+  ],
   volunteer: [],
   awards: [],
   languages: [],

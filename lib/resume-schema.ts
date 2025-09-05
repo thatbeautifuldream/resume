@@ -116,6 +116,17 @@ export const ReferenceSchema = z.object({
   reference: z.string(),
 });
 
+export const PRSchema = z.object({
+  title: z.string(),
+  url: url,
+});
+
+export const ContributionSchema = z.object({
+  organisation: z.string(),
+  repository: url,
+  prs: z.array(PRSchema).default([]),
+});
+
 export const ResumeSchema = z.object({
   basics: BasicsSchema,
   work: z.array(WorkSchema).default([]),
@@ -128,6 +139,7 @@ export const ResumeSchema = z.object({
   certificates: z.array(CertificatesSchema).default([]),
   talks: z.array(TalksSchema).default([]),
   references: z.array(ReferenceSchema).default([]),
+  contributions: z.array(ContributionSchema).default([]),
 });
 
 export type Resume = z.infer<typeof ResumeSchema>;
@@ -139,3 +151,5 @@ export type Profile = z.infer<typeof ProfileSchema>;
 export type Certificates = z.infer<typeof CertificatesSchema>;
 export type Talks = z.infer<typeof TalksSchema>;
 export type Reference = z.infer<typeof ReferenceSchema>;
+export type Contribution = z.infer<typeof ContributionSchema>;
+export type PR = z.infer<typeof PRSchema>;
