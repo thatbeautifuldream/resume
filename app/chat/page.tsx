@@ -9,7 +9,7 @@ export default function Page() {
   const [input, setInput] = useState("");
 
   return (
-    <main className="fixed inset-0 flex flex-col">
+    <main className="fixed inset-0 flex flex-col select-none">
       <div className="flex-1 overflow-y-auto p-4 space-y-4 max-w-full lg:max-w-[896px] lg:mx-auto lg:w-full">
         {messages.map((message) => (
           <div
