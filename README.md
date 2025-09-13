@@ -1,1 +1,1 @@
-<img width="1019" height="1198" alt="image" src="https://github.com/user-attachments/assets/322e7539-1a7c-4d74-9a30-ce4b289fc6c7" />
+<img width="2763" height="2774" alt="Group 111" src="https://github.com/user-attachments/assets/5893653a-8e52-4c2c-aea9-831e753405ee" />
