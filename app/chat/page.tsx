@@ -12,16 +12,23 @@ export default function Page() {
     <main className="fixed inset-0 flex flex-col">
       <div className="flex-1 overflow-y-auto p-4 space-y-4 max-w-full lg:max-w-[896px] lg:mx-auto lg:w-full">
         {messages.map((message) => (
-          <div key={message.id} className={`w-full ${message.role === 'user' ? 'text-right' : 'text-left'}`}>
+          <div
+            key={message.id}
+            className={`w-full ${
+              message.role === "user" ? "text-right" : "text-left"
+            }`}
+          >
             {message.parts
               .filter((part) => part.type === "text")
-              .map((part, index) => (
-                message.role === 'user' ? (
-                  <div key={index} className="p-2">{part.text}</div>
+              .map((part, index) =>
+                message.role === "user" ? (
+                  <div key={index} className="p-2">
+                    {part.text}
+                  </div>
                 ) : (
                   <Response key={index}>{part.text}</Response>
                 )
-              ))}
+              )}
           </div>
         ))}
       </div>
@@ -41,11 +48,11 @@ export default function Page() {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             disabled={status !== "ready"}
-            placeholder="Say something..."
+            placeholder="Ask something about Milind's work..."
             className="flex-1 border p-2"
           />
-          <button 
-            type="submit" 
+          <button
+            type="submit"
             disabled={status !== "ready"}
             className="border p-2"
           >
