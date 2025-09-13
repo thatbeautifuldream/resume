@@ -9,6 +9,7 @@ import { Section } from "./section";
 import { Skills } from "./skills";
 import { TalkItem } from "./talk-item";
 import { WorkItem } from "./work-item";
+import Link from "next/link";
 
 export function ResumeView({ data }: { data: Resume }) {
   return (
@@ -18,9 +19,7 @@ export function ResumeView({ data }: { data: Resume }) {
           <span>
             <strong>[NEW]</strong> Try the interactive resume chat - ask
             questions about my experience, skills, and projects!{" "}
-            <a href="/chat" target="_blank" rel="noopener noreferrer">
-              Chat with Resume
-            </a>
+            <Link href="/chat">Chat with Resume</Link>
           </span>
         </div>
       </header>
