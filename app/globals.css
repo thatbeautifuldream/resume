@@ -137,7 +137,6 @@
     line-height: 1.6 !important;
   }
   
-  /* Mobile heading styles */
   h1 {
     font-size: 1.875rem !important;
     line-height: 2.25rem !important;
@@ -164,7 +163,6 @@
     margin-top: 0.75rem !important;
   }
   
-  /* Small screens (sm) - 640px+ */
   @media (min-width: 640px) {
     html {
       font-size: 0.9375rem !important; /* 15px */
@@ -175,7 +173,6 @@
     }
   }
   
-  /* Medium screens (md) - 768px+ */
   @media (min-width: 768px) {
     html {
       font-size: 1rem !important; /* 16px */
@@ -185,7 +182,6 @@
       line-height: 1.8 !important;
     }
     
-    /* Reset headings to larger sizes on desktop */
     h1 {
       font-size: 2.5rem !important;
       line-height: 1 !important;
@@ -213,7 +209,6 @@
     }
   }
   
-  /* Large screens (lg) - 1024px+ */
   @media (min-width: 1024px) {
     body {
       max-width: 896px !important;
@@ -221,7 +216,6 @@
     }
   }
   
-  /* Print styles for professional PDF output */
   @media print {
     html {
       font-size: 0.8125rem !important; /* 13px base font size for print */
@@ -271,7 +265,6 @@
       margin-bottom: 0.25rem !important;
     }
     
-    /* Reduce spacing for print */
     ul, ol {
       margin-top: 0.5rem !important;
       margin-bottom: 0.5rem !important;
@@ -282,7 +275,6 @@
       margin-bottom: 0.125rem !important;
     }
     
-    /* Ensure good page breaks */
     h1, h2, h3 {
       page-break-after: avoid;
     }
@@ -291,9 +283,25 @@
       page-break-inside: avoid;
     }
     
-    /* Hide any unnecessary elements for print */
     .no-print {
       display: none !important;
     }
+  }
+  
+  @keyframes marquee {
+    0% {
+      transform: translate3d(100%, 0, 0);
+    }
+    100% {
+      transform: translate3d(-100%, 0, 0);
+    }
+  }
+  
+  .animate-marquee {
+    animation: marquee 15s linear infinite;
+  }
+  
+  .animate-marquee:hover {
+    animation-play-state: paused;
   }
 }

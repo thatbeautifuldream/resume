@@ -13,6 +13,17 @@ import { WorkItem } from "./work-item";
 export function ResumeView({ data }: { data: Resume }) {
   return (
     <main>
+      <header className="mb-8 pb-4 text-center text-sm print:hidden overflow-hidden select-none">
+        <div className="whitespace-nowrap animate-marquee">
+          <span>
+            <strong>[NEW]</strong> Try the interactive resume chat - ask
+            questions about my experience, skills, and projects!{" "}
+            <a href="/chat" target="_blank" rel="noopener noreferrer">
+              Chat with Resume
+            </a>
+          </span>
+        </div>
+      </header>
       <article>
         <ResumeHeader basics={data.basics} />
 
