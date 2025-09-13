@@ -1,0 +1,10 @@
+{
+  "name": "Milind Mishra - Resume",
+  "short_name": "Milind Resume",
+  "description": "Product Engineer based in India - Interactive Resume",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#000000",
+  "icons": []
+}

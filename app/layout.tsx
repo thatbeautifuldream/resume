@@ -25,6 +25,7 @@ export default function RootLayout({
           name="viewport"
           content="width=device-width, initial-scale=1, maximum-scale=1"
         />
+        <link rel="manifest" href="/manifest.json" />
         <link rel="stylesheet" href="https://latex.vercel.app/style.css" />
       </head>
       <body>
