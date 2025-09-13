@@ -49,7 +49,7 @@ export default function Page() {
             onChange={(e) => setInput(e.target.value)}
             disabled={status !== "ready"}
             placeholder="Ask something about Milind's work..."
-            className="flex-1 border p-2"
+            className="flex-1 border p-2 text-base"
           />
           <button
             type="submit"
