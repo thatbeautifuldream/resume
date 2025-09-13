@@ -20,7 +20,7 @@ export const createMetadata = ({
   ...properties
 }: MetadataGenerator): Metadata => {
   const parsedTitle = `${title} | ${applicationName}`;
-  const image = "https://resume.milind.app/images/icon.png";
+  const image = "https://resume.milind.app/images/opengraph-image.png";
 
   const defaultMetadata: Metadata = {
     title: parsedTitle,
