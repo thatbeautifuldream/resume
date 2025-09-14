@@ -11,6 +11,7 @@ import { Section } from "./section";
 import { Skills } from "./skills";
 import { TalkItem } from "./talk-item";
 import { WorkItem } from "./work-item";
+import { Clock } from "../clock";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -26,17 +27,14 @@ export function ResumeView({ data }: { data: Resume }) {
 
   return (
     <main className="select-none">
-      <header className="mb-8 pb-4 text-center text-sm print:hidden">
-        <div>
-          <span className="hidden md:inline">
-            <strong>[NEW]</strong> Try the interactive resume chat - ask
-            questions about my experience, skills, and projects!{" "}
+      <header className="print:hidden">
+        <div className="flex justify-between items-center">
+          <div className="text-left">
+            <Clock timeZone="Asia/Calcutta" />
+          </div>
+          <div className="text-right">
             <Link href="/chat">Chat with Resume</Link>
-          </span>
-          <span className="md:hidden">
-            <strong>[NEW]</strong> Try the interactive resume chat!{" "}
-            <Link href="/chat">Chat with Resume</Link>
-          </span>
+          </div>
         </div>
       </header>
       <article>

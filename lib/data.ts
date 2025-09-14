@@ -16,6 +16,8 @@ export const resume: Resume = {
       countryCode: "IN",
       region: "Karnataka",
     },
+    // timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+    timezone: "Asia/Calcutta",
     profiles: [
       {
         network: "LinkedIn",

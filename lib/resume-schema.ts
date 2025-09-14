@@ -31,6 +31,9 @@ export const BasicsSchema = z.object({
   url: url.optional(),
   summary: z.string().optional(),
   location: LocationSchema.optional(),
+  timezone: z
+    .string()
+    .optional(),
   profiles: z.array(ProfileSchema).optional(),
 });
 

@@ -20,6 +20,9 @@ importers:
       '@next/third-parties':
         specifier: ^15.5.2
         version: 15.5.2(next@15.4.6(@opentelemetry/api@1.9.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react@19.1.0)
+      '@number-flow/react':
+        specifier: ^0.5.10
+        version: 0.5.10(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       ai:
         specifier: ^5.0.43
         version: 5.0.43(zod@4.1.5)
@@ -357,6 +360,12 @@ packages:
     peerDependencies:
       next: ^13.0.0 || ^14.0.0 || ^15.0.0
       react: ^18.2.0 || 19.0.0-rc-de68d2f4-20241204 || ^19.0.0
+
+  '@number-flow/react@0.5.10':
+    resolution: {integrity: sha512-a8Wh5eNITn7Km4xbddAH7QH8eNmnduR6k34ER1hkHSGO4H2yU1DDnuAWLQM99vciGInFODemSc0tdxrXkJEpbA==}
+    peerDependencies:
+      react: ^18 || ^19
+      react-dom: ^18 || ^19
 
   '@opentelemetry/api@1.9.0':
     resolution: {integrity: sha512-3giAOQvZiH5F9bMlMiv8+GSPMeqg0dbaeo58/0SlA9sxSqZhnUtxzX9/2FzyhS9sWQf5S0GJE0AKBrFqjpeYcg==}
@@ -915,6 +924,9 @@ packages:
     resolution: {integrity: sha512-/veY75JbMK4j1yjvuUxuVsiS/hr/4iHs9FTT6cgTexxdE0Ly/glccBAkloH/DofkjRbZU3bnoj38mOmhkZ0lHw==}
     engines: {node: '>=12'}
 
+  esm-env@1.2.2:
+    resolution: {integrity: sha512-Epxrv+Nr/CaL4ZcFGPJIYLWFom+YeV1DqMLHJoEd9SYRxNbaFruBwfEX/kkHUJf55j2+TUbmDcmuilbP1TmXHA==}
+
   estree-util-is-identifier-name@3.0.0:
     resolution: {integrity: sha512-hFtqIDZTIUZ9BXLb8y4pYGyk6+wekIivNVTcmvk8NoOh+VeRn5y6cEHzbURrWbfp1fIqdVipilzj+lfaadNZmg==}
 
@@ -1359,6 +1371,9 @@ packages:
         optional: true
       sass:
         optional: true
+
+  number-flow@0.5.8:
+    resolution: {integrity: sha512-FPr1DumWyGi5Nucoug14bC6xEz70A1TnhgSHhKyfqjgji2SOTz+iLJxKtv37N5JyJbteGYCm6NQ9p1O4KZ7iiA==}
 
   nuqs@2.5.2:
     resolution: {integrity: sha512-vzKeoYlMRmNYPWECdn53Nmh/jM+r/iSezEin342EVXPogT6KzALwdnYbZxASE5vTdXRUtOymtPkgsarLipKetg==}
@@ -1900,6 +1915,13 @@ snapshots:
       next: 15.4.6(@opentelemetry/api@1.9.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       react: 19.1.0
       third-party-capital: 1.0.20
+
+  '@number-flow/react@0.5.10(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
+    dependencies:
+      esm-env: 1.2.2
+      number-flow: 0.5.8
+      react: 19.1.0
+      react-dom: 19.1.0(react@19.1.0)
 
   '@opentelemetry/api@1.9.0': {}
 
@@ -2484,6 +2506,8 @@ snapshots:
   entities@6.0.1: {}
 
   escape-string-regexp@5.0.0: {}
+
+  esm-env@1.2.2: {}
 
   estree-util-is-identifier-name@3.0.0: {}
 
@@ -3181,6 +3205,10 @@ snapshots:
     transitivePeerDependencies:
       - '@babel/core'
       - babel-plugin-macros
+
+  number-flow@0.5.8:
+    dependencies:
+      esm-env: 1.2.2
 
   nuqs@2.5.2(next@15.4.6(@opentelemetry/api@1.9.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react@19.1.0):
     dependencies:
