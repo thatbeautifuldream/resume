@@ -7,6 +7,8 @@ import { GoogleAnalytics } from "@next/third-parties/google";
 import "./globals.css";
 import { createMetadata } from "@/lib/metadata";
 import { ThemeSwitcher } from "@/components/theme-switcher";
+import { cn } from "@/lib/utils";
+import { ebGaramond, inter } from "@/lib/fonts";
 
 export const metadata: Metadata = createMetadata({
   title: "Milind Mishra",
@@ -28,7 +30,13 @@ export default function RootLayout({
         <link rel="manifest" href="/manifest.json" />
         <link rel="stylesheet" href="https://latex.vercel.app/style.css" />
       </head>
-      <body>
+      <body
+        className={cn(
+          ebGaramond.className,
+          inter.className,
+          "min-h-screen bg-background font-serif antialiased"
+        )}
+      >
         <NuqsAdapter>
           {children}
           <Suspense fallback={null}>
