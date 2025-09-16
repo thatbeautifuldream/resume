@@ -18,12 +18,24 @@ import { useState } from "react";
 const DEFAULT_ITEMS_TO_SHOW = 2;
 
 export function ResumeView({ data }: { data: Resume }) {
+  const [expandAll, setExpandAll] = useState(false);
   const [showAllWork, setShowAllWork] = useState(false);
   const [showAllContributions, setShowAllContributions] = useState(false);
   const [showAllProjects, setShowAllProjects] = useState(false);
   const [showAllEducation, setShowAllEducation] = useState(false);
   const [showAllCertificates, setShowAllCertificates] = useState(false);
   const [showAllTalks, setShowAllTalks] = useState(false);
+
+  const toggleExpandAll = () => {
+    const newExpandAll = !expandAll;
+    setExpandAll(newExpandAll);
+    setShowAllWork(newExpandAll);
+    setShowAllContributions(newExpandAll);
+    setShowAllProjects(newExpandAll);
+    setShowAllEducation(newExpandAll);
+    setShowAllCertificates(newExpandAll);
+    setShowAllTalks(newExpandAll);
+  };
 
   return (
     <main className="select-none">
@@ -32,7 +44,13 @@ export function ResumeView({ data }: { data: Resume }) {
           <div className="text-left">
             <Clock timeZone="Asia/Calcutta" />
           </div>
-          <div className="text-right">
+          <div className="text-right flex gap-x-2">
+            <button
+              onClick={toggleExpandAll}
+              className="text-sm cursor-pointer hover:underline"
+            >
+              {expandAll ? "Collapse All" : "Expand All"}
+            </button>
             <Link href="/chat">Chat with Resume</Link>
           </div>
         </div>
@@ -51,7 +69,11 @@ export function ResumeView({ data }: { data: Resume }) {
               ))}
               {data.work.length > DEFAULT_ITEMS_TO_SHOW && (
                 <button
-                  onClick={() => setShowAllWork(!showAllWork)}
+                  onClick={() => {
+                    const newShowAll = !showAllWork;
+                    setShowAllWork(newShowAll);
+                    if (!newShowAll) setExpandAll(false);
+                  }}
                   className="print:hidden text-sm cursor-pointer"
                 >
                   {showAllWork ? "show less" : "show more..."}
@@ -72,7 +94,11 @@ export function ResumeView({ data }: { data: Resume }) {
               ))}
               {data.contributions.length > DEFAULT_ITEMS_TO_SHOW && (
                 <button
-                  onClick={() => setShowAllContributions(!showAllContributions)}
+                  onClick={() => {
+                    const newShowAll = !showAllContributions;
+                    setShowAllContributions(newShowAll);
+                    if (!newShowAll) setExpandAll(false);
+                  }}
                   className="print:hidden text-sm cursor-pointer"
                 >
                   {showAllContributions ? "show less" : "show more..."}
@@ -115,7 +141,11 @@ export function ResumeView({ data }: { data: Resume }) {
               ))}
               {data.projects.length > DEFAULT_ITEMS_TO_SHOW && (
                 <button
-                  onClick={() => setShowAllProjects(!showAllProjects)}
+                  onClick={() => {
+                    const newShowAll = !showAllProjects;
+                    setShowAllProjects(newShowAll);
+                    if (!newShowAll) setExpandAll(false);
+                  }}
                   className="print:hidden text-sm cursor-pointer"
                 >
                   {showAllProjects ? "show less" : "show more..."}
@@ -136,7 +166,11 @@ export function ResumeView({ data }: { data: Resume }) {
               ))}
               {data.education.length > DEFAULT_ITEMS_TO_SHOW && (
                 <button
-                  onClick={() => setShowAllEducation(!showAllEducation)}
+                  onClick={() => {
+                    const newShowAll = !showAllEducation;
+                    setShowAllEducation(newShowAll);
+                    if (!newShowAll) setExpandAll(false);
+                  }}
                   className="print:hidden text-sm cursor-pointer"
                 >
                   {showAllEducation ? "show less" : "show more..."}
@@ -157,7 +191,11 @@ export function ResumeView({ data }: { data: Resume }) {
               ))}
               {data.certificates.length > DEFAULT_ITEMS_TO_SHOW && (
                 <button
-                  onClick={() => setShowAllCertificates(!showAllCertificates)}
+                  onClick={() => {
+                    const newShowAll = !showAllCertificates;
+                    setShowAllCertificates(newShowAll);
+                    if (!newShowAll) setExpandAll(false);
+                  }}
                   className="print:hidden text-sm cursor-pointer"
                 >
                   {showAllCertificates ? "show less" : "show more..."}
@@ -178,7 +216,11 @@ export function ResumeView({ data }: { data: Resume }) {
               ))}
               {data.talks.length > DEFAULT_ITEMS_TO_SHOW && (
                 <button
-                  onClick={() => setShowAllTalks(!showAllTalks)}
+                  onClick={() => {
+                    const newShowAll = !showAllTalks;
+                    setShowAllTalks(newShowAll);
+                    if (!newShowAll) setExpandAll(false);
+                  }}
                   className="print:hidden text-sm cursor-pointer"
                 >
                   {showAllTalks ? "show less" : "show more..."}
