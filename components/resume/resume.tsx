@@ -14,10 +14,15 @@ import { WorkItem } from "./work-item";
 import { Clock } from "../clock";
 import Link from "next/link";
 import { useState } from "react";
+import { useQueryState, parseAsStringLiteral } from "nuqs";
 
 const DEFAULT_ITEMS_TO_SHOW = 2;
 
 export function ResumeView({ data }: { data: Resume }) {
+  const [theme] = useQueryState(
+    "theme",
+    parseAsStringLiteral(["dark", "light"]).withDefault("light")
+  );
   const [expandAll, setExpandAll] = useState(false);
   const [showAllWork, setShowAllWork] = useState(false);
   const [showAllContributions, setShowAllContributions] = useState(false);
@@ -51,7 +56,7 @@ export function ResumeView({ data }: { data: Resume }) {
             >
               {expandAll ? "Collapse All" : "Expand All"}
             </button>
-            <Link href="/chat">Chat with Resume</Link>
+            <Link href={theme === "dark" ? "/chat?theme=dark" : "/chat"}>Chat with Resume</Link>
           </div>
         </div>
       </header>
