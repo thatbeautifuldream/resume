@@ -217,7 +217,7 @@ export default function Page() {
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <ChatContent />
-      <AIDevtools />
+      {process.env.NODE_ENV === "development" && <AIDevtools />}
     </Suspense>
   );
 }
