@@ -6,9 +6,10 @@ import { motion } from "motion/react";
 import Link from "next/link";
 import { Response } from "@/components/ai-elements/response";
 import { useQueryState, parseAsStringLiteral } from "nuqs";
+import { ArrowUp, Square } from "lucide-react";
 
 function ChatContent() {
-  const { messages, sendMessage, status } = useChat();
+  const { messages, sendMessage, status, stop } = useChat();
   const [theme] = useQueryState(
     "theme",
     parseAsStringLiteral(["dark", "light"]).withDefault("light")
@@ -122,36 +123,67 @@ function ChatContent() {
             <form
               onSubmit={(e) => {
                 e.preventDefault();
-                if (input.trim()) {
+                if (input.trim() && status === "ready") {
                   sendMessage({ text: input });
                   setInput("");
                 }
               }}
-              className="flex gap-2 w-full"
+              className="w-full"
             >
-              <div className="flex-1 min-w-0 relative border flex items-center justify-between pr-3">
-                <input
-                  ref={inputRef}
+              <div className="relative flex items-end border border-input bg-background focus-within:ring-2 focus-within:ring-ring focus-within:border-transparent transition-all duration-200">
+                <textarea
+                  ref={inputRef as any}
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                      e.preventDefault();
+                      if (input.trim() && status === "ready") {
+                        sendMessage({ text: input });
+                        setInput("");
+                      }
+                    }
+                  }}
                   disabled={status !== "ready"}
                   placeholder="Ask something about Milind's work..."
-                  className="flex-1 min-w-0 p-3 text-base disabled:opacity-50 border-none outline-none bg-transparent"
+                  rows={1}
+                  className="flex-1 min-w-0 px-4 py-3 text-base bg-transparent border-none outline-none resize-none disabled:opacity-50 disabled:cursor-not-allowed placeholder:text-muted-foreground min-h-[48px] max-h-[200px] overflow-y-scroll"
+                  style={{
+                    height: 'auto',
+                    scrollbarWidth: 'none',
+                    msOverflowStyle: 'none'
+                  }}
+                  onInput={(e) => {
+                    const target = e.target as HTMLTextAreaElement;
+                    target.style.height = 'auto';
+                    target.style.height = Math.min(target.scrollHeight, 200) + 'px';
+                  }}
                 />
-                <div className="flex items-center gap-1 text-xs text-gray-500">
-                  <kbd className="px-1.5 py-0.5 text-xs font-mono bg-gray-100 border rounded">/</kbd>
-                  <span>to focus</span>
-                  <kbd className="px-1.5 py-0.5 text-xs font-mono bg-gray-100 border rounded ml-2">esc</kbd>
-                  <span>to blur</span>
-                </div>
+
+                {/* Send/Stop button */}
+                <button
+                  type={status === "ready" ? "submit" : "button"}
+                  onClick={() => {
+                    if (status === "submitted") {
+                      stop();
+                    }
+                  }}
+                  disabled={status === "ready" && !input.trim()}
+                  className={`mr-2 mb-2 p-2 rounded-full transition-all duration-200 flex items-center justify-center ${
+                    status === "ready" && input.trim()
+                      ? "bg-primary text-primary-foreground hover:bg-primary/90 cursor-pointer"
+                      : status === "submitted"
+                      ? "bg-muted text-muted-foreground hover:bg-muted/80 cursor-pointer"
+                      : "bg-muted text-muted-foreground cursor-not-allowed opacity-50"
+                  }`}
+                >
+                  {status === "submitted" ? (
+                    <Square className="w-4 h-4" />
+                  ) : (
+                    <ArrowUp className="w-4 h-4" />
+                  )}
+                </button>
               </div>
-              <button
-                type="submit"
-                disabled={status !== "ready" || !input.trim()}
-                className="border px-4 py-3 disabled:opacity-50 flex-shrink-0"
-              >
-                Send
-              </button>
             </form>
           </motion.div>
         </div>
