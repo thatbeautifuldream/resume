@@ -1,6 +1,7 @@
 "use client";
 
-import { useChat } from "@ai-sdk/react";
+import { useChat, useChatMessages } from "@ai-sdk-tools/store";
+import { DefaultChatTransport } from "ai";
 import { useState, useRef, useEffect, Suspense } from "react";
 import { motion } from "motion/react";
 import Link from "next/link";
@@ -10,7 +11,12 @@ import { ArrowUp, Square } from "lucide-react";
 import { AIDevtools } from "@ai-sdk-tools/devtools";
 
 function ChatContent() {
-  const { messages, sendMessage, status, stop } = useChat();
+  const { sendMessage, status, stop } = useChat({
+    transport: new DefaultChatTransport({
+      api: "/api/chat",
+    }),
+  });
+  const messages = useChatMessages();
   const [theme] = useQueryState(
     "theme",
     parseAsStringLiteral(["dark", "light"]).withDefault("light")
