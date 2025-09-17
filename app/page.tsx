@@ -1,5 +1,6 @@
 import { ResumeView } from "@/components/resume/resume";
 import { resume } from "@/lib/data";
+import { Suspense } from "react";
 
 // export default async function Page({
 //   searchParams,
@@ -14,5 +15,9 @@ import { resume } from "@/lib/data";
 // }
 
 export default function Page() {
-  return <ResumeView data={resume} />;
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ResumeView data={resume} />
+    </Suspense>
+  );
 }

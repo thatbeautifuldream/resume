@@ -1,13 +1,13 @@
 "use client";
 
 import { useChat } from "@ai-sdk/react";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, Suspense } from "react";
 import { motion } from "motion/react";
 import Link from "next/link";
 import { Response } from "@/components/ai-elements/response";
 import { useQueryState, parseAsStringLiteral } from "nuqs";
 
-export default function Page() {
+function ChatContent() {
   const { messages, sendMessage, status } = useChat();
   const [theme] = useQueryState(
     "theme",
@@ -157,5 +157,13 @@ export default function Page() {
         </div>
       </main>
     </>
+  );
+}
+
+export default function Page() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ChatContent />
+    </Suspense>
   );
 }
