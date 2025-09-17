@@ -5,9 +5,14 @@ import { useState, useRef, useEffect } from "react";
 import { motion } from "motion/react";
 import Link from "next/link";
 import { Response } from "@/components/ai-elements/response";
+import { useQueryState, parseAsStringLiteral } from "nuqs";
 
 export default function Page() {
   const { messages, sendMessage, status } = useChat();
+  const [theme] = useQueryState(
+    "theme",
+    parseAsStringLiteral(["dark", "light"]).withDefault("light")
+  );
   const [input, setInput] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
   const hasMessages = messages.length > 0;
@@ -33,7 +38,7 @@ export default function Page() {
     <>
       <main className="fixed inset-0 flex flex-col select-none">
         <Link
-          href="/"
+          href={theme === "dark" ? "/?theme=dark" : "/"}
           className="absolute top-4 left-4 z-50 inline-block text-sm cursor-pointer hover:underline"
         >
           ← Back to Resume
