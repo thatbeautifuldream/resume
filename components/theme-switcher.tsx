@@ -2,23 +2,41 @@
 
 import { useEffect } from "react";
 import { useQueryState, parseAsStringLiteral } from "nuqs";
+import { useTheme } from "next-themes";
 
 export function ThemeSwitcher() {
-  const [theme, setTheme] = useQueryState(
+  const { theme, setTheme } = useTheme();
+  const [latexTheme, setLatexTheme] = useQueryState(
     "theme",
     parseAsStringLiteral(["dark", "light"]).withDefault("light")
   );
 
+  // Sync URL theme state with next-themes
   useEffect(() => {
-    if (theme === "dark") {
+    if (latexTheme !== theme) {
+      setTheme(latexTheme);
+    }
+  }, [latexTheme, theme, setTheme]);
+
+  // Sync next-themes state with URL theme state
+  useEffect(() => {
+    if (theme && theme !== latexTheme) {
+      setLatexTheme(theme as "dark" | "light");
+    }
+  }, [theme, latexTheme, setLatexTheme]);
+
+  // Handle latex CSS classes
+  useEffect(() => {
+    if (latexTheme === "dark") {
       document.body.classList.add("latex-dark");
     } else {
       document.body.classList.remove("latex-dark");
     }
-  }, [theme]);
+  }, [latexTheme]);
 
   const toggleDarkMode = () => {
-    setTheme(theme === "dark" ? "light" : "dark");
+    const newTheme = latexTheme === "dark" ? "light" : "dark";
+    setLatexTheme(newTheme);
   };
 
   return (

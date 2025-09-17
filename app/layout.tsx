@@ -9,6 +9,7 @@ import { createMetadata } from "@/lib/metadata";
 import { ThemeSwitcher } from "@/components/theme-switcher";
 import { cn } from "@/lib/utils";
 import { ebGaramond, inter } from "@/lib/fonts";
+import { ThemeProvider } from "@/components/providers/theme-provider";
 
 export const metadata: Metadata = createMetadata({
   title: "Milind Mishra",
@@ -38,7 +39,14 @@ export default function RootLayout({
         )}
       >
         <NuqsAdapter>
-          {children}
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="light"
+            enableSystem
+            disableTransitionOnChange
+          >
+            {children}
+          </ThemeProvider>
           <Suspense fallback={null}>
             <ThemeSwitcher />
           </Suspense>

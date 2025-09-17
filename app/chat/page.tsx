@@ -9,6 +9,7 @@ import { Response } from "@/components/ai-elements/response";
 import { useQueryState, parseAsStringLiteral } from "nuqs";
 import { ArrowUp, Square } from "lucide-react";
 import { AIDevtools } from "@ai-sdk-tools/devtools";
+import { useTheme } from "next-themes";
 
 function ChatContent() {
   const { sendMessage, status, stop } = useChat({
@@ -17,6 +18,7 @@ function ChatContent() {
     }),
   });
   const messages = useChatMessages();
+  const { setTheme } = useTheme();
   const [theme] = useQueryState(
     "theme",
     parseAsStringLiteral(["dark", "light"]).withDefault("light")
@@ -24,6 +26,11 @@ function ChatContent() {
   const [input, setInput] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
   const hasMessages = messages.length > 0;
+
+  // Sync URL theme with next-themes
+  useEffect(() => {
+    setTheme(theme);
+  }, [theme, setTheme]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
