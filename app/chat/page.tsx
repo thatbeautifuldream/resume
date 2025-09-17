@@ -7,6 +7,7 @@ import Link from "next/link";
 import { Response } from "@/components/ai-elements/response";
 import { useQueryState, parseAsStringLiteral } from "nuqs";
 import { ArrowUp, Square } from "lucide-react";
+import { AIDevtools } from "@ai-sdk-tools/devtools";
 
 function ChatContent() {
   const { messages, sendMessage, status, stop } = useChat();
@@ -136,7 +137,7 @@ function ChatContent() {
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={(e) => {
-                    if (e.key === 'Enter' && !e.shiftKey) {
+                    if (e.key === "Enter" && !e.shiftKey) {
                       e.preventDefault();
                       if (input.trim() && status === "ready") {
                         sendMessage({ text: input });
@@ -149,14 +150,15 @@ function ChatContent() {
                   rows={1}
                   className="flex-1 min-w-0 px-4 py-3 text-base bg-transparent border-none outline-none resize-none disabled:opacity-50 disabled:cursor-not-allowed placeholder:text-muted-foreground min-h-[48px] max-h-[200px] overflow-y-scroll"
                   style={{
-                    height: 'auto',
-                    scrollbarWidth: 'none',
-                    msOverflowStyle: 'none'
+                    height: "auto",
+                    scrollbarWidth: "none",
+                    msOverflowStyle: "none",
                   }}
                   onInput={(e) => {
                     const target = e.target as HTMLTextAreaElement;
-                    target.style.height = 'auto';
-                    target.style.height = Math.min(target.scrollHeight, 200) + 'px';
+                    target.style.height = "auto";
+                    target.style.height =
+                      Math.min(target.scrollHeight, 200) + "px";
                   }}
                 />
 
@@ -196,6 +198,7 @@ export default function Page() {
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <ChatContent />
+      <AIDevtools />
     </Suspense>
   );
 }
