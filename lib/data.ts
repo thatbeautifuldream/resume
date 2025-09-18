@@ -117,11 +117,9 @@ export const resume: Resume = {
       url: "https://www.linkedin.com/company/startuphire",
       startDate: "2023-08-01",
       endDate: "2024-01-31",
-      summary:
-        "Prototyped and launched candidate pipeline tools to accelerate startup hiring workflows.",
+      summary: "Built marketing pages and platform features.",
       highlights: [
-        "Led team to prototype recruiting pipeline, reducing manual work for hiring managers by 40%.",
-        "Integrated multiple job boards into a unified platform, saving recruiters an average of 5 hours per week.",
+        "Collaborated with team to build recruiting pipeline, reducing manual work for hiring managers.",
       ],
     },
     {
