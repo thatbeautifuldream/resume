@@ -14,7 +14,7 @@ import { WorkItem } from "./work-item";
 import { Clock } from "../clock";
 import Link from "next/link";
 import { useState } from "react";
-import { useQueryState, parseAsStringLiteral } from "nuqs";
+import { useQueryState, parseAsStringLiteral, parseAsBoolean } from "nuqs";
 
 const DEFAULT_ITEMS_TO_SHOW = 2;
 
@@ -23,7 +23,10 @@ export function ResumeView({ data }: { data: Resume }) {
     "theme",
     parseAsStringLiteral(["dark", "light"]).withDefault("light")
   );
-  const [expandAll, setExpandAll] = useState(false);
+  const [expandAll, setExpandAll] = useQueryState(
+    "expand",
+    parseAsBoolean.withDefault(false)
+  );
   const [showAllWork, setShowAllWork] = useState(false);
   const [showAllContributions, setShowAllContributions] = useState(false);
   const [showAllProjects, setShowAllProjects] = useState(false);
