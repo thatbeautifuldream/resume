@@ -1,6 +1,6 @@
 "use client";
 
-import { useChat, useChatMessages } from "@ai-sdk-tools/store";
+import { useChat, useChatMessages, useChatStoreState } from "@ai-sdk-tools/store";
 import { DefaultChatTransport } from "ai";
 import { useState, useRef, useEffect, Suspense } from "react";
 import { motion } from "motion/react";
@@ -10,14 +10,17 @@ import { useQueryState, parseAsStringLiteral } from "nuqs";
 import { ArrowUp, Square } from "lucide-react";
 import { AIDevtools } from "@ai-sdk-tools/devtools";
 import { useTheme } from "next-themes";
+import { saveToIndexedDB, loadFromIndexedDB } from "@/lib/chat-storage";
 
 function ChatContent() {
-  const { sendMessage, status, stop } = useChat({
+  const { sendMessage, status, stop, setMessages } = useChat({
     transport: new DefaultChatTransport({
       api: "/api/chat",
     }),
+    storeId: "persistent-chat",
   });
-  const messages = useChatMessages();
+  const messages = useChatMessages("persistent-chat");
+  const chatState = useChatStoreState("persistent-chat");
   const { setTheme } = useTheme();
   const [theme] = useQueryState(
     "theme",
@@ -26,6 +29,36 @@ function ChatContent() {
   const [input, setInput] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
   const hasMessages = messages.length > 0;
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  // Load persisted messages on mount
+  useEffect(() => {
+    const loadPersistedMessages = async () => {
+      try {
+        const persistedData = await loadFromIndexedDB('resume-chat-history');
+        if (persistedData?.messages && persistedData.messages.length > 0) {
+          setMessages(persistedData.messages);
+        }
+      } catch (error) {
+        console.warn('Failed to load persisted messages:', error);
+      } finally {
+        setIsLoaded(true);
+      }
+    };
+    loadPersistedMessages();
+  }, [setMessages]);
+
+  // Save messages to IndexedDB when they change
+  useEffect(() => {
+    if (isLoaded && messages.length > 0) {
+      saveToIndexedDB('resume-chat-history', {
+        messages,
+        id: chatState.id
+      }).catch(error => {
+        console.warn('Failed to save messages:', error);
+      });
+    }
+  }, [messages, chatState.id, isLoaded]);
 
   // Sync URL theme with next-themes
   useEffect(() => {
