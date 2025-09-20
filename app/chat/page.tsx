@@ -7,10 +7,10 @@ import { motion } from "motion/react";
 import Link from "next/link";
 import { Response } from "@/components/ai-elements/response";
 import { useQueryState, parseAsStringLiteral } from "nuqs";
-import { ArrowUp, Square } from "lucide-react";
+import { ArrowUp, Square, Trash2 } from "lucide-react";
 import { AIDevtools } from "@ai-sdk-tools/devtools";
 import { useTheme } from "next-themes";
-import { saveToIndexedDB, loadFromIndexedDB } from "@/lib/chat-storage";
+import { saveToIndexedDB, loadFromIndexedDB, clearFromIndexedDB } from "@/lib/chat-storage";
 
 function ChatContent() {
   const { sendMessage, status, stop, setMessages } = useChat({
@@ -30,6 +30,18 @@ function ChatContent() {
   const inputRef = useRef<HTMLInputElement>(null);
   const hasMessages = messages.length > 0;
   const [isLoaded, setIsLoaded] = useState(false);
+
+  // Clear chat function
+  const clearChat = async () => {
+    try {
+      // Clear from IndexedDB
+      await clearFromIndexedDB('resume-chat-history');
+      // Clear from current state
+      setMessages([]);
+    } catch (error) {
+      console.warn('Failed to clear chat:', error);
+    }
+  };
 
   // Load persisted messages on mount
   useEffect(() => {
@@ -85,12 +97,23 @@ function ChatContent() {
   return (
     <>
       <main className="fixed inset-0 flex flex-col select-none">
-        <Link
-          href={theme === "dark" ? "/?theme=dark" : "/"}
-          className="absolute top-4 left-4 z-50 inline-block text-sm cursor-pointer hover:underline"
-        >
-          ← Back to Resume
-        </Link>
+        <div className="absolute top-4 left-4 z-50 flex items-center space-x-3">
+          <Link
+            href={theme === "dark" ? "/?theme=dark" : "/"}
+            className="inline-block text-sm cursor-pointer hover:underline"
+          >
+            ← Back to Resume
+          </Link>
+          {hasMessages && (
+            <button
+              onClick={clearChat}
+              className="text-sm cursor-pointer hover:underline opacity-60 hover:opacity-100 transition-opacity"
+              title="Clear chat history"
+            >
+              <span>Clear Chat</span>
+            </button>
+          )}
+        </div>
         {hasMessages && (
           <div
             className="flex-1 overflow-y-auto p-4 space-y-4 max-w-full lg:max-w-[896px] lg:mx-auto lg:w-full"

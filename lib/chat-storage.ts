@@ -60,3 +60,32 @@ export async function loadFromIndexedDB(key: string): Promise<any> {
     return data ? JSON.parse(data) : null;
   }
 }
+
+export async function clearFromIndexedDB(key: string): Promise<void> {
+  try {
+    const request = indexedDB.open('chat-storage', 1);
+
+    await new Promise<void>((resolve, reject) => {
+      request.onerror = () => reject(request.error);
+      request.onsuccess = () => {
+        const db = request.result;
+        const transaction = db.transaction(['chat-data'], 'readwrite');
+        const store = transaction.objectStore('chat-data');
+        const deleteRequest = store.delete(key);
+
+        deleteRequest.onsuccess = () => resolve();
+        deleteRequest.onerror = () => reject(deleteRequest.error);
+      };
+
+      request.onupgradeneeded = () => {
+        const db = request.result;
+        if (!db.objectStoreNames.contains('chat-data')) {
+          db.createObjectStore('chat-data', { keyPath: 'key' });
+        }
+      };
+    });
+  } catch (error) {
+    // Fallback to localStorage
+    localStorage.removeItem(key);
+  }
+}
