@@ -11,58 +11,48 @@ import { Section } from "./section";
 import { Skills } from "./skills";
 import { TalkItem } from "./talk-item";
 import { WorkItem } from "./work-item";
-import { Clock } from "../clock";
-import Link from "next/link";
-import { useState } from "react";
-import { useQueryState, parseAsStringLiteral, parseAsBoolean } from "nuqs";
+import type { Dispatch, SetStateAction } from "react";
 
 const DEFAULT_ITEMS_TO_SHOW = 2;
 
-export function ResumeView({ data }: { data: Resume }) {
-  const [theme] = useQueryState(
-    "theme",
-    parseAsStringLiteral(["dark", "light"]).withDefault("light")
-  );
-  const [expandAll, setExpandAll] = useQueryState(
-    "expand",
-    parseAsBoolean.withDefault(false)
-  );
-  const [showAllWork, setShowAllWork] = useState(false);
-  const [showAllContributions, setShowAllContributions] = useState(false);
-  const [showAllProjects, setShowAllProjects] = useState(false);
-  const [showAllEducation, setShowAllEducation] = useState(false);
-  const [showAllCertificates, setShowAllCertificates] = useState(false);
-  const [showAllTalks, setShowAllTalks] = useState(false);
+interface ResumeViewProps {
+  data: Resume;
+  expandAll?: boolean;
+  showAllWork?: boolean;
+  setShowAllWork?: Dispatch<SetStateAction<boolean>>;
+  showAllContributions?: boolean;
+  setShowAllContributions?: Dispatch<SetStateAction<boolean>>;
+  showAllProjects?: boolean;
+  setShowAllProjects?: Dispatch<SetStateAction<boolean>>;
+  showAllEducation?: boolean;
+  setShowAllEducation?: Dispatch<SetStateAction<boolean>>;
+  showAllCertificates?: boolean;
+  setShowAllCertificates?: Dispatch<SetStateAction<boolean>>;
+  showAllTalks?: boolean;
+  setShowAllTalks?: Dispatch<SetStateAction<boolean>>;
+  setExpandAll?: Dispatch<SetStateAction<boolean>>;
+}
 
-  const toggleExpandAll = () => {
-    const newExpandAll = !expandAll;
-    setExpandAll(newExpandAll);
-    setShowAllWork(newExpandAll);
-    setShowAllContributions(newExpandAll);
-    setShowAllProjects(newExpandAll);
-    setShowAllEducation(newExpandAll);
-    setShowAllCertificates(newExpandAll);
-    setShowAllTalks(newExpandAll);
-  };
+export function ResumeView({
+  data,
+  expandAll = false,
+  showAllWork = false,
+  setShowAllWork,
+  showAllContributions = false,
+  setShowAllContributions,
+  showAllProjects = false,
+  setShowAllProjects,
+  showAllEducation = false,
+  setShowAllEducation,
+  showAllCertificates = false,
+  setShowAllCertificates,
+  showAllTalks = false,
+  setShowAllTalks,
+  setExpandAll,
+}: ResumeViewProps) {
 
   return (
     <main className="select-none">
-      <header className="print:hidden">
-        <div className="flex justify-between items-center">
-          <div className="text-left">
-            <Clock timeZone="Asia/Calcutta" />
-          </div>
-          <div className="text-right flex gap-x-2">
-            <button
-              onClick={toggleExpandAll}
-              className="text-sm cursor-pointer hover:underline"
-            >
-              {expandAll ? "Collapse All" : "Expand All"}
-            </button>
-            <Link href={theme === "dark" ? "/chat?theme=dark" : "/chat"}>Chat with Resume</Link>
-          </div>
-        </div>
-      </header>
       <article>
         <ResumeHeader basics={data.basics} />
 
@@ -79,8 +69,8 @@ export function ResumeView({ data }: { data: Resume }) {
                 <button
                   onClick={() => {
                     const newShowAll = !showAllWork;
-                    setShowAllWork(newShowAll);
-                    if (!newShowAll) setExpandAll(false);
+                    setShowAllWork?.(newShowAll);
+                    if (!newShowAll) setExpandAll?.(false);
                   }}
                   className="print:hidden text-sm cursor-pointer"
                 >
@@ -104,8 +94,8 @@ export function ResumeView({ data }: { data: Resume }) {
                 <button
                   onClick={() => {
                     const newShowAll = !showAllContributions;
-                    setShowAllContributions(newShowAll);
-                    if (!newShowAll) setExpandAll(false);
+                    setShowAllContributions?.(newShowAll);
+                    if (!newShowAll) setExpandAll?.(false);
                   }}
                   className="print:hidden text-sm cursor-pointer"
                 >
@@ -151,8 +141,8 @@ export function ResumeView({ data }: { data: Resume }) {
                 <button
                   onClick={() => {
                     const newShowAll = !showAllProjects;
-                    setShowAllProjects(newShowAll);
-                    if (!newShowAll) setExpandAll(false);
+                    setShowAllProjects?.(newShowAll);
+                    if (!newShowAll) setExpandAll?.(false);
                   }}
                   className="print:hidden text-sm cursor-pointer"
                 >
@@ -176,8 +166,8 @@ export function ResumeView({ data }: { data: Resume }) {
                 <button
                   onClick={() => {
                     const newShowAll = !showAllEducation;
-                    setShowAllEducation(newShowAll);
-                    if (!newShowAll) setExpandAll(false);
+                    setShowAllEducation?.(newShowAll);
+                    if (!newShowAll) setExpandAll?.(false);
                   }}
                   className="print:hidden text-sm cursor-pointer"
                 >
@@ -201,8 +191,8 @@ export function ResumeView({ data }: { data: Resume }) {
                 <button
                   onClick={() => {
                     const newShowAll = !showAllCertificates;
-                    setShowAllCertificates(newShowAll);
-                    if (!newShowAll) setExpandAll(false);
+                    setShowAllCertificates?.(newShowAll);
+                    if (!newShowAll) setExpandAll?.(false);
                   }}
                   className="print:hidden text-sm cursor-pointer"
                 >
@@ -226,8 +216,8 @@ export function ResumeView({ data }: { data: Resume }) {
                 <button
                   onClick={() => {
                     const newShowAll = !showAllTalks;
-                    setShowAllTalks(newShowAll);
-                    if (!newShowAll) setExpandAll(false);
+                    setShowAllTalks?.(newShowAll);
+                    if (!newShowAll) setExpandAll?.(false);
                   }}
                   className="print:hidden text-sm cursor-pointer"
                 >

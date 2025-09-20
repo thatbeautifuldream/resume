@@ -1,12 +1,10 @@
 import type React from "react";
-import { Suspense } from "react";
 import type { Metadata } from "next";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { ClarityProvider } from "@/components/providers/clarity-provider";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import "./globals.css";
 import { createMetadata } from "@/lib/metadata";
-import { ThemeSwitcher } from "@/components/theme-switcher";
 import { cn } from "@/lib/utils";
 import { ebGaramond, inter } from "@/lib/fonts";
 import { ThemeProvider } from "@/components/providers/theme-provider";
@@ -47,9 +45,6 @@ export default function RootLayout({
           >
             {children}
           </ThemeProvider>
-          <Suspense fallback={null}>
-            <ThemeSwitcher />
-          </Suspense>
         </NuqsAdapter>
         <GoogleAnalytics gaId="G-G7VF0PLE22" />
         <ClarityProvider />

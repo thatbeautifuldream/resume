@@ -1,16 +1,24 @@
 "use client";
 
-import { useChat, useChatMessages, useChatStoreState } from "@ai-sdk-tools/store";
-import { DefaultChatTransport } from "ai";
-import { useState, useRef, useEffect, Suspense } from "react";
-import { motion } from "motion/react";
-import Link from "next/link";
 import { Response } from "@/components/ai-elements/response";
-import { useQueryState, parseAsStringLiteral } from "nuqs";
-import { ArrowUp, Square, Trash2 } from "lucide-react";
+import { Header } from "@/components/header";
+import {
+  clearFromIndexedDB,
+  loadFromIndexedDB,
+  saveToIndexedDB,
+} from "@/lib/chat-storage";
 import { AIDevtools } from "@ai-sdk-tools/devtools";
+import {
+  useChat,
+  useChatMessages,
+  useChatStoreState,
+} from "@ai-sdk-tools/store";
+import { DefaultChatTransport } from "ai";
+import { ArrowUp, Square } from "lucide-react";
+import { motion } from "motion/react";
 import { useTheme } from "next-themes";
-import { saveToIndexedDB, loadFromIndexedDB, clearFromIndexedDB } from "@/lib/chat-storage";
+import { parseAsStringLiteral, useQueryState } from "nuqs";
+import { Suspense, useEffect, useRef, useState } from "react";
 
 function ChatContent() {
   const { sendMessage, status, stop, setMessages } = useChat({
@@ -35,11 +43,11 @@ function ChatContent() {
   const clearChat = async () => {
     try {
       // Clear from IndexedDB
-      await clearFromIndexedDB('resume-chat-history');
+      await clearFromIndexedDB("resume-chat-history");
       // Clear from current state
       setMessages([]);
     } catch (error) {
-      console.warn('Failed to clear chat:', error);
+      console.warn("Failed to clear chat:", error);
     }
   };
 
@@ -47,12 +55,12 @@ function ChatContent() {
   useEffect(() => {
     const loadPersistedMessages = async () => {
       try {
-        const persistedData = await loadFromIndexedDB('resume-chat-history');
+        const persistedData = await loadFromIndexedDB("resume-chat-history");
         if (persistedData?.messages && persistedData.messages.length > 0) {
           setMessages(persistedData.messages);
         }
       } catch (error) {
-        console.warn('Failed to load persisted messages:', error);
+        console.warn("Failed to load persisted messages:", error);
       } finally {
         setIsLoaded(true);
       }
@@ -63,11 +71,11 @@ function ChatContent() {
   // Save messages to IndexedDB when they change
   useEffect(() => {
     if (isLoaded && messages.length > 0) {
-      saveToIndexedDB('resume-chat-history', {
+      saveToIndexedDB("resume-chat-history", {
         messages,
-        id: chatState.id
-      }).catch(error => {
-        console.warn('Failed to save messages:', error);
+        id: chatState.id,
+      }).catch((error) => {
+        console.warn("Failed to save messages:", error);
       });
     }
   }, [messages, chatState.id, isLoaded]);
@@ -96,24 +104,11 @@ function ChatContent() {
 
   return (
     <>
-      <main className="fixed inset-0 flex flex-col select-none">
-        <div className="absolute top-4 left-4 z-50 flex items-center space-x-3">
-          <Link
-            href={theme === "dark" ? "/?theme=dark" : "/"}
-            className="inline-block text-sm cursor-pointer hover:underline"
-          >
-            ← Back to Resume
-          </Link>
-          {hasMessages && (
-            <button
-              onClick={clearChat}
-              className="text-sm cursor-pointer hover:underline opacity-60 hover:opacity-100 transition-opacity"
-              title="Clear chat history"
-            >
-              <span>Clear Chat</span>
-            </button>
-          )}
-        </div>
+      <Header
+        hasMessages={hasMessages}
+        onClearChat={clearChat}
+      />
+      <main className="fixed inset-0 flex flex-col select-none pt-16">
         {hasMessages && (
           <div
             className="flex-1 overflow-y-auto p-4 space-y-4 max-w-full lg:max-w-[896px] lg:mx-auto lg:w-full"
