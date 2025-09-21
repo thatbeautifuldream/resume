@@ -58,7 +58,7 @@ export function ResumeView({ data }: { data: Resume }) {
   };
 
   return (
-    <main className="select-none">
+    <main className="select-none -mt-8 print:mt-0">
       <article>
         <ResumeHeader basics={data.basics} />
 

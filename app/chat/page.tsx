@@ -1,6 +1,7 @@
 "use client";
 
 import { Response } from "@/components/ai-elements/response";
+import { Loading } from "@/components/loading";
 import {
   clearFromIndexedDB,
   loadFromIndexedDB,
@@ -90,7 +91,7 @@ function ChatContent() {
   }, []);
 
   return (
-    <main className="fixed inset-0 flex flex-col select-none pt-16">
+    <main className="fixed inset-0 flex flex-col select-none pt-16 print:static print:pt-0">
       {hasMessages && (
         <div
           className="flex-1 overflow-y-auto p-4 space-y-4 max-w-full lg:max-w-[896px] lg:mx-auto lg:w-full"
@@ -119,30 +120,7 @@ function ChatContent() {
                 )}
             </div>
           ))}
-          {status === "submitted" && (
-            <div className="w-full text-left">
-              <div className="flex items-center space-x-1 p-2">
-                <motion.span
-                  animate={{ opacity: [0, 1, 0] }}
-                  transition={{ duration: 1.5, repeat: Infinity, delay: 0 }}
-                >
-                  *
-                </motion.span>
-                <motion.span
-                  animate={{ opacity: [0, 1, 0] }}
-                  transition={{ duration: 1.5, repeat: Infinity, delay: 0.5 }}
-                >
-                  *
-                </motion.span>
-                <motion.span
-                  animate={{ opacity: [0, 1, 0] }}
-                  transition={{ duration: 1.5, repeat: Infinity, delay: 1 }}
-                >
-                  *
-                </motion.span>
-              </div>
-            </div>
-          )}
+          {status === "submitted" && <Loading />}
         </div>
       )}
 
@@ -169,7 +147,7 @@ function ChatContent() {
 
         <motion.div
           layout
-          className={`w-full max-w-full lg:max-w-[896px] lg:mx-auto p-4 ${
+          className={`w-full max-w-full lg:max-w-[896px] lg:mx-auto p-4 print:hidden ${
             hasMessages ? "flex-shrink-0" : ""
           }`}
         >
@@ -194,7 +172,7 @@ function ChatContent() {
             }}
             className="w-full"
           >
-            <div className="relative flex items-end border border-input focus-within:ring-2 focus-within:ring-ring focus-within:border-transparent transition-all duration-200">
+            <div className="relative flex items-end border border-input bg-background focus-within:ring-2 focus-within:ring-ring focus-within:border-transparent transition-all duration-200">
               <textarea
                 ref={inputRef}
                 value={input}
@@ -211,7 +189,7 @@ function ChatContent() {
                 disabled={status !== "ready"}
                 placeholder="Ask something about Milind's work..."
                 rows={1}
-                className="flex-1 min-w-0 px-4 py-3 text-base bg-transparent border-none outline-none resize-none disabled:opacity-50 disabled:cursor-not-allowed placeholder:text-muted-foreground min-h-[48px] max-h-[200px] overflow-y-scroll"
+                className="flex-1 min-w-0 px-4 py-3 text-base border-none outline-none resize-none disabled:opacity-50 disabled:cursor-not-allowed placeholder:text-muted-foreground min-h-[48px] max-h-[200px] overflow-y-scroll"
                 style={{
                   height: "auto",
                   scrollbarWidth: "none",

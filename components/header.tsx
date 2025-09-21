@@ -15,14 +15,11 @@ export type THeaderConfig = {
 
 const Header = ({ leftItems = [] }: THeaderConfig) => {
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 print:hidden backdrop-blur-xl">
+    <header className="fixed top-0 left-0 right-0 z-50 print:hidden bg-background border-b">
       <div className="max-w-full lg:max-w-[896px] lg:mx-auto px-4 lg:px-8 py-4">
         <div className="flex justify-between items-center">
           <div className="flex gap-x-4 items-center">
-            <Link
-              href="/"
-              className="text-base font-medium hover:underline"
-            >
+            <Link href="/" className="text-base font-medium hover:underline">
               Milind's Resume
             </Link>
             {leftItems.map((item) => (
