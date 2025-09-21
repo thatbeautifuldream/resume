@@ -34,7 +34,7 @@ export default function RootLayout({
         className={cn(
           ebGaramond.className,
           inter.className,
-          "min-h-screen bg-background font-serif antialiased"
+          "min-h-screen bg-background! font-serif antialiased"
         )}
       >
         <NuqsAdapter>
