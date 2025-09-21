@@ -2,6 +2,8 @@
 
 import { range } from "@/lib/format";
 import type { Resume } from "@/lib/resume-schema";
+import { parseAsBoolean, useQueryState } from "nuqs";
+import { useState, useEffect } from "react";
 import { CertificateItem } from "./certificate-item";
 import { ContributionItem } from "./contribution-item";
 import { EducationItem } from "./education-item";
@@ -11,45 +13,31 @@ import { Section } from "./section";
 import { Skills } from "./skills";
 import { TalkItem } from "./talk-item";
 import { WorkItem } from "./work-item";
-import type { Dispatch, SetStateAction } from "react";
 
 const DEFAULT_ITEMS_TO_SHOW = 2;
 
-interface ResumeViewProps {
-  data: Resume;
-  expandAll?: boolean;
-  showAllWork?: boolean;
-  setShowAllWork?: Dispatch<SetStateAction<boolean>>;
-  showAllContributions?: boolean;
-  setShowAllContributions?: Dispatch<SetStateAction<boolean>>;
-  showAllProjects?: boolean;
-  setShowAllProjects?: Dispatch<SetStateAction<boolean>>;
-  showAllEducation?: boolean;
-  setShowAllEducation?: Dispatch<SetStateAction<boolean>>;
-  showAllCertificates?: boolean;
-  setShowAllCertificates?: Dispatch<SetStateAction<boolean>>;
-  showAllTalks?: boolean;
-  setShowAllTalks?: Dispatch<SetStateAction<boolean>>;
-  setExpandAll?: Dispatch<SetStateAction<boolean>>;
-}
+export function ResumeView({ data }: { data: Resume }) {
+  const [expandAll, setExpandAll] = useQueryState(
+    "expand",
+    parseAsBoolean.withDefault(false)
+  );
+  const [showAllWork, setShowAllWork] = useState(false);
+  const [showAllContributions, setShowAllContributions] = useState(false);
+  const [showAllProjects, setShowAllProjects] = useState(false);
+  const [showAllEducation, setShowAllEducation] = useState(false);
+  const [showAllCertificates, setShowAllCertificates] = useState(false);
+  const [showAllTalks, setShowAllTalks] = useState(false);
 
-export function ResumeView({
-  data,
-  expandAll = false,
-  showAllWork = false,
-  setShowAllWork,
-  showAllContributions = false,
-  setShowAllContributions,
-  showAllProjects = false,
-  setShowAllProjects,
-  showAllEducation = false,
-  setShowAllEducation,
-  showAllCertificates = false,
-  setShowAllCertificates,
-  showAllTalks = false,
-  setShowAllTalks,
-  setExpandAll,
-}: ResumeViewProps) {
+  useEffect(() => {
+    if (expandAll) {
+      setShowAllWork(true);
+      setShowAllContributions(true);
+      setShowAllProjects(true);
+      setShowAllEducation(true);
+      setShowAllCertificates(true);
+      setShowAllTalks(true);
+    }
+  }, [expandAll]);
 
   return (
     <main className="select-none">
@@ -65,12 +53,12 @@ export function ResumeView({
               ).map((w, i) => (
                 <WorkItem key={i} item={w} />
               ))}
-              {data.work.length > DEFAULT_ITEMS_TO_SHOW && (
+              {data.work.length > DEFAULT_ITEMS_TO_SHOW && !expandAll && (
                 <button
                   onClick={() => {
                     const newShowAll = !showAllWork;
-                    setShowAllWork?.(newShowAll);
-                    if (!newShowAll) setExpandAll?.(false);
+                    setShowAllWork(newShowAll);
+                    if (!newShowAll) setExpandAll(false);
                   }}
                   className="print:hidden text-sm cursor-pointer"
                 >
@@ -90,12 +78,12 @@ export function ResumeView({
               ).map((c, i) => (
                 <ContributionItem key={i} item={c} />
               ))}
-              {data.contributions.length > DEFAULT_ITEMS_TO_SHOW && (
+              {data.contributions.length > DEFAULT_ITEMS_TO_SHOW && !expandAll && (
                 <button
                   onClick={() => {
                     const newShowAll = !showAllContributions;
-                    setShowAllContributions?.(newShowAll);
-                    if (!newShowAll) setExpandAll?.(false);
+                    setShowAllContributions(newShowAll);
+                    if (!newShowAll) setExpandAll(false);
                   }}
                   className="print:hidden text-sm cursor-pointer"
                 >
@@ -137,12 +125,12 @@ export function ResumeView({
                   )}
                 </div>
               ))}
-              {data.projects.length > DEFAULT_ITEMS_TO_SHOW && (
+              {data.projects.length > DEFAULT_ITEMS_TO_SHOW && !expandAll && (
                 <button
                   onClick={() => {
                     const newShowAll = !showAllProjects;
-                    setShowAllProjects?.(newShowAll);
-                    if (!newShowAll) setExpandAll?.(false);
+                    setShowAllProjects(newShowAll);
+                    if (!newShowAll) setExpandAll(false);
                   }}
                   className="print:hidden text-sm cursor-pointer"
                 >
@@ -162,12 +150,12 @@ export function ResumeView({
               ).map((e, i) => (
                 <EducationItem key={i} item={e} />
               ))}
-              {data.education.length > DEFAULT_ITEMS_TO_SHOW && (
+              {data.education.length > DEFAULT_ITEMS_TO_SHOW && !expandAll && (
                 <button
                   onClick={() => {
                     const newShowAll = !showAllEducation;
-                    setShowAllEducation?.(newShowAll);
-                    if (!newShowAll) setExpandAll?.(false);
+                    setShowAllEducation(newShowAll);
+                    if (!newShowAll) setExpandAll(false);
                   }}
                   className="print:hidden text-sm cursor-pointer"
                 >
@@ -187,12 +175,12 @@ export function ResumeView({
               ).map((c, i) => (
                 <CertificateItem key={i} item={c} />
               ))}
-              {data.certificates.length > DEFAULT_ITEMS_TO_SHOW && (
+              {data.certificates.length > DEFAULT_ITEMS_TO_SHOW && !expandAll && (
                 <button
                   onClick={() => {
                     const newShowAll = !showAllCertificates;
-                    setShowAllCertificates?.(newShowAll);
-                    if (!newShowAll) setExpandAll?.(false);
+                    setShowAllCertificates(newShowAll);
+                    if (!newShowAll) setExpandAll(false);
                   }}
                   className="print:hidden text-sm cursor-pointer"
                 >
@@ -212,12 +200,12 @@ export function ResumeView({
               ).map((t, i) => (
                 <TalkItem key={i} item={t} />
               ))}
-              {data.talks.length > DEFAULT_ITEMS_TO_SHOW && (
+              {data.talks.length > DEFAULT_ITEMS_TO_SHOW && !expandAll && (
                 <button
                   onClick={() => {
                     const newShowAll = !showAllTalks;
-                    setShowAllTalks?.(newShowAll);
-                    if (!newShowAll) setExpandAll?.(false);
+                    setShowAllTalks(newShowAll);
+                    if (!newShowAll) setExpandAll(false);
                   }}
                   className="print:hidden text-sm cursor-pointer"
                 >

@@ -2,35 +2,18 @@
 
 import { Clock } from "@/components/clock";
 import { useQueryState, parseAsStringLiteral } from "nuqs";
-import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { useEffect, useState } from "react";
-
-// Types
-export type THeaderConfig = {
-  showClock?: boolean;
-  showExpandAll?: boolean;
-  showChatLink?: boolean;
-  showBackToResume?: boolean;
-  showClearChat?: boolean;
-  expandAllState?: boolean;
-  onExpandAllToggle?: () => void;
-  onClearChat?: () => void;
-  hasMessages?: boolean;
-}
 
 export type THeaderItem = {
   key: string;
   label: string;
-  href?: string;
-  onClick?: () => void;
-  condition?: boolean;
-  variant?: "default" | "secondary";
-}
+  href: string;
+};
 
-export type TRouteConfig = Record<string, THeaderConfig>;
+export type THeaderConfig = {
+  leftItems?: THeaderItem[];
+};
 
-// Theme Toggle Component
 const ThemeToggle = () => {
   const [theme, setTheme] = useQueryState(
     "theme",
@@ -41,7 +24,6 @@ const ThemeToggle = () => {
     const newTheme = theme === "dark" ? "light" : "dark";
     setTheme(newTheme);
 
-    // Apply theme to document immediately
     if (newTheme === "dark") {
       document.documentElement.classList.add("dark");
       document.body.classList.add("latex-dark");
@@ -80,171 +62,41 @@ const ThemeToggle = () => {
   );
 };
 
-// Left Content Component
-const LeftContent = ({ config }: { config: THeaderConfig }) => {
+const Header = ({ leftItems = [] }: THeaderConfig) => {
   const [theme] = useQueryState(
     "theme",
     parseAsStringLiteral(["dark", "light"]).withDefault("light")
   );
 
-  if (config.showClock) {
-    return <Clock timeZone="Asia/Calcutta" />;
-  }
-
-  if (config.showBackToResume) {
-    return (
-      <Link
-        href={theme === "dark" ? "/?theme=dark" : "/"}
-        className="inline-block text-sm cursor-pointer hover:underline"
-      >
-        ← Back to Resume
-      </Link>
-    );
-  }
-
-  return null;
-};
-
-// Right Content Component
-const RightContent = ({ config }: { config: THeaderConfig }) => {
-  const [theme] = useQueryState(
-    "theme",
-    parseAsStringLiteral(["dark", "light"]).withDefault("light")
-  );
-
-  const items = [];
-
-  if (config.showClearChat && config.hasMessages) {
-    items.push(
-      <button
-        key="clear-chat"
-        onClick={config.onClearChat}
-        className="text-sm cursor-pointer hover:underline opacity-60 hover:opacity-100 transition-opacity"
-        title="Clear chat history"
-      >
-        Clear Chat
-      </button>
-    );
-  }
-
-  if (config.showExpandAll && config.onExpandAllToggle) {
-    items.push(
-      <button
-        key="expand-all"
-        onClick={config.onExpandAllToggle}
-        className="text-sm cursor-pointer hover:underline"
-      >
-        {config.expandAllState ? "Collapse All" : "Expand All"}
-      </button>
-    );
-  }
-
-  if (config.showChatLink) {
-    items.push(
-      <Link
-        key="chat-link"
-        href={theme === "dark" ? "/chat?theme=dark" : "/chat"}
-        className="text-sm cursor-pointer hover:underline"
-      >
-        Chat with Resume
-      </Link>
-    );
-  }
-
-  // Always include theme toggle
-  items.push(<ThemeToggle key="theme-toggle" />);
-
   return (
-    <div className="text-right flex gap-x-2 items-center">
-      {items}
-    </div>
-  );
-};
-
-// Main Header Component
-type THeaderProps = THeaderConfig;
-
-const DEFAULT_ROUTE_CONFIGS: Record<string, THeaderConfig> = {
-  "/": {
-    showClock: true,
-    showExpandAll: false,
-    showChatLink: true,
-    showBackToResume: false,
-    showClearChat: false,
-  },
-  "/chat": {
-    showClock: false,
-    showExpandAll: false,
-    showChatLink: false,
-    showBackToResume: true,
-    showClearChat: true,
-  },
-};
-
-const Header = (props: THeaderProps) => {
-  const pathname = usePathname();
-  const [isVisible, setIsVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
-
-  // Merge default config with passed props
-  const defaultConfig = DEFAULT_ROUTE_CONFIGS[pathname] || {};
-  const currentConfig: THeaderConfig = { ...defaultConfig, ...props };
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-
-      // Show header when scrolling up or at top
-      if (currentScrollY < lastScrollY || currentScrollY < 10) {
-        setIsVisible(true);
-      } else {
-        setIsVisible(false);
-      }
-
-      setLastScrollY(currentScrollY);
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [lastScrollY]);
-
-  // Don't render if no content to show
-  const hasLeftContent = currentConfig.showClock || currentConfig.showBackToResume;
-  const hasRightContent =
-    (currentConfig.showClearChat && currentConfig.hasMessages) ||
-    (currentConfig.showExpandAll && currentConfig.onExpandAllToggle) ||
-    currentConfig.showChatLink ||
-    true; // Always true because theme toggle is always shown
-
-  if (!hasLeftContent && !hasRightContent) {
-    return null;
-  }
-
-  return (
-    <header
-      className={`
-        fixed top-0 left-0 right-0 z-50 print:hidden transition-all duration-300 ease-in-out
-        ${isVisible ? 'translate-y-0' : '-translate-y-full'}
-        backdrop-blur-md bg-background/80 border-b border-border/50
-      `}
-    >
+    <header className="fixed top-0 left-0 right-0 z-50 print:hidden backdrop-blur-xl">
       <div className="max-w-full lg:max-w-[896px] lg:mx-auto px-4 lg:px-8 py-4">
         <div className="flex justify-between items-center">
-          <div className="text-left">
-            <LeftContent config={currentConfig} />
+          <div className="flex gap-x-4 items-center">
+            <Link
+              href={theme === "dark" ? "/?theme=dark" : "/"}
+              className="text-base font-medium hover:underline"
+            >
+              Milind's Resume
+            </Link>
+            {leftItems.map((item) => (
+              <Link
+                key={item.key}
+                href={theme === "dark" ? `${item.href}?theme=dark` : item.href}
+                className="cursor-pointer hover:underline"
+              >
+                {item.label}
+              </Link>
+            ))}
           </div>
-          <div className="text-right">
-            <RightContent config={currentConfig} />
+          <div className="flex gap-x-3 items-center">
+            <Clock timeZone="Asia/Calcutta" />
+            <ThemeToggle />
           </div>
         </div>
       </div>
     </header>
   );
 };
-
-// Compound component exports
-Header.ThemeToggle = ThemeToggle;
-Header.LeftContent = LeftContent;
-Header.RightContent = RightContent;
 
 export { Header };

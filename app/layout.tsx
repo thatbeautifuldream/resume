@@ -1,13 +1,15 @@
 import type React from "react";
+import { Suspense } from "react";
 import type { Metadata } from "next";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { ClarityProvider } from "@/components/providers/clarity-provider";
 import { GoogleAnalytics } from "@next/third-parties/google";
-import "./globals.css";
 import { createMetadata } from "@/lib/metadata";
+import { Header } from "@/components/header";
 import { cn } from "@/lib/utils";
 import { ebGaramond, inter } from "@/lib/fonts";
 import { ThemeProvider } from "@/components/providers/theme-provider";
+import "./globals.css";
 
 export const metadata: Metadata = createMetadata({
   title: "Milind Mishra",
@@ -43,7 +45,12 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            {children}
+            <Suspense fallback={null}>
+              <Header
+                leftItems={[{ key: "chat", label: "Chat", href: "/chat" }]}
+              />
+            </Suspense>
+            <div className="pt-8 print:pt-0">{children}</div>
           </ThemeProvider>
         </NuqsAdapter>
         <GoogleAnalytics gaId="G-G7VF0PLE22" />
