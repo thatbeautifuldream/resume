@@ -8,7 +8,6 @@ import { createMetadata } from "@/lib/metadata";
 import { Header } from "@/components/header";
 import { cn } from "@/lib/utils";
 import { ebGaramond, inter } from "@/lib/fonts";
-import { ThemeProvider } from "@/components/providers/theme-provider";
 import "./globals.css";
 
 export const metadata: Metadata = createMetadata({
@@ -39,19 +38,12 @@ export default function RootLayout({
         )}
       >
         <NuqsAdapter>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="light"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <Suspense fallback={null}>
-              <Header
-                leftItems={[{ key: "chat", label: "Chat", href: "/chat" }]}
-              />
-            </Suspense>
-            <div className="pt-8 print:pt-0">{children}</div>
-          </ThemeProvider>
+          <Suspense fallback={null}>
+            <Header
+              leftItems={[{ key: "chat", label: "Chat", href: "/chat" }]}
+            />
+          </Suspense>
+          <div className="pt-8 print:pt-0">{children}</div>
         </NuqsAdapter>
         <GoogleAnalytics gaId="G-G7VF0PLE22" />
         <ClarityProvider />

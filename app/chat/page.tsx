@@ -15,8 +15,6 @@ import {
 import { DefaultChatTransport } from "ai";
 import { ArrowUp, Square } from "lucide-react";
 import { motion } from "motion/react";
-import { useTheme } from "next-themes";
-import { parseAsStringLiteral, useQueryState } from "nuqs";
 import { Suspense, useEffect, useRef, useState } from "react";
 
 function ChatContent() {
@@ -28,13 +26,8 @@ function ChatContent() {
   });
   const messages = useChatMessages("persistent-chat");
   const chatState = useChatStoreState("persistent-chat");
-  const { setTheme } = useTheme();
-  const [theme] = useQueryState(
-    "theme",
-    parseAsStringLiteral(["dark", "light"]).withDefault("light")
-  );
   const [input, setInput] = useState("");
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
   const hasMessages = messages.length > 0;
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -78,11 +71,6 @@ function ChatContent() {
       });
     }
   }, [messages, chatState.id, isLoaded]);
-
-  // Sync URL theme with next-themes
-  useEffect(() => {
-    setTheme(theme);
-  }, [theme, setTheme]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -208,7 +196,7 @@ function ChatContent() {
           >
             <div className="relative flex items-end border border-input focus-within:ring-2 focus-within:ring-ring focus-within:border-transparent transition-all duration-200">
               <textarea
-                ref={inputRef as any}
+                ref={inputRef}
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={(e) => {
@@ -245,6 +233,16 @@ function ChatContent() {
                   }
                 }}
                 disabled={status === "ready" && !input.trim()}
+                aria-label={
+                  status === "submitted"
+                    ? "Stop generating response"
+                    : "Send message"
+                }
+                title={
+                  status === "submitted"
+                    ? "Stop generating response"
+                    : "Send message"
+                }
                 className={`mr-2 mb-2 p-2 rounded-full transition-all duration-200 flex items-center justify-center ${
                   status === "ready" && input.trim()
                     ? "bg-primary text-primary-foreground hover:bg-primary/90 cursor-pointer"
