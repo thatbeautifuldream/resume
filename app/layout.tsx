@@ -4,12 +4,11 @@ import type { Metadata } from "next";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { ClarityProvider } from "@/components/providers/clarity-provider";
 import { GoogleAnalytics } from "@next/third-parties/google";
-import "./globals.css";
 import { createMetadata } from "@/lib/metadata";
-import { ThemeSwitcher } from "@/components/theme-switcher";
+import { Header } from "@/components/header";
 import { cn } from "@/lib/utils";
 import { ebGaramond, inter } from "@/lib/fonts";
-import { ThemeProvider } from "@/components/providers/theme-provider";
+import "./globals.css";
 
 export const metadata: Metadata = createMetadata({
   title: "Milind Mishra",
@@ -39,17 +38,12 @@ export default function RootLayout({
         )}
       >
         <NuqsAdapter>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="light"
-            enableSystem
-            disableTransitionOnChange
-          >
-            {children}
-          </ThemeProvider>
           <Suspense fallback={null}>
-            <ThemeSwitcher />
+            <Header
+              leftItems={[{ key: "chat", label: "Chat", href: "/chat" }]}
+            />
           </Suspense>
+          <div className="pt-8 print:pt-0">{children}</div>
         </NuqsAdapter>
         <GoogleAnalytics gaId="G-G7VF0PLE22" />
         <ClarityProvider />
