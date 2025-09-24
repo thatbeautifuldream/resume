@@ -1,4 +1,4 @@
-import { resume } from "@/lib/data";
+import { resume } from "@/lib/resume";
 import { groq } from "@ai-sdk/groq";
 import { convertToModelMessages, streamText, UIMessage } from "ai";
 
@@ -7,7 +7,7 @@ export const maxDuration = 30;
 /**
  * Creates a privacy-safe version of the resume by redacting sensitive PII fields
  * and preserving only professional information needed for chat responses.
- * 
+ *
  * Redacted fields: email, phone, street address, postal code
  * Preserved fields: skills, experience, education, projects, certifications
  */

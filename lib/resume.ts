@@ -8,7 +8,7 @@ export const resume: Resume = {
     phone: "+919631333128",
     url: "https://milindmishra.com",
     summary:
-      "Driven full-stack engineer passionate about crafting delightful web interfaces and user experiences. Expert in TypeScript, React/Next.js, and cloud infrastructure, with a track record of launching impactful AI, SaaS, and platform products for startups and global teams.",
+      "Full-stack software engineer specializing in React, Next.js, and scalable product engineering. Experienced in building AI-integrated SaaS platforms serving millions of users with solid foundations in system design, component architecture, and performance optimization. Contributor to open-source at Vercel and frequent speaker at React community meetups.",
     location: {
       address: "Zolo Darren, BTM Layout",
       postalCode: "560034",
@@ -16,8 +16,7 @@ export const resume: Resume = {
       countryCode: "IN",
       region: "Karnataka",
     },
-    // timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-    timezone: "Asia/Calcutta",
+    timezone: "Asia/Kolkata",
     profiles: [
       {
         network: "LinkedIn",
