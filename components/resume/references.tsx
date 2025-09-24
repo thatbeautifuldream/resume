@@ -9,7 +9,7 @@ export function References({ items }: { items: Reference[] }) {
           key={i}
           className="italic border-l-4 border-border pl-4 space-y-2"
         >
-          <div>{r.reference}</div>
+          <div>"{r.reference}"</div>
           <footer className="text-sm font-semibold">— {r.name}</footer>
         </blockquote>
       ))}

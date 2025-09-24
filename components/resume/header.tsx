@@ -53,7 +53,7 @@ export function ResumeHeader({ basics }: { basics: Basics }) {
         </div>
 
         {basics.summary && (
-          <div>
+          <div className="border-l-4 border-border pl-4 space-y-2">
             <p>{basics.summary}</p>
           </div>
         )}
