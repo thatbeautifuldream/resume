@@ -13,6 +13,7 @@
     "@ai-sdk-tools/store": "^0.1.2",
     "@ai-sdk/groq": "^2.0.19",
     "@ai-sdk/react": "^2.0.43",
+    "@calcom/embed-react": "^1.5.3",
     "@microsoft/clarity": "^1.0.0",
     "@next/third-parties": "^15.5.2",
     "@number-flow/react": "^0.5.10",

@@ -40,7 +40,10 @@ export default function RootLayout({
         <NuqsAdapter>
           <Suspense fallback={null}>
             <Header
-              leftItems={[{ key: "chat", label: "Chat", href: "/chat" }]}
+              leftItems={[
+                { key: "chat", label: "Chat", href: "/chat" },
+                { key: "cal", label: "Cal", href: "/cal" },
+              ]}
             />
           </Suspense>
           <div className="pt-16 print:pt-0">{children}</div>
