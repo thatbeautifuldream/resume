@@ -230,9 +230,9 @@ function ChatContent() {
                 }`}
               >
                 {status === "submitted" ? (
-                  <Square className="w-4 h-4" />
+                  <Square className="size-4" fill="currentColor" />
                 ) : (
-                  <ArrowUp className="w-4 h-4" />
+                  <ArrowUp className="size-5" />
                 )}
               </button>
             </div>
