@@ -91,7 +91,7 @@ function ChatContent() {
   }, []);
 
   return (
-    <main className="fixed inset-0 flex flex-col select-none pt-16 print:static print:pt-0">
+    <main className="fixed inset-0 flex flex-col select-none pt-12 print:static print:pt-0">
       {hasMessages && (
         <div
           className="flex-1 overflow-y-auto p-4 space-y-4 max-w-full lg:max-w-[896px] lg:mx-auto lg:w-full"

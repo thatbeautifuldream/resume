@@ -1,13 +1,14 @@
-import type React from "react";
-import { Suspense } from "react";
+import { Header } from "@/components/header";
+import { ClarityProvider } from "@/components/providers/clarity-provider";
+import { ebGaramond, inter } from "@/lib/fonts";
+import { createMetadata } from "@/lib/metadata";
+import { cn } from "@/lib/utils";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import type { Metadata } from "next";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
-import { ClarityProvider } from "@/components/providers/clarity-provider";
-import { GoogleAnalytics } from "@next/third-parties/google";
-import { createMetadata } from "@/lib/metadata";
-import { Header } from "@/components/header";
-import { cn } from "@/lib/utils";
-import { ebGaramond, inter } from "@/lib/fonts";
+import type React from "react";
+import { Suspense } from "react";
+
 import "./globals.css";
 
 export const metadata: Metadata = createMetadata({
@@ -46,7 +47,7 @@ export default function RootLayout({
               ]}
             />
           </Suspense>
-          <div className="pt-16 print:pt-0">{children}</div>
+          <div className="pt-6 print:pt-0">{children}</div>
         </NuqsAdapter>
         <GoogleAnalytics gaId="G-G7VF0PLE22" />
         <ClarityProvider />
