@@ -4,7 +4,7 @@ import { convertToModelMessages, streamText, UIMessage } from "ai";
 
 export const maxDuration = 30;
 
-export function createRedactedResume(fullResume: typeof resume) {
+function createRedactedResume(fullResume: typeof resume) {
   return {
     ...fullResume,
     basics: {
