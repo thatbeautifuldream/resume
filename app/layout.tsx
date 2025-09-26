@@ -1,5 +1,6 @@
 import { Header } from "@/components/header";
 import { ClarityProvider } from "@/components/providers/clarity-provider";
+import { StructuredData } from "@/components/structured-data";
 import { ebGaramond, inter } from "@/lib/fonts";
 import { createMetadata } from "@/lib/metadata";
 import { cn } from "@/lib/utils";
@@ -30,6 +31,7 @@ export default function RootLayout({
         />
         <link rel="manifest" href="/manifest.json" />
         <link rel="stylesheet" href="https://latex.vercel.app/style.css" />
+        <StructuredData />
       </head>
       <body
         className={cn(
