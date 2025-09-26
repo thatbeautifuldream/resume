@@ -68,6 +68,10 @@ Your goal is to represent the candidate accurately and professionally, helping p
     model: groq("openai/gpt-oss-20b"),
     system,
     messages: convertToModelMessages(messages),
+    tools: {
+      browser_search: groq.tools.browserSearch({}),
+    },
+    toolChoice: "required",
   });
 
   return result.toUIMessageStreamResponse();
