@@ -4,42 +4,18 @@ import { convertToModelMessages, streamText, UIMessage } from "ai";
 
 export const maxDuration = 30;
 
-/**
- * Creates a privacy-safe version of the resume by redacting sensitive PII fields
- * and preserving only professional information needed for chat responses.
- *
- * Redacted fields: email, phone, street address, postal code
- * Preserved fields: skills, experience, education, projects, certifications
- */
-function createRedactedResume(fullResume: typeof resume) {
+export function createRedactedResume(fullResume: typeof resume) {
   return {
+    ...fullResume,
     basics: {
-      name: fullResume.basics.name,
-      label: fullResume.basics.label,
-      email: "[REDACTED]",
+      ...fullResume.basics,
       phone: "[REDACTED]",
-      url: fullResume.basics.url,
-      summary: fullResume.basics.summary,
       location: {
+        ...fullResume.basics.location,
         address: "[REDACTED]",
         postalCode: "[REDACTED]",
-        city: fullResume.basics.location?.city,
-        countryCode: fullResume.basics.location?.countryCode,
-        region: fullResume.basics.location?.region,
       },
-      profiles: fullResume.basics.profiles,
     },
-    work: fullResume.work,
-    education: fullResume.education,
-    certificates: fullResume.certificates,
-    skills: fullResume.skills,
-    projects: fullResume.projects,
-    talks: fullResume.talks,
-    references: fullResume.references,
-    contributions: fullResume.contributions,
-    volunteer: fullResume.volunteer,
-    awards: fullResume.awards,
-    languages: fullResume.languages,
   };
 }
 
