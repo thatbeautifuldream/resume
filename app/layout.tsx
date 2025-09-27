@@ -1,7 +1,6 @@
 import { Header } from "@/components/header";
 import { ClarityProvider } from "@/components/providers/clarity-provider";
 import { StructuredData } from "@/components/structured-data";
-import { ebGaramond, inter } from "@/lib/fonts";
 import { createMetadata } from "@/lib/metadata";
 import { cn } from "@/lib/utils";
 import { GoogleAnalytics } from "@next/third-parties/google";
@@ -11,6 +10,7 @@ import type React from "react";
 import { Suspense } from "react";
 
 import "./globals.css";
+import "./latex.css";
 
 export const metadata: Metadata = createMetadata({
   title: "Milind Mishra",
@@ -23,23 +23,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="antialiased" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
       <head>
         <meta
           name="viewport"
           content="width=device-width, initial-scale=1, maximum-scale=1"
         />
         <link rel="manifest" href="/manifest.json" />
-        <link rel="stylesheet" href="https://latex.vercel.app/style.css" />
         <StructuredData />
       </head>
-      <body
-        className={cn(
-          ebGaramond.className,
-          inter.className,
-          "min-h-screen bg-background! font-serif antialiased"
-        )}
-      >
+      <body className="min-h-screen bg-background! antialiased">
         <NuqsAdapter>
           <Suspense fallback={null}>
             <Header
