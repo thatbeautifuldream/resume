@@ -9,11 +9,11 @@ export default async function ResumePdf({
 
   if (params.full === "true") {
     redirect(
-      "https://cdn.jsdelivr.net/gh/thatbeautifuldream/resume-to-pdf@main/dist/Milind_Mishra_Full_Resume_2025.pdf"
+      "/pdf/milind-mishra-full-resume-2025.pdf"
     );
   } else {
     redirect(
-      "https://cdn.jsdelivr.net/gh/thatbeautifuldream/resume-to-pdf@main/dist/Milind_Mishra_Resume_2025.pdf"
+      "/pdf/milind-mishra-resume-2025.pdf"
     );
   }
 }

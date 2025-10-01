@@ -21,6 +21,16 @@ export async function GET(request: NextRequest) {
         },
       });
 
+    case "pdf":
+      const pdfType = searchParams.get("type") || "normal";
+      const pdfFilename = pdfType === "full"
+        ? "milind-mishra-full-resume-2025.pdf"
+        : "milind-mishra-resume-2025.pdf";
+      return NextResponse.redirect(
+        `${request.nextUrl.origin}/pdf/${pdfFilename}`,
+        302
+      );
+
     case "json":
     default:
       return NextResponse.json(resume);
