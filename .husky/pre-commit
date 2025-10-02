@@ -1,0 +1,1 @@
+pnpm run print && pnpm run build
