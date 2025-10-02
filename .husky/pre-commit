@@ -1,1 +1,1 @@
-pnpm run print && pnpm run build && git add .
+pnpm run build
