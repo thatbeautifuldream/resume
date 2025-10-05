@@ -51,6 +51,7 @@ Your goal is to represent the candidate accurately and professionally, helping p
     tools: {
       browser_search: groq.tools.browserSearch({}),
     },
+    toolChoice: "auto",
     stopWhen: stepCountIs(1),
   });
 
