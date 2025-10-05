@@ -47,7 +47,7 @@ Your goal is to represent the candidate accurately and professionally, helping p
     tools: {
       browser_search: groq.tools.browserSearch({}),
     },
-    toolChoice: "required",
+    toolChoice: "auto",
   });
 
   return result.toUIMessageStreamResponse();
