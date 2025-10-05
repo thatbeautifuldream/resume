@@ -1,6 +1,10 @@
 import { resume } from "@/lib/resume";
 import { groq } from "@ai-sdk/groq";
-import { convertToModelMessages, streamText, UIMessage } from "ai";
+import * as ai from "ai";
+import { convertToModelMessages, UIMessage, stepCountIs } from "ai";
+import { wrapAISDK } from "langsmith/experimental/vercel";
+
+const { streamText } = wrapAISDK(ai);
 
 export const maxDuration = 30;
 
@@ -47,7 +51,7 @@ Your goal is to represent the candidate accurately and professionally, helping p
     tools: {
       browser_search: groq.tools.browserSearch({}),
     },
-    toolChoice: "auto",
+    stopWhen: stepCountIs(1),
   });
 
   return result.toUIMessageStreamResponse();
