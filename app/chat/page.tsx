@@ -18,15 +18,18 @@ import { ArrowUp, Square } from "lucide-react";
 import { motion } from "motion/react";
 import { Suspense, useEffect, useRef, useState } from "react";
 
+const CHAT_STORE_ID = "persistent-chat";
+const CHAT_HISTORY_KEY = "resume-chat-history";
+
 function ChatContent() {
   const { sendMessage, status, stop, setMessages } = useChat({
     transport: new DefaultChatTransport({
       api: "/api/chat",
     }),
-    storeId: "persistent-chat",
+    storeId: CHAT_STORE_ID,
   });
-  const messages = useChatMessages("persistent-chat");
-  const chatState = useChatStoreState("persistent-chat");
+  const messages = useChatMessages(CHAT_STORE_ID);
+  const chatState = useChatStoreState(CHAT_STORE_ID);
   const [input, setInput] = useState("");
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const hasMessages = messages.length > 0;
@@ -36,7 +39,7 @@ function ChatContent() {
   const clearChat = async () => {
     try {
       // Clear from IndexedDB
-      await clearFromIndexedDB("resume-chat-history");
+      await clearFromIndexedDB(CHAT_HISTORY_KEY);
       // Clear from current state
       setMessages([]);
     } catch (error) {
@@ -48,7 +51,7 @@ function ChatContent() {
   useEffect(() => {
     const loadPersistedMessages = async () => {
       try {
-        const persistedData = await loadFromIndexedDB("resume-chat-history");
+        const persistedData = await loadFromIndexedDB(CHAT_HISTORY_KEY);
         if (persistedData?.messages && persistedData.messages.length > 0) {
           setMessages(persistedData.messages);
         }
@@ -64,7 +67,7 @@ function ChatContent() {
   // Save messages to IndexedDB when they change
   useEffect(() => {
     if (isLoaded && messages.length > 0) {
-      saveToIndexedDB("resume-chat-history", {
+      saveToIndexedDB(CHAT_HISTORY_KEY, {
         messages,
         id: chatState.id,
       }).catch((error) => {
@@ -91,7 +94,7 @@ function ChatContent() {
   }, []);
 
   return (
-    <main className="fixed inset-0 flex flex-col select-none pt-12 print:static print:pt-0">
+    <main className="fixed inset-0 flex flex-col pt-12 print:static print:pt-0">
       {hasMessages && (
         <div
           className="flex-1 overflow-y-auto p-4 space-y-4 max-w-full lg:max-w-[896px] lg:mx-auto lg:w-full"
