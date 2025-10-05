@@ -110,17 +110,34 @@ function ChatContent() {
                 message.role === "user" ? "text-right" : "text-left"
               }`}
             >
-              {message.parts
-                .filter((part) => part.type === "text")
-                .map((part, index) =>
-                  message.role === "user" ? (
+              {message.parts.map((part, index) => {
+                if (part.type === "text" && message.role === "user") {
+                  return (
                     <div key={index} className="p-2">
                       {part.text}
                     </div>
-                  ) : (
-                    <Response key={index}>{part.text}</Response>
-                  )
-                )}
+                  );
+                }
+
+                if (part.type === "text" && message.role === "assistant") {
+                  return <Response key={index}>{part.text}</Response>;
+                }
+
+                if (part.type === "reasoning" && message.role === "assistant") {
+                  return (
+                    <details key={index} className="mb-2 p-2">
+                      <summary className="text-sm cursor-pointer transition-opacity italic">
+                        Thinking...
+                      </summary>
+                      <div className="text-sm mt-2 pl-4 italic whitespace-pre-wrap">
+                        {part.text}
+                      </div>
+                    </details>
+                  );
+                }
+
+                return null;
+              })}
             </div>
           ))}
           {status === "submitted" && <Loading />}
