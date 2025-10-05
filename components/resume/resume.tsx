@@ -278,7 +278,7 @@ export function ResumeView({ data }: { data: Resume }) {
       </article>
       <footer className="mt-8 pt-4 text-center text-sm print:hidden">
         <p className="text-muted-foreground">
-          This resume is open sourced at{" "}
+          Source :{" "}
           <a
             href="https://github.com/thatbeautifuldream/resume"
             target="_blank"
