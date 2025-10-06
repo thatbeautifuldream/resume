@@ -370,7 +370,6 @@ export const resume: Resume = {
   ],
   contributions: [
     {
-      organisation: "Vercel",
       repository: "https://github.com/vercel/streamdown",
       prs: [
         {
@@ -386,6 +385,16 @@ export const resume: Resume = {
           title:
             "feat: add image download functionality with hover controls #103",
           url: "https://github.com/vercel/streamdown/pull/103",
+        },
+      ],
+    },
+    {
+      repository: "https://github.com/vercel/ai-elements",
+      prs: [
+        {
+          title:
+            "feat: add speech to text input to prompt area and update test and example apps #112",
+          url: "https://github.com/vercel/ai-elements/pull/112",
         },
       ],
     },

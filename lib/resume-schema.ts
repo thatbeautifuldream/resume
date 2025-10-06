@@ -31,9 +31,7 @@ export const BasicsSchema = z.object({
   url: url.optional(),
   summary: z.string().optional(),
   location: LocationSchema.optional(),
-  timezone: z
-    .string()
-    .optional(),
+  timezone: z.string().optional(),
   profiles: z.array(ProfileSchema).optional(),
 });
 
@@ -125,7 +123,6 @@ export const PRSchema = z.object({
 });
 
 export const ContributionSchema = z.object({
-  organisation: z.string(),
   repository: url,
   prs: z.array(PRSchema).default([]),
 });

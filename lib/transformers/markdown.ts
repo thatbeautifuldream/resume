@@ -109,8 +109,9 @@ export function resumeToMarkdown(resume: Resume): string {
   if (resume.contributions?.length) {
     sections.push("\n## Open Source");
     resume.contributions.forEach((contrib) => {
+      const repoName = new URL(contrib.repository).pathname.split("/").slice(1).join("/");
       sections.push(
-        `\n**${contrib.organisation}** - [${contrib.repository}](${contrib.repository})`
+        `\n**${repoName}** - [${contrib.repository}](${contrib.repository})`
       );
       contrib.prs?.forEach((pr) => {
         sections.push(`- [${pr.title}](${pr.url})`);
