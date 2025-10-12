@@ -18,7 +18,7 @@
     "@ai-sdk/react": "^2.0.43",
     "@calcom/embed-react": "^1.5.3",
     "@microsoft/clarity": "^1.0.0",
-    "@next/third-parties": "^15.5.2",
+    "@next/third-parties": "16.0.0-beta.0",
     "@number-flow/react": "^0.5.10",
     "ai": "^5.0.43",
     "class-variance-authority": "^0.7.1",
@@ -27,10 +27,10 @@
     "langsmith": "^0.3.72",
     "lucide-react": "^0.539.0",
     "motion": "^12.23.12",
-    "next": "15.4.6",
+    "next": "16.0.0-beta.0",
     "nuqs": "^2.5.2",
-    "react": "19.1.0",
-    "react-dom": "19.1.0",
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
     "streamdown": "^1.3.0",
     "tailwind-merge": "^3.3.1",
     "zod": "^4.1.5",
@@ -39,12 +39,18 @@
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
+    "@types/react": "19.2.2",
+    "@types/react-dom": "19.2.1",
     "husky": "^9.1.7",
     "puppeteer": "^24.22.3",
     "tailwindcss": "^4",
     "tw-animate-css": "^1.3.7",
     "typescript": "^5"
+  },
+  "pnpm": {
+    "overrides": {
+      "@types/react": "19.2.2",
+      "@types/react-dom": "19.2.1"
+    }
   }
 }
