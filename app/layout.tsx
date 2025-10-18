@@ -32,7 +32,7 @@ export default function RootLayout({
         <StructuredData />
       </head>
       <body className="min-h-screen bg-background text-foreground antialiased">
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        <ThemeProvider attribute="class" defaultTheme="light">
           <NuqsAdapter>
             <Suspense fallback={null}>
               <Header

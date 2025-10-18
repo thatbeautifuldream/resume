@@ -276,7 +276,7 @@ export function ResumeView({ data }: { data: Resume }) {
           </Section>
         )}
       </article>
-      <footer className="mt-8 pt-4 text-center text-sm print:hidden">
+      <footer className="mt-8 pt-4 text-center text-sm">
         <p className="text-muted-foreground">
           Source :{" "}
           <a
