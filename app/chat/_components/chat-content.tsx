@@ -113,8 +113,10 @@ function Welcome() {
       animate={{ opacity: hasMessages ? 0 : 1 }}
       transition={{ duration: 0.3 }}
     >
-      <h1 className="text-base">Chat with Milind's Resume</h1>
-      <p className="text-md opacity-60">
+      <h1 className="text-2xl sm:text-3xl md:text-4xl font-medium mb-4">
+        Chat with Milind's Resume
+      </h1>
+      <p className="text-base sm:text-lg md:text-xl opacity-60">
         Ask anything about my work, projects, or experience
       </p>
     </motion.div>
@@ -218,15 +220,15 @@ function Input() {
 }
 
 function Chat({ children }: { children: React.ReactNode }) {
-  const { 
-    sendMessage, 
-    status, 
-    stop, 
+  const {
+    sendMessage,
+    status,
+    stop,
     setMessages,
     regenerate,
     resumeStream,
     addToolResult,
-    clearError
+    clearError,
   } = useChat({
     transport: new DefaultChatTransport({
       api: "/api/chat",

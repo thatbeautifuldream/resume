@@ -2,7 +2,6 @@ import { Header } from "@/components/header";
 import { ClarityProvider } from "@/components/providers/clarity-provider";
 import { StructuredData } from "@/components/structured-data";
 import { createMetadata } from "@/lib/metadata";
-import { cn } from "@/lib/utils";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import type { Metadata } from "next";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
@@ -10,7 +9,6 @@ import type React from "react";
 import { Suspense } from "react";
 
 import "./globals.css";
-import "./latex.css";
 
 export const metadata: Metadata = createMetadata({
   title: "Milind Mishra",
@@ -36,10 +34,7 @@ export default function RootLayout({
         <NuqsAdapter>
           <Suspense fallback={null}>
             <Header
-              leftItems={[
-                { key: "chat", label: "Chat", href: "/chat" },
-                { key: "cal", label: "Cal", href: "/cal" },
-              ]}
+              leftItems={[{ key: "chat", label: "Chat", href: "/chat" }]}
             />
           </Suspense>
           <div className="pt-6 print:pt-0">{children}</div>

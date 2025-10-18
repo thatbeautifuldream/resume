@@ -48,6 +48,9 @@
   --radius: 0.625rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
+  --link-color: hsl(0, 100%, 33%);
+  --link-visited: hsl(0, 100%, 33%);
+  --link-focus-outline: hsl(220, 90%, 52%);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
@@ -82,6 +85,9 @@
 .dark {
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
+  --link-color: hsl(196, 80%, 77%);
+  --link-visited: hsl(196, 80%, 77%);
+  --link-focus-outline: hsl(215, 63%, 73%);
   --card: oklch(0.205 0 0);
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.205 0 0);
@@ -114,105 +120,346 @@
 }
 
 @layer base {
-  * {
+  /* Font faces */
+  @font-face {
+    font-family: 'Optimistic Display';
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url('/fonts/optimistic/Optimistic_Display_W_Md.woff2') format('woff2');
+  }
+
+  @font-face {
+    font-family: 'Optimistic Display';
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+    src: url('/fonts/optimistic/Optimistic_Display_W_SBd.woff2') format('woff2');
+  }
+
+  @font-face {
+    font-family: 'Optimistic Display';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url('/fonts/optimistic/Optimistic_Display_W_Bd.woff2') format('woff2');
+  }
+
+  @font-face {
+    font-family: 'Optimistic Text';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('/fonts/optimistic/Optimistic_Text_W_Rg.woff2') format('woff2');
+  }
+
+  @font-face {
+    font-family: 'Optimistic Text';
+    font-style: italic;
+    font-weight: 400;
+    font-display: swap;
+    src: url('/fonts/optimistic/Optimistic_Text_W_It.woff2') format('woff2');
+  }
+
+  @font-face {
+    font-family: 'Optimistic Text';
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url('/fonts/optimistic/Optimistic_Text_W_Md.woff2') format('woff2');
+  }
+
+  @font-face {
+    font-family: 'Optimistic Text';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url('/fonts/optimistic/Optimistic_Text_W_Bd.woff2') format('woff2');
+  }
+
+  @font-face {
+    font-family: 'Source Code Pro';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('/fonts/source-code-pro/Source-Code-Pro-Regular.woff2') format('woff2');
+  }
+
+  @font-face {
+    font-family: 'Source Code Pro';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url('/fonts/source-code-pro/Source-Code-Pro-Bold.woff2') format('woff2');
+  }
+
+  /* Box sizing */
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
     @apply border-border outline-ring/50;
   }
+
+  /* Remove default margins */
+  body,
+  h1, h2, h3, h4, h5, h6,
+  p, ul, ol, li,
+  figure, figcaption,
+  dl, dd {
+    margin: 0;
+  }
+
+  /* Base HTML settings */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Body base styles */
   body {
     @apply bg-background text-foreground;
+    font-family: "Optimistic Text", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.8;
+    max-width: 80ch;
+    min-height: 100vh;
+    overflow-x: hidden;
+    margin: 0 auto;
+    padding: 2rem 1.25rem;
+    text-rendering: optimizeLegibility;
+    hyphens: auto;
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+  }
+
+  /* Typography - Headings */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: "Optimistic Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+
+  h1 {
+    font-size: 2.5rem;
+    line-height: 3.25rem;
+    margin-bottom: 1.625rem;
+  }
+
+  h2 {
+    font-size: 1.7rem;
+    line-height: 2rem;
+    margin-top: 3rem;
+    margin-bottom: 0.8rem;
+  }
+
+  h3 {
+    font-size: 1.4rem;
+    line-height: 1.625rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.8rem;
+  }
+
+  h4 {
+    font-size: 1.2rem;
+    line-height: 1.625rem;
+    margin-top: 2rem;
+    margin-bottom: 0.8rem;
+  }
+
+  h5 {
+    font-size: 1rem;
+    line-height: 1.625rem;
+    margin-top: 1.8rem;
+    margin-bottom: 0.8rem;
+  }
+
+  h6 {
+    font-size: 1rem;
+    line-height: 1.625rem;
+    font-style: italic;
+    font-weight: normal;
+    margin-top: 2.5rem;
+    margin-bottom: 0.8rem;
+  }
+
+  /* Heading combinations */
+  h1:first-child {
+    text-align: center;
+  }
+
+  h1 + h2 {
+    margin-top: 1.625rem;
+  }
+
+  h2 + h3,
+  h3 + h4,
+  h4 + h5 {
+    margin-top: 0.8rem;
+  }
+
+  h5 + h6 {
+    margin-top: -0.8rem;
+  }
+
+  /* Paragraphs */
+  p {
+    margin-top: 1rem;
+  }
+
+  /* Links */
+  a:not([class]) {
+    text-decoration-skip-ink: auto;
+  }
+
+  a,
+  a:visited {
+    color: var(--link-visited);
+  }
+
+  a:focus {
+    outline-offset: 2px;
+    outline: 2px solid var(--link-focus-outline);
+  }
+
+  /* Images */
+  img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  /* Forms */
+  input, button, textarea, select {
+    font: inherit;
+  }
+
+  textarea {
+    width: 100%;
+  }
+
+  /* Code blocks */
+  code, pre, kbd {
+    font-family: "Source Code Pro", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: 85%;
+    hyphens: none;
+  }
+
+  pre {
+    padding: 1rem 1.4rem;
+    max-width: 100%;
+    overflow: auto;
+    border-radius: 4px;
+    background: hsl(210, 28%, 93%);
+  }
+
+  .dark pre {
+    background: hsl(0, 1%, 25%);
+  }
+
+  pre code {
+    font-size: 95%;
+    position: relative;
+  }
+
+  kbd {
+    background: hsl(210, 5%, 100%);
+    border: 1px solid hsl(210, 5%, 70%);
+    border-radius: 2px;
+    padding: 2px 4px;
+    font-size: 75%;
+  }
+
+  .dark kbd {
+    background: hsl(0, 0%, 16%);
+    border-color: hsl(210, 5%, 70%);
+  }
+
+  /* Tables */
+  table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: auto;
+    max-width: 100%;
+    border-top: 2.27px solid var(--foreground);
+    border-bottom: 2.27px solid var(--foreground);
+    overflow-x: auto;
+  }
+
+  th, td {
+    text-align: left;
+    padding: 0.5rem;
+    line-height: 1.1;
+  }
+
+  table tr > th[scope="col"] {
+    border-bottom: 1.36px solid var(--foreground);
+  }
+
+  table tr > th[scope="row"] {
+    border-right: 1.36px solid var(--foreground);
+  }
+
+  /* Natural flow in articles */
+  article > * + * {
+    margin-top: 1em;
   }
 }
 
-/* Override LaTeX CSS body styles for responsive layout */
 @layer utilities {
-  /* Base styles - mobile first */
-  html {
-    font-size: 0.875rem !important; /* 14px */
+  /* Utility classes */
+  .text-justify {
+    text-align: justify;
   }
-  
-  body {
-    max-width: 100% !important;
-    margin: 0 !important;
-    padding: 1rem !important;
-    overflow-x: hidden !important;
-    line-height: 1.6 !important;
-  }
-  
-  h1 {
-    font-size: 1.875rem !important;
-    line-height: 2.25rem !important;
-    margin-bottom: 1rem !important;
-  }
-  
-  h2 {
-    font-size: 1.375rem !important;
-    line-height: 1.625rem !important;
-    margin-top: 2rem !important;
-  }
-  
-  h3 {
-    font-size: 1.125rem !important;
-    margin-top: 1.5rem !important;
-  }
-  
-  h4 {
-    font-size: 1rem !important;
-    margin-top: 1.25rem !important;
-  }
-  
-  p {
-    margin-top: 0.75rem !important;
-  }
-  
-  @media (min-width: 640px) {
+
+  /* Responsive overrides - mobile first */
+  @media (max-width: 767px) {
     html {
-      font-size: 0.9375rem !important; /* 15px */
+      font-size: 0.875rem;
     }
+
     body {
-      padding: 1.5rem !important;
-      line-height: 1.7 !important;
+      max-width: 100%;
+      padding: 1rem;
+      line-height: 1.6;
     }
-  }
-  
-  @media (min-width: 768px) {
-    html {
-      font-size: 1rem !important; /* 16px */
-    }
-    body {
-      padding: 2rem !important;
-      line-height: 1.8 !important;
-    }
-    
+
     h1 {
-      font-size: 2.5rem !important;
-      line-height: 1 !important;
-      margin-bottom: 1.5rem !important;
+      font-size: 1.875rem;
+      line-height: 2.25rem;
+      margin-bottom: 1rem;
     }
-    
+
     h2 {
-      font-size: 1.7rem !important;
-      line-height: 1.2 !important;
-      margin-top: 2.5rem !important;
+      font-size: 1.375rem;
+      line-height: 1.625rem;
+      margin-top: 2rem;
     }
-    
+
     h3 {
-      font-size: 1.4rem !important;
-      margin-top: 2rem !important;
+      font-size: 1.125rem;
+      margin-top: 1.5rem;
     }
-    
+
     h4 {
-      font-size: 1.2rem !important;
-      margin-top: 1.5rem !important;
+      font-size: 1rem;
+      margin-top: 1.25rem;
     }
-    
+
     p {
-      margin-top: 1rem !important;
+      margin-top: 0.75rem;
     }
   }
-  
+
+  @media (min-width: 640px) and (max-width: 767px) {
+    html {
+      font-size: 0.9375rem;
+    }
+    body {
+      padding: 1.5rem;
+      line-height: 1.7;
+    }
+  }
+
   @media (min-width: 1024px) {
     body {
-      max-width: 896px !important;
-      margin: 0 auto !important;
+      max-width: 896px;
     }
   }
   
