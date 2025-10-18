@@ -57,22 +57,7 @@
   src: url('/fonts/optimistic/Optimistic_Text_W_Bd.woff2') format('woff2');
 }
 
-/* Source Code Pro for monospace/code */
-@font-face {
-  font-family: 'Source Code Pro';
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url('/fonts/source-code-pro/Source-Code-Pro-Regular.woff2') format('woff2');
-}
-
-@font-face {
-  font-family: 'Source Code Pro';
-  font-style: normal;
-  font-weight: 700;
-  font-display: swap;
-  src: url('/fonts/source-code-pro/Source-Code-Pro-Bold.woff2') format('woff2');
-}
+/* Geist Mono loaded via next/font/google - see lib/fonts.ts */
 
 /* OpenAI Sans Fonts - Commented for easy switching
 @font-face {

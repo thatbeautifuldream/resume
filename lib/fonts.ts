@@ -1,67 +1,17 @@
-import localFont from "next/font/local";
+import { STIX_Two_Text, Geist_Mono } from "next/font/google";
 
-export const optimisticDisplay = localFont({
-  src: [
-    {
-      path: "../public/fonts/optimistic/Optimistic_Display_W_Md.woff2",
-      weight: "500",
-      style: "normal",
-    },
-    {
-      path: "../public/fonts/optimistic/Optimistic_Display_W_SBd.woff2",
-      weight: "600",
-      style: "normal",
-    },
-    {
-      path: "../public/fonts/optimistic/Optimistic_Display_W_Bd.woff2",
-      weight: "700",
-      style: "normal",
-    },
-  ],
-  variable: "--font-optimistic-display",
+export const stixTwoText = STIX_Two_Text({
+  weight: ["400", "500", "600", "700"],
+  style: ["normal", "italic"],
+  subsets: ["latin"],
+  variable: "--font-stix-two-text",
   display: "swap",
 });
 
-export const optimisticText = localFont({
-  src: [
-    {
-      path: "../public/fonts/optimistic/Optimistic_Text_W_Rg.woff2",
-      weight: "400",
-      style: "normal",
-    },
-    {
-      path: "../public/fonts/optimistic/Optimistic_Text_W_It.woff2",
-      weight: "400",
-      style: "italic",
-    },
-    {
-      path: "../public/fonts/optimistic/Optimistic_Text_W_Md.woff2",
-      weight: "500",
-      style: "normal",
-    },
-    {
-      path: "../public/fonts/optimistic/Optimistic_Text_W_Bd.woff2",
-      weight: "700",
-      style: "normal",
-    },
-  ],
-  variable: "--font-optimistic-text",
-  display: "swap",
-});
-
-export const sourceCodePro = localFont({
-  src: [
-    {
-      path: "../public/fonts/source-code-pro/Source-Code-Pro-Regular.woff2",
-      weight: "400",
-      style: "normal",
-    },
-    {
-      path: "../public/fonts/source-code-pro/Source-Code-Pro-Bold.woff2",
-      weight: "700",
-      style: "normal",
-    },
-  ],
-  variable: "--font-source-code-pro",
+export const geistMono = Geist_Mono({
+  weight: ["400", "500", "600", "700"],
+  style: ["normal"],
+  subsets: ["latin"],
+  variable: "--font-geist-mono",
   display: "swap",
 });

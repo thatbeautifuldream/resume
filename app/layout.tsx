@@ -9,9 +9,8 @@ import type React from "react";
 import { Suspense } from "react";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import {
-  optimisticDisplay,
-  optimisticText,
-  sourceCodePro,
+  stixTwoText,
+  geistMono,
 } from "@/lib/fonts";
 
 import "./globals.css";
@@ -30,7 +29,7 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${optimisticText.variable} ${optimisticDisplay.variable} ${sourceCodePro.variable}`}
+      className={`${stixTwoText.variable} ${geistMono.variable}`}
     >
       <head>
         <meta
