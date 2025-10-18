@@ -47,11 +47,24 @@ export const resume: Resume = {
   },
   work: [
     {
+      name: "Thine",
+      location: "Bangalore Urban, Karnataka, India",
+      position: "Design Engineer",
+      startDate: "2025-10-01",
+      summary:
+        "Designing advanced, animation-centric product experiences for Thine's web platform.",
+      highlights: [
+        "Building a new landing page with an advanced video timeline for engaging media-rich introductions.",
+        "Creating split text animations for the manifesto and marketing pages, enhancing visual storytelling.",
+      ],
+    },
+    {
       name: "Merlin AI by Foyer",
       location: "Bengaluru, Karnataka, India",
       position: "Product Engineer",
       url: "https://getmerlin.in",
       startDate: "2025-02-21",
+      endDate: "2025-10-01",
       summary:
         "Driving product engineering initiatives for Merlin AI, focused on seamless AI integration and next-gen chat experiences.",
       highlights: [
