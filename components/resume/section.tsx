@@ -8,7 +8,7 @@ export function Section({
   children: React.ReactNode;
 }) {
   return (
-    <section>
+    <section className="space-y-3">
       <h4 className="pb-1 uppercase font-semibold border-b">{title}</h4>
       <div>{children}</div>
     </section>

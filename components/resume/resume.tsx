@@ -59,7 +59,7 @@ export function ResumeView({ data }: { data: Resume }) {
 
   return (
     <main className="pt-12 print:pt-0">
-      <article>
+      <article className="space-y-6">
         <ResumeHeader basics={data.basics} />
 
         {!!data.work?.length && (

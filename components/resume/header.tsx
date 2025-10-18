@@ -26,7 +26,7 @@ export function ResumeHeader({ basics }: { basics: Basics }) {
   };
 
   return (
-    <header className="text-left mb-8">
+    <header className="text-left space-y-4">
       <div className="space-y-4">
         <h2 className="font-semibold">{basics.name.toUpperCase()}</h2>
 
@@ -36,7 +36,7 @@ export function ResumeHeader({ basics }: { basics: Basics }) {
             <Link
               href="#"
               onClick={handleEmailClick}
-              className="hover:underline cursor-pointer"
+              className="hover:underline cursor-pointer print:cursor-default"
             >
               {emailCopied ? "Copied to clipboard!" : basics.email}
             </Link>
@@ -53,7 +53,7 @@ export function ResumeHeader({ basics }: { basics: Basics }) {
         </div>
 
         {basics.summary && (
-          <div className="border-l-4 border-border pl-4 space-y-2">
+          <div className="border-l-4 pl-4 space-y-2">
             <p>{basics.summary}</p>
           </div>
         )}
