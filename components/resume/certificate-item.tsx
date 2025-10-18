@@ -9,21 +9,21 @@ export function CertificateItem({ item }: { item: Certificates }) {
             href={item.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="font-semibold hover:underline"
+            className="font-semibold hover:underline text-sm md:text-base"
           >
             <strong>{item.name}</strong>
           </a>
         ) : (
-          <strong>{item.name}</strong>
+          <strong className="text-sm md:text-base">{item.name}</strong>
         )}
         <div className="sm:flex sm:gap-4 sm:items-baseline">
           {item.issuer && (
-            <div className="italic hidden sm:block float-right">{item.issuer}</div>
+            <div className="italic hidden sm:block float-right text-sm md:text-base">{item.issuer}</div>
           )}
-          {item.date && <em className="sm:mt-0 mt-1 text-sm">{item.date}</em>}
+          {item.date && <em className="sm:mt-0 mt-1 text-xs md:text-sm">{item.date}</em>}
         </div>
       </div>
-      {item.issuer && <div className="italic sm:hidden">{item.issuer}</div>}
+      {item.issuer && <div className="italic sm:hidden text-sm md:text-base">{item.issuer}</div>}
     </div>
   );
 }

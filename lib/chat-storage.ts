@@ -1,4 +1,3 @@
-// Simple persistence using localStorage as fallback for IndexedDB
 export async function saveToIndexedDB(key: string, data: any): Promise<void> {
   try {
     const request = indexedDB.open('chat-storage', 1);
@@ -23,7 +22,6 @@ export async function saveToIndexedDB(key: string, data: any): Promise<void> {
       };
     });
   } catch (error) {
-    // Fallback to localStorage
     localStorage.setItem(key, JSON.stringify(data));
   }
 }
@@ -55,7 +53,6 @@ export async function loadFromIndexedDB(key: string): Promise<any> {
       };
     });
   } catch (error) {
-    // Fallback to localStorage
     const data = localStorage.getItem(key);
     return data ? JSON.parse(data) : null;
   }
@@ -85,7 +82,6 @@ export async function clearFromIndexedDB(key: string): Promise<void> {
       };
     });
   } catch (error) {
-    // Fallback to localStorage
     localStorage.removeItem(key);
   }
 }

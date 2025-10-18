@@ -48,7 +48,9 @@ export default function RootLayout({
                 leftItems={[{ key: "chat", label: "Chat", href: "/chat" }]}
               />
             </Suspense>
-            <div className="pt-6 print:pt-0">{children}</div>
+            <main className="container mx-auto px-4 sm:px-6 lg:px-8 pt-[60px] print:pt-0">
+              {children}
+            </main>
           </NuqsAdapter>
           <GoogleAnalytics gaId="G-G7VF0PLE22" />
           <ClarityProvider />

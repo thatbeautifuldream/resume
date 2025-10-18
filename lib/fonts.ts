@@ -1,6 +1,5 @@
 import localFont from "next/font/local";
 
-// Optimistic Display - Used for headings
 export const optimisticDisplay = localFont({
   src: [
     {
@@ -23,7 +22,6 @@ export const optimisticDisplay = localFont({
   display: "swap",
 });
 
-// Optimistic Text - Used for body text
 export const optimisticText = localFont({
   src: [
     {
@@ -51,7 +49,6 @@ export const optimisticText = localFont({
   display: "swap",
 });
 
-// Source Code Pro - Used for code blocks
 export const sourceCodePro = localFont({
   src: [
     {

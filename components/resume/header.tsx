@@ -26,12 +26,11 @@ export function ResumeHeader({ basics }: { basics: Basics }) {
   };
 
   return (
-    <header className="text-left space-y-4">
-      <div className="space-y-4">
-        <h2 className="font-semibold">{basics.name.toUpperCase()}</h2>
+    <header className="text-left space-y-3 md:space-y-4">
+      <div className="space-y-3 md:space-y-4">
+        <h2 className="font-semibold text-base sm:text-lg md:text-xl lg:text-2xl">{basics.name.toUpperCase()}</h2>
 
-        <div className="flex flex-wrap gap-3 text-sm">
-          {/* {location && <span>{location}</span>} */}
+        <div className="flex flex-wrap gap-2 sm:gap-3 text-xs sm:text-sm">
           {basics.email && (
             <Link
               href="#"
@@ -53,8 +52,8 @@ export function ResumeHeader({ basics }: { basics: Basics }) {
         </div>
 
         {basics.summary && (
-          <div className="border-l-4 pl-4 space-y-2">
-            <p>{basics.summary}</p>
+          <div className="border-l-4 pl-3 sm:pl-4 space-y-2">
+            <p className="text-xs sm:text-sm md:text-base">{basics.summary}</p>
           </div>
         )}
       </div>

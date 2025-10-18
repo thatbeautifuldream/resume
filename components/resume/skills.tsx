@@ -7,11 +7,11 @@ export function Skills({ skills }: { skills: Skill[] }) {
     <div className="space-y-3">
       {skills.map((s, i) => (
         <div key={i} className="space-y-2">
-          <div className="font-semibold text-md">{s.name}</div>
+          <div className="font-semibold text-sm md:text-base">{s.name}</div>
           {!!s.keywords?.length && (
             <div className="flex flex-wrap gap-2">
               {s.keywords.map((keyword, idx) => (
-                <Badge key={idx} variant="outline">
+                <Badge key={idx} variant="outline" className="text-xs md:text-sm">
                   {keyword}
                 </Badge>
               ))}

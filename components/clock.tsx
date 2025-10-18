@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import NumberFlow from "@number-flow/react";
 
 type TClockProps = {
-  timeZone: string; // IANA timezone string like "Asia/Calcutta"
+  timeZone: string;
 };
 
 export function Clock({ timeZone = "Asia/Calcutta" }: TClockProps) {
@@ -26,7 +26,6 @@ export function Clock({ timeZone = "Asia/Calcutta" }: TClockProps) {
     setIs24Hour(!is24Hour);
   };
 
-  // Format the time parts
   const formatter = new Intl.DateTimeFormat(undefined, {
     hour: "2-digit",
     minute: "2-digit",
@@ -42,7 +41,10 @@ export function Clock({ timeZone = "Asia/Calcutta" }: TClockProps) {
   const dayPeriod = parts.find((part) => part.type === "dayPeriod")?.value;
 
   return (
-    <div onClick={toggleTimeFormat} className="cursor-pointer select-none">
+    <div
+      onClick={toggleTimeFormat}
+      className="cursor-pointer select-none text-sm md:text-md"
+    >
       <NumberFlow value={parseInt(hour)} format={{ minimumIntegerDigits: 2 }} />
       :
       <NumberFlow
@@ -54,7 +56,7 @@ export function Clock({ timeZone = "Asia/Calcutta" }: TClockProps) {
         value={parseInt(second)}
         format={{ minimumIntegerDigits: 2 }}
       />
-      {dayPeriod && <span className="ml-1 text-sm">{dayPeriod}</span>}
+      {dayPeriod && <span className="ml-1">{dayPeriod}</span>}
     </div>
   );
 }

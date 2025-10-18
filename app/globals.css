@@ -119,7 +119,6 @@
 }
 
 @layer base {
-  /* Box sizing */
   *,
   *::before,
   *::after {
@@ -127,109 +126,51 @@
     @apply border-border outline-ring/50;
   }
 
-  /* Remove default margins */
   body,
-  h1, h2, h3, h4, h5, h6,
-  p, ul, ol, li,
-  figure, figcaption,
-  dl, dd {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  ul,
+  ol,
+  li,
+  figure,
+  figcaption,
+  dl,
+  dd {
     margin: 0;
   }
 
-  /* Base HTML settings */
   html {
     scroll-behavior: smooth;
   }
 
-  /* Body base styles */
   body {
-    @apply bg-background text-foreground;
-    font-family: var(--font-optimistic-text), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    @apply bg-background text-foreground text-sm md:text-base;
+    font-family: var(--font-optimistic-text), -apple-system, BlinkMacSystemFont,
+      "Segoe UI", Roboto, sans-serif;
     line-height: 1.8;
-    max-width: 80ch;
     min-height: 100vh;
     overflow-x: hidden;
-    margin: 0 auto;
-    padding: 2rem 1.25rem;
     text-rendering: optimizeLegibility;
     hyphens: auto;
     -webkit-hyphens: auto;
     -moz-hyphens: auto;
   }
 
-  /* Typography - Headings */
-  h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-optimistic-display), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  }
-
-  h1 {
-    font-size: 2.5rem;
-    line-height: 3.25rem;
-    margin-bottom: 1.625rem;
-  }
-
-  h2 {
-    font-size: 1.7rem;
-    line-height: 2rem;
-    margin-top: 3rem;
-    margin-bottom: 0.8rem;
-  }
-
-  h3 {
-    font-size: 1.4rem;
-    line-height: 1.625rem;
-    margin-top: 2.5rem;
-    margin-bottom: 0.8rem;
-  }
-
-  h4 {
-    font-size: 1.2rem;
-    line-height: 1.625rem;
-    margin-top: 2rem;
-    margin-bottom: 0.8rem;
-  }
-
-  h5 {
-    font-size: 1rem;
-    line-height: 1.625rem;
-    margin-top: 1.8rem;
-    margin-bottom: 0.8rem;
-  }
-
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
   h6 {
-    font-size: 1rem;
-    line-height: 1.625rem;
-    font-style: italic;
-    font-weight: normal;
-    margin-top: 2.5rem;
-    margin-bottom: 0.8rem;
+    font-family: var(--font-optimistic-display), -apple-system,
+      BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   }
 
-  /* Heading combinations */
-  h1:first-child {
-    text-align: center;
-  }
-
-  h1 + h2 {
-    margin-top: 1.625rem;
-  }
-
-  h2 + h3,
-  h3 + h4,
-  h4 + h5 {
-    margin-top: 0.8rem;
-  }
-
-  h5 + h6 {
-    margin-top: -0.8rem;
-  }
-
-  /* Paragraphs */
-  p {
-    margin-top: 1rem;
-  }
-
-  /* Links */
   a:not([class]) {
     text-decoration-skip-ink: auto;
   }
@@ -244,15 +185,16 @@
     outline: 2px solid var(--link-focus-outline);
   }
 
-  /* Images */
   img {
     max-width: 100%;
     height: auto;
     display: block;
   }
 
-  /* Forms */
-  input, button, textarea, select {
+  input,
+  button,
+  textarea,
+  select {
     font: inherit;
   }
 
@@ -260,9 +202,10 @@
     width: 100%;
   }
 
-  /* Code blocks */
-  code, pre {
-    font-family: var(--font-source-code-pro), Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  code,
+  pre {
+    font-family: var(--font-source-code-pro), Menlo, Monaco, Consolas,
+      "Liberation Mono", "Courier New", monospace;
     font-size: 85%;
     hyphens: none;
   }
@@ -284,7 +227,6 @@
     position: relative;
   }
 
-  /* Tables */
   table {
     border-collapse: collapse;
     border-spacing: 0;
@@ -295,7 +237,8 @@
     overflow-x: auto;
   }
 
-  th, td {
+  th,
+  td {
     text-align: left;
     padding: 0.5rem;
     line-height: 1.1;
@@ -309,76 +252,29 @@
     border-right: 1.36px solid var(--foreground);
   }
 
-  /* Natural flow in articles */
   article > * + * {
     margin-top: 1em;
   }
 }
 
 @layer utilities {
-  /* Utility classes */
-  .text-justify {
-    text-align: justify;
-  }
-
-  /* Responsive overrides - mobile first */
-  @media (max-width: 767px) {
-    html {
-      font-size: 0.875rem;
-    }
-
-    body {
-      max-width: 100%;
-      padding: 1rem;
-      line-height: 1.6;
-    }
-
-    h1 {
-      font-size: 1.875rem;
-      line-height: 2.25rem;
-      margin-bottom: 1rem;
-    }
-
-    h2 {
-      font-size: 1.375rem;
-      line-height: 1.625rem;
-      margin-top: 2rem;
-    }
-
-    h3 {
-      font-size: 1.125rem;
-      margin-top: 1.5rem;
-    }
-
-    h4 {
-      font-size: 1rem;
-      margin-top: 1.25rem;
-    }
-
-    p {
-      margin-top: 0.75rem;
-    }
-  }
-
-  @media (min-width: 640px) and (max-width: 767px) {
-    html {
-      font-size: 0.9375rem;
-    }
-    body {
-      padding: 1.5rem;
-      line-height: 1.7;
-    }
+  .container {
+    max-width: 80ch;
   }
 
   @media (min-width: 1024px) {
-    body {
+    .container {
       max-width: 896px;
     }
   }
 
+  .text-justify {
+    text-align: justify;
+  }
+
   @media print {
     html {
-      font-size: 0.8125rem !important; /* 13px base font size for print */
+      font-size: 0.8125rem !important;
     }
 
     body {
@@ -390,42 +286,55 @@
       background: white !important;
     }
 
+    .container {
+      max-width: 100% !important;
+    }
+
+    main {
+      padding-left: 0.5rem !important;
+      padding-right: 0.5rem !important;
+    }
+
     h1 {
-      font-size: 1.625rem !important; /* 21px */
+      font-size: 1.625rem !important;
       line-height: 1.2 !important;
       margin-bottom: 0.75rem !important;
       margin-top: 0 !important;
     }
 
     h2 {
-      font-size: 1.1875rem !important; /* 15.4px */
+      font-size: 1.1875rem !important;
       line-height: 1.3 !important;
       margin-top: 1.25rem !important;
       margin-bottom: 0.5rem !important;
     }
 
     h3 {
-      font-size: 1rem !important; /* 13px */
+      font-size: 1rem !important;
       line-height: 1.3 !important;
       margin-top: 1rem !important;
       margin-bottom: 0.25rem !important;
     }
 
     h4 {
-      font-size: 0.9375rem !important; /* 12.2px */
+      font-size: 0.9375rem !important;
       line-height: 1.3 !important;
       margin-top: 0.75rem !important;
       margin-bottom: 0.25rem !important;
     }
 
-    p, li, span, div {
-      font-size: 0.8125rem !important; /* 13px */
+    p,
+    li,
+    span,
+    div {
+      font-size: 0.8125rem !important;
       line-height: 1.45 !important;
       margin-top: 0.25rem !important;
       margin-bottom: 0.25rem !important;
     }
 
-    ul, ol {
+    ul,
+    ol {
       margin-top: 0.5rem !important;
       margin-bottom: 0.5rem !important;
       padding-left: 1rem !important;
@@ -435,11 +344,14 @@
       margin-bottom: 0.125rem !important;
     }
 
-    h1, h2, h3 {
+    h1,
+    h2,
+    h3 {
       page-break-after: avoid;
     }
 
-    p, li {
+    p,
+    li {
       page-break-inside: avoid;
     }
 
@@ -465,7 +377,6 @@
     animation-play-state: paused;
   }
 
-  /* Hide scrollbar for textarea */
   textarea {
     -ms-overflow-style: none;
     scrollbar-width: none;

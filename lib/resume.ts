@@ -50,6 +50,7 @@ export const resume: Resume = {
       name: "Thine",
       location: "Bangalore Urban, Karnataka, India",
       position: "Design Engineer",
+      logo: "/logos/alwaysthine_logo.jpeg",
       startDate: "2025-10-01",
       summary:
         "Designing advanced, animation-centric product experiences for Thine's web platform.",
@@ -63,6 +64,7 @@ export const resume: Resume = {
       location: "Bengaluru, Karnataka, India",
       position: "Product Engineer",
       url: "https://getmerlin.in",
+      logo: "/logos/merlin_ai_assistant_logo.jpeg",
       startDate: "2025-02-21",
       endDate: "2025-10-01",
       summary:
@@ -79,6 +81,7 @@ export const resume: Resume = {
       location: "Bengaluru, Karnataka, India",
       position: "Software Engineer",
       url: "https://getsaral.com",
+      logo: "/logos/getsaral_logo.jpeg",
       startDate: "2024-12-28",
       endDate: "2025-02-08",
       summary:
@@ -95,6 +98,7 @@ export const resume: Resume = {
       location: "Bengaluru, Karnataka, India",
       position: "Founding Product Engineer",
       url: "https://proofofskill.org",
+      logo: "/logos/proof_of_skill_logo.jpeg",
       startDate: "2024-06-01",
       endDate: "2024-12-27",
       summary:
@@ -112,6 +116,7 @@ export const resume: Resume = {
       location: "Bengaluru, Karnataka, India",
       position: "Independent Contractor",
       url: "https://milindmishra.com",
+      logo: "/logos/milind_mishra_technologies_logo.jpeg",
       startDate: "2024-02-01",
       endDate: "2024-05-31",
       summary:
@@ -127,6 +132,7 @@ export const resume: Resume = {
       location: "Remote",
       position: "Software Engineer",
       url: "https://www.linkedin.com/company/startuphire",
+      logo: "/logos/startuphire_logo.jpeg",
       startDate: "2023-08-01",
       endDate: "2024-01-31",
       summary: "Built marketing pages and platform features.",
@@ -139,6 +145,7 @@ export const resume: Resume = {
       location: "Hsinchu, Taiwan",
       position: "Research Assistant",
       url: "https://www.nycu.edu.tw/",
+      logo: "/logos/nycu_logo.jpeg",
       startDate: "2023-02-01",
       endDate: "2023-07-31",
       summary:
@@ -154,6 +161,7 @@ export const resume: Resume = {
       location: "Hsinchu, Taiwan",
       position: "Software Engineer",
       url: "https://www.locusconnect.com/",
+      logo: "/logos/locus_connect_logo.jpeg",
       startDate: "2022-07-01",
       endDate: "2023-01-31",
       summary:
@@ -169,6 +177,7 @@ export const resume: Resume = {
       location: "Bengaluru, Karnataka, India",
       position: "UX Designer",
       url: "https://www.ineuron.ai/",
+      logo: "/logos/ineuron_ai_logo.jpeg",
       startDate: "2022-05-01",
       endDate: "2022-06-30",
       summary:
@@ -184,6 +193,7 @@ export const resume: Resume = {
       location: "Remote",
       position: "Technical Writer",
       url: "https://www.plusklass.com/",
+      logo: "/logos/plusklass_logo.jpeg",
       startDate: "2022-01-01",
       endDate: "2022-04-30",
       summary:
@@ -198,6 +208,7 @@ export const resume: Resume = {
     {
       institution: "National Yang Ming Chiao Tung University",
       url: "https://www.nycu.edu.tw/",
+      logo: "/logos/nycu_logo.jpeg",
       area: "Computer Software Engineering",
       studyType: "Short Term Research Program",
       startDate: "2023-02-01",
@@ -206,6 +217,7 @@ export const resume: Resume = {
     {
       institution: "Visvesvaraya Technological University",
       url: "https://www.vtu.ac.in/",
+      logo: "/logos/vtu_logo.jpeg",
       area: "Electronics and Communication",
       studyType: "Bachelor of Engineering",
       startDate: "2018-08-01",

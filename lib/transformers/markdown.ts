@@ -3,10 +3,8 @@ import type { Resume } from "../resume-schema";
 export function resumeToMarkdown(resume: Resume): string {
   const sections: string[] = [];
 
-  // Header
   sections.push(`# ${resume.basics.name} - ${resume.basics.label}`);
 
-  // Contact info
   const contact = [
     `📧 ${resume.basics.email}`,
     `📱 ${resume.basics.phone}`,
@@ -17,12 +15,10 @@ export function resumeToMarkdown(resume: Resume): string {
   ];
   sections.push(contact.join(" | "));
 
-  // Summary
   if (resume.basics.summary) {
     sections.push(`\n## Summary\n${resume.basics.summary}`);
   }
 
-  // Profiles
   if (resume.basics.profiles?.length) {
     sections.push("\n## Profiles");
     resume.basics.profiles.forEach((profile) => {
@@ -32,7 +28,6 @@ export function resumeToMarkdown(resume: Resume): string {
     });
   }
 
-  // Work Experience
   if (resume.work?.length) {
     sections.push("\n## Experience");
     resume.work.forEach((job) => {
@@ -52,7 +47,6 @@ export function resumeToMarkdown(resume: Resume): string {
     });
   }
 
-  // Education
   if (resume.education?.length) {
     sections.push("\n## Education");
     resume.education.forEach((edu) => {
@@ -64,7 +58,6 @@ export function resumeToMarkdown(resume: Resume): string {
     });
   }
 
-  // Skills
   if (resume.skills?.length) {
     sections.push("\n## Skills");
     resume.skills.forEach((skill) => {
@@ -75,7 +68,6 @@ export function resumeToMarkdown(resume: Resume): string {
     });
   }
 
-  // Projects
   if (resume.projects?.length) {
     sections.push("\n## Projects");
     resume.projects.forEach((project) => {
@@ -94,7 +86,6 @@ export function resumeToMarkdown(resume: Resume): string {
     });
   }
 
-  // Talks
   if (resume.talks?.length) {
     sections.push("\n## Speaking");
     resume.talks.forEach((talk) => {
@@ -105,7 +96,6 @@ export function resumeToMarkdown(resume: Resume): string {
     });
   }
 
-  // Contributions
   if (resume.contributions?.length) {
     sections.push("\n## Open Source");
     resume.contributions.forEach((contrib) => {
@@ -119,7 +109,6 @@ export function resumeToMarkdown(resume: Resume): string {
     });
   }
 
-  // Certificates
   if (resume.certificates?.length) {
     sections.push("\n## Certifications");
     resume.certificates.forEach((cert) => {

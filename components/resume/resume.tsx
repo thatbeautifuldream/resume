@@ -1,6 +1,5 @@
 "use client";
 
-import { range } from "@/lib/format";
 import type { Resume } from "@/lib/resume-schema";
 import { parseAsBoolean, useQueryState } from "nuqs";
 import { useState, useEffect } from "react";
@@ -8,6 +7,7 @@ import { CertificateItem } from "./certificate-item";
 import { ContributionItem } from "./contribution-item";
 import { EducationItem } from "./education-item";
 import { ResumeHeader } from "./header";
+import { ProjectItem } from "./project-item";
 import { References } from "./references";
 import { Section } from "./section";
 import { Skills } from "./skills";
@@ -58,11 +58,10 @@ export function ResumeView({ data }: { data: Resume }) {
   };
 
   return (
-    <main className="pt-4 md:pt-12 print:pt-0">
-      <article className="space-y-6">
-        <ResumeHeader basics={data.basics} />
+    <article className="space-y-6 py-4 md:py-8">
+      <ResumeHeader basics={data.basics} />
 
-        {!!data.work?.length && (
+      {!!data.work?.length && (
           <Section title="Experience">
             <div className="space-y-8">
               {(showAllWork
@@ -75,7 +74,7 @@ export function ResumeView({ data }: { data: Resume }) {
                 <button
                   type="button"
                   onClick={createToggleHandler(showAllWork, setShowAllWork)}
-                  className="print:hidden text-sm cursor-pointer"
+                  className="print:hidden text-xs md:text-sm cursor-pointer"
                   aria-expanded={showAllWork}
                   aria-label={
                     showAllWork
@@ -90,7 +89,7 @@ export function ResumeView({ data }: { data: Resume }) {
           </Section>
         )}
 
-        {!!data.contributions?.length && (
+      {!!data.contributions?.length && (
           <Section title="Open Source Contributions">
             <div className="space-y-5">
               {(showAllContributions
@@ -107,7 +106,7 @@ export function ResumeView({ data }: { data: Resume }) {
                       showAllContributions,
                       setShowAllContributions
                     )}
-                    className="print:hidden text-sm cursor-pointer"
+                    className="print:hidden text-xs md:text-sm cursor-pointer"
                     aria-expanded={showAllContributions}
                     aria-label={
                       showAllContributions
@@ -122,36 +121,14 @@ export function ResumeView({ data }: { data: Resume }) {
           </Section>
         )}
 
-        {!!data.projects?.length && (
+      {!!data.projects?.length && (
           <Section title="Projects">
-            <div className="space-y-5">
+            <div className="space-y-8">
               {(showAllProjects
                 ? data.projects
                 : data.projects.slice(0, DEFAULT_ITEMS_TO_SHOW)
               ).map((p, i) => (
-                <div key={i} className="space-y-2">
-                  <div className="flex justify-between items-baseline">
-                    <strong>{p.name}</strong>
-                    <em className="text-sm">{range(p.startDate, p.endDate)}</em>
-                  </div>
-                  {p.url && (
-                    <div>
-                      <a href={p.url} target="_blank" rel="noreferrer">
-                        {p.url.replace(/^https?:\/\//, "")}
-                      </a>
-                    </div>
-                  )}
-                  {p.description && <p>{p.description}</p>}
-                  {!!p.highlights?.length && (
-                    <ul className="list-disc pl-5 space-y-1">
-                      {p.highlights.map((h, j) => (
-                        <li key={j} className="text-justify">
-                          {h}
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
+                <ProjectItem key={i} item={p} />
               ))}
               {data.projects.length > DEFAULT_ITEMS_TO_SHOW && !expandAll && (
                 <button
@@ -160,7 +137,7 @@ export function ResumeView({ data }: { data: Resume }) {
                     showAllProjects,
                     setShowAllProjects
                   )}
-                  className="print:hidden text-sm cursor-pointer"
+                  className="print:hidden text-xs md:text-sm cursor-pointer"
                   aria-expanded={showAllProjects}
                   aria-label={
                     showAllProjects
@@ -175,7 +152,7 @@ export function ResumeView({ data }: { data: Resume }) {
           </Section>
         )}
 
-        {!!data.education?.length && (
+      {!!data.education?.length && (
           <Section title="Education">
             <div className="space-y-5">
               {(showAllEducation
@@ -191,7 +168,7 @@ export function ResumeView({ data }: { data: Resume }) {
                     showAllEducation,
                     setShowAllEducation
                   )}
-                  className="print:hidden text-sm cursor-pointer"
+                  className="print:hidden text-xs md:text-sm cursor-pointer"
                   aria-expanded={showAllEducation}
                   aria-label={
                     showAllEducation
@@ -206,7 +183,7 @@ export function ResumeView({ data }: { data: Resume }) {
           </Section>
         )}
 
-        {!!data.certificates?.length && (
+      {!!data.certificates?.length && (
           <Section title="Certificates">
             <div className="space-y-5">
               {(showAllCertificates
@@ -223,7 +200,7 @@ export function ResumeView({ data }: { data: Resume }) {
                       showAllCertificates,
                       setShowAllCertificates
                     )}
-                    className="print:hidden text-sm cursor-pointer"
+                    className="print:hidden text-xs md:text-sm cursor-pointer"
                     aria-expanded={showAllCertificates}
                     aria-label={
                       showAllCertificates
@@ -238,7 +215,7 @@ export function ResumeView({ data }: { data: Resume }) {
           </Section>
         )}
 
-        {!!data.talks?.length && (
+      {!!data.talks?.length && (
           <Section title="Talks">
             <div className="space-y-5">
               {(showAllTalks
@@ -251,7 +228,7 @@ export function ResumeView({ data }: { data: Resume }) {
                 <button
                   type="button"
                   onClick={createToggleHandler(showAllTalks, setShowAllTalks)}
-                  className="print:hidden text-sm cursor-pointer"
+                  className="print:hidden text-xs md:text-sm cursor-pointer"
                   aria-expanded={showAllTalks}
                   aria-label={
                     showAllTalks ? "Show less talks" : "Show more talks"
@@ -264,19 +241,19 @@ export function ResumeView({ data }: { data: Resume }) {
           </Section>
         )}
 
-        {!!data.skills?.length && (
+      {!!data.skills?.length && (
           <Section title="Skills">
             <Skills skills={data.skills} />
           </Section>
         )}
 
-        {!!data.references?.length && (
+      {!!data.references?.length && (
           <Section title="References">
             <References items={data.references} />
           </Section>
         )}
-      </article>
-      <footer className="mt-8 pt-4 text-center text-sm">
+
+      <footer className="mt-8 pt-4 text-center text-xs md:text-sm">
         <p className="text-muted-foreground">
           Source :{" "}
           <a
@@ -288,6 +265,6 @@ export function ResumeView({ data }: { data: Resume }) {
           </a>
         </p>
       </footer>
-    </main>
+    </article>
   );
 }

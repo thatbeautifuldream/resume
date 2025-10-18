@@ -2,8 +2,6 @@ import type { Contribution } from "@/lib/resume-schema";
 
 function extractRepoPathAndName(url: string) {
   const parsedUrl = new URL(url);
-  // The pathname is "/vercel/streamdown"
-  // Remove the leading slash and return the rest
   const path = parsedUrl.pathname.slice(1);
   return {
     repoPath: path,
@@ -16,12 +14,12 @@ export function ContributionItem({ item }: { item: Contribution }) {
   return (
     <div className="space-y-2">
       <div className="flex justify-between items-baseline">
-        <strong>{repoName}</strong>
+        <strong className="text-sm md:text-base">{repoName}</strong>
         <a
           href={item.repository}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-sm hover:underline"
+          className="text-xs md:text-sm hover:underline"
         >
           {repoPath}
         </a>
@@ -30,7 +28,7 @@ export function ContributionItem({ item }: { item: Contribution }) {
       {!!item.prs?.length && (
         <div className="space-y-1">
           {item.prs.map((pr, i) => (
-            <div key={i} className="text-md">
+            <div key={i} className="text-sm md:text-base">
               <a
                 href={pr.url}
                 target="_blank"
