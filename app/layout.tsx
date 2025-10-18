@@ -8,6 +8,11 @@ import { NuqsAdapter } from "nuqs/adapters/next/app";
 import type React from "react";
 import { Suspense } from "react";
 import { ThemeProvider } from "@/components/providers/theme-provider";
+import {
+  optimisticDisplay,
+  optimisticText,
+  sourceCodePro,
+} from "@/lib/fonts";
 
 import "./globals.css";
 
@@ -22,7 +27,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`${optimisticText.variable} ${optimisticDisplay.variable} ${sourceCodePro.variable}`}
+    >
       <head>
         <meta
           name="viewport"

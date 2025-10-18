@@ -119,79 +119,6 @@
 }
 
 @layer base {
-  /* Font faces */
-  @font-face {
-    font-family: 'Optimistic Display';
-    font-style: normal;
-    font-weight: 500;
-    font-display: swap;
-    src: url('/fonts/optimistic/Optimistic_Display_W_Md.woff2') format('woff2');
-  }
-
-  @font-face {
-    font-family: 'Optimistic Display';
-    font-style: normal;
-    font-weight: 600;
-    font-display: swap;
-    src: url('/fonts/optimistic/Optimistic_Display_W_SBd.woff2') format('woff2');
-  }
-
-  @font-face {
-    font-family: 'Optimistic Display';
-    font-style: normal;
-    font-weight: 700;
-    font-display: swap;
-    src: url('/fonts/optimistic/Optimistic_Display_W_Bd.woff2') format('woff2');
-  }
-
-  @font-face {
-    font-family: 'Optimistic Text';
-    font-style: normal;
-    font-weight: 400;
-    font-display: swap;
-    src: url('/fonts/optimistic/Optimistic_Text_W_Rg.woff2') format('woff2');
-  }
-
-  @font-face {
-    font-family: 'Optimistic Text';
-    font-style: italic;
-    font-weight: 400;
-    font-display: swap;
-    src: url('/fonts/optimistic/Optimistic_Text_W_It.woff2') format('woff2');
-  }
-
-  @font-face {
-    font-family: 'Optimistic Text';
-    font-style: normal;
-    font-weight: 500;
-    font-display: swap;
-    src: url('/fonts/optimistic/Optimistic_Text_W_Md.woff2') format('woff2');
-  }
-
-  @font-face {
-    font-family: 'Optimistic Text';
-    font-style: normal;
-    font-weight: 700;
-    font-display: swap;
-    src: url('/fonts/optimistic/Optimistic_Text_W_Bd.woff2') format('woff2');
-  }
-
-  @font-face {
-    font-family: 'Source Code Pro';
-    font-style: normal;
-    font-weight: 400;
-    font-display: swap;
-    src: url('/fonts/source-code-pro/Source-Code-Pro-Regular.woff2') format('woff2');
-  }
-
-  @font-face {
-    font-family: 'Source Code Pro';
-    font-style: normal;
-    font-weight: 700;
-    font-display: swap;
-    src: url('/fonts/source-code-pro/Source-Code-Pro-Bold.woff2') format('woff2');
-  }
-
   /* Box sizing */
   *,
   *::before,
@@ -217,7 +144,7 @@
   /* Body base styles */
   body {
     @apply bg-background text-foreground;
-    font-family: "Optimistic Text", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-family: var(--font-optimistic-text), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     line-height: 1.8;
     max-width: 80ch;
     min-height: 100vh;
@@ -232,7 +159,7 @@
 
   /* Typography - Headings */
   h1, h2, h3, h4, h5, h6 {
-    font-family: "Optimistic Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-family: var(--font-optimistic-display), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   }
 
   h1 {
@@ -335,7 +262,7 @@
 
   /* Code blocks */
   code, pre {
-    font-family: "Source Code Pro", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-family: var(--font-source-code-pro), Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
     font-size: 85%;
     hyphens: none;
   }
