@@ -7,6 +7,7 @@ import type { Metadata } from "next";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import type React from "react";
 import { Suspense } from "react";
+import { ThemeProvider } from "@/components/providers/theme-provider";
 
 import "./globals.css";
 
@@ -30,17 +31,19 @@ export default function RootLayout({
         <link rel="manifest" href="/manifest.json" />
         <StructuredData />
       </head>
-      <body className="min-h-screen bg-background! antialiased">
-        <NuqsAdapter>
-          <Suspense fallback={null}>
-            <Header
-              leftItems={[{ key: "chat", label: "Chat", href: "/chat" }]}
-            />
-          </Suspense>
-          <div className="pt-6 print:pt-0">{children}</div>
-        </NuqsAdapter>
-        <GoogleAnalytics gaId="G-G7VF0PLE22" />
-        <ClarityProvider />
+      <body className="min-h-screen bg-background text-foreground antialiased">
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <NuqsAdapter>
+            <Suspense fallback={null}>
+              <Header
+                leftItems={[{ key: "chat", label: "Chat", href: "/chat" }]}
+              />
+            </Suspense>
+            <div className="pt-6 print:pt-0">{children}</div>
+          </NuqsAdapter>
+          <GoogleAnalytics gaId="G-G7VF0PLE22" />
+          <ClarityProvider />
+        </ThemeProvider>
       </body>
     </html>
   );

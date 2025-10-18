@@ -1,4 +1,5 @@
 import type { Skill } from "@/lib/resume-schema";
+import { Badge } from "@/components/ui/badge";
 
 export function Skills({ skills }: { skills: Skill[] }) {
   if (!skills?.length) return null;
@@ -8,9 +9,11 @@ export function Skills({ skills }: { skills: Skill[] }) {
         <div key={i} className="space-y-2">
           <div className="font-semibold text-md">{s.name}</div>
           {!!s.keywords?.length && (
-            <div className="flex flex-wrap gap-1">
+            <div className="flex flex-wrap gap-2">
               {s.keywords.map((keyword, idx) => (
-                <kbd key={idx}>{keyword}</kbd>
+                <Badge key={idx} variant="outline">
+                  {keyword}
+                </Badge>
               ))}
             </div>
           )}

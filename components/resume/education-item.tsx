@@ -18,7 +18,7 @@ export function EducationItem({ item }: { item: Education }) {
         ) : (
           <strong>{item.institution}</strong>
         )}
-        <em className="sm:mt-0 mt-1">{range(item.startDate, item.endDate)}</em>
+        <em className="sm:mt-0 mt-1 text-sm">{range(item.startDate, item.endDate)}</em>
       </div>
       <div className="italic">{title}</div>
       {item.score && <div>GPA: {item.score}</div>}

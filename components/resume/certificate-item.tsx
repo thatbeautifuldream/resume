@@ -20,7 +20,7 @@ export function CertificateItem({ item }: { item: Certificates }) {
           {item.issuer && (
             <div className="italic hidden sm:block float-right">{item.issuer}</div>
           )}
-          {item.date && <em className="sm:mt-0 mt-1">{item.date}</em>}
+          {item.date && <em className="sm:mt-0 mt-1 text-sm">{item.date}</em>}
         </div>
       </div>
       {item.issuer && <div className="italic sm:hidden">{item.issuer}</div>}

@@ -58,7 +58,7 @@ export function ResumeView({ data }: { data: Resume }) {
   };
 
   return (
-    <main>
+    <main className="pt-12 print:pt-0">
       <article>
         <ResumeHeader basics={data.basics} />
 
@@ -132,7 +132,7 @@ export function ResumeView({ data }: { data: Resume }) {
                 <div key={i} className="space-y-2">
                   <div className="flex justify-between items-baseline">
                     <strong>{p.name}</strong>
-                    <em>{range(p.startDate, p.endDate)}</em>
+                    <em className="text-sm">{range(p.startDate, p.endDate)}</em>
                   </div>
                   {p.url && (
                     <div>

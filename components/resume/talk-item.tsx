@@ -17,7 +17,7 @@ export function TalkItem({ item }: { item: Talks }) {
         ) : (
           <strong>{item.title}</strong>
         )}
-        {item.date && <em className="sm:mt-0 mt-1">{formatDate(item.date)}</em>}
+        {item.date && <em className="sm:mt-0 mt-1 text-sm">{formatDate(item.date)}</em>}
       </div>
       {item.event && <div className="italic">{item.event}</div>}
       {item.summary && <p className="text-justify">{item.summary}</p>}
