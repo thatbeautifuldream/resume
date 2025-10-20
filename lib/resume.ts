@@ -47,7 +47,7 @@ export const resume: Resume = {
   },
   work: [
     {
-      name: "Thine",
+      name: "Thine by Foyer",
       location: "Bangalore Urban, Karnataka, India",
       position: "Design Engineer",
       logo: "/logos/alwaysthine_logo.jpeg",

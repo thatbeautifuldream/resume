@@ -1,8 +1,5 @@
-import type { ProjectSchema } from "@/lib/resume-schema";
+import type { Project } from "@/lib/resume-schema";
 import { range } from "@/lib/format";
-import type { z } from "zod";
-
-type Project = z.infer<typeof ProjectSchema>;
 
 export function ProjectItem({ item }: { item: Project }) {
   return (
