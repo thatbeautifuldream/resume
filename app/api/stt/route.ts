@@ -1,9 +1,9 @@
+import { openai } from "@ai-sdk/openai";
 import { experimental_transcribe as transcribe } from "ai";
-import { createOpenAI } from "@ai-sdk/openai";
 
 export const maxDuration = 30;
 
-type TGroqSTTModel = "whisper-large-v3-turbo" | "whisper-large-v3";
+// type TGroqSTTModel = "whisper-large-v3-turbo" | "whisper-large-v3";
 
 export async function POST(req: Request) {
   try {
@@ -17,18 +17,23 @@ export async function POST(req: Request) {
       });
     }
 
-    const groq = createOpenAI({
-      baseURL: "https://api.groq.com/openai/v1",
-      apiKey: process.env.GROQ_API_KEY,
-    });
+    // const groq = createOpenAI({
+    //   baseURL: "https://api.groq.com/openai/v1",
+    //   apiKey: process.env.GROQ_API_KEY,
+    // });
 
-    const model: TGroqSTTModel = "whisper-large-v3-turbo";
+    // const model: TGroqSTTModel = "whisper-large-v3-turbo";
 
     const arrayBuffer = await audio.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
 
+    // const { text, segments } = await transcribe({
+    //   model: groq.transcription(model),
+    //   audio: buffer,
+    // });
+
     const { text, segments } = await transcribe({
-      model: groq.transcription(model),
+      model: openai.transcription("whisper-1"),
       audio: buffer,
     });
 
