@@ -10,7 +10,8 @@ import {
 } from "@/components/ui/card";
 import { Star, GitFork } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { useState, useMemo } from "react";
+import { Kbd } from "@/components/ui/kbd";
+import { useState, useMemo, useRef, useEffect } from "react";
 import Fuse from "fuse.js";
 
 function formatDate(dateString: string) {
@@ -75,6 +76,7 @@ function ProjectCard({ project }: { project: (typeof projects)[number] }) {
 
 export default function ProjectsPage() {
   const [searchQuery, setSearchQuery] = useState("");
+  const searchInputRef = useRef<HTMLInputElement>(null);
 
   const fuse = useMemo(
     () =>
@@ -93,16 +95,37 @@ export default function ProjectsPage() {
     return fuse.search(searchQuery).map((result) => result.item);
   }, [searchQuery, fuse]);
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+        e.preventDefault();
+        searchInputRef.current?.focus();
+      }
+      if (e.key === "Escape") {
+        searchInputRef.current?.blur();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
   return (
     <div className="space-y-4">
       <div className="sticky top-12 z-10 bg-background pt-4 pb-4">
-        <Input
-          type="text"
-          placeholder="Search projects..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full"
-        />
+        <div className="relative">
+          <Input
+            ref={searchInputRef}
+            type="search"
+            placeholder="Filter my github chaos..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full pe-11"
+          />
+          <div className="pointer-events-none absolute inset-y-0 end-0 flex items-center justify-center pe-2 text-muted-foreground">
+            <Kbd>⌘K</Kbd>
+          </div>
+        </div>
       </div>
       {filteredProjects.length > 0 ? (
         <div className="grid gap-3 md:grid-cols-2 mb-4">
