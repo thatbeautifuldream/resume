@@ -1,14 +1,16 @@
 import puppeteer from "puppeteer";
 import { mkdir } from "fs/promises";
 import { dirname } from "path";
-import { RESUME_CONFIG } from "../lib/config.ts";
+import { RESUME_CONFIG } from "@/lib/config";
 
 const RESUME_URL = "https://resume.milind.app";
 
 export async function printResumeToPdf() {
-  const browser = await puppeteer.launch({ headless: true });
+  console.log(`Fetching resume from ${RESUME_URL}...`);
 
+  const browser = await puppeteer.launch({ headless: true });
   const page = await browser.newPage();
+
   await page.goto(RESUME_URL, {
     waitUntil: "networkidle0",
   });
@@ -16,6 +18,7 @@ export async function printResumeToPdf() {
   const filePath = `public/pdf/${RESUME_CONFIG.pdfFilename}`;
   await mkdir(dirname(filePath), { recursive: true });
 
+  console.log("Generating PDF...");
   await page.pdf({
     path: filePath,
     format: "A4",
@@ -29,6 +32,7 @@ export async function printResumeToPdf() {
   });
 
   await browser.close();
+  console.log(`Saved to ${filePath}`);
 }
 
 printResumeToPdf().catch(console.error);

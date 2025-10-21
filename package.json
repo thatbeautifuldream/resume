@@ -8,7 +8,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "print": "node scripts/resume-to-pdf.js",
+    "print": "tsx scripts/resume-to-pdf.ts",
     "prepare": "husky"
   },
   "dependencies": {
@@ -48,6 +48,7 @@
     "husky": "^9.1.7",
     "puppeteer": "^24.22.3",
     "tailwindcss": "^4",
+    "tsx": "^4.20.6",
     "tw-animate-css": "^1.3.7",
     "typescript": "^5"
   },
