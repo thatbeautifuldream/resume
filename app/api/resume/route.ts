@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { resume } from "@/lib/resume";
 import { getResumeAsMarkdown, getResumeAsJsonLd } from "@/lib/transformers";
+import { RESUME_CONFIG } from "@/lib/config";
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
@@ -22,12 +23,8 @@ export async function GET(request: NextRequest) {
       });
 
     case "pdf":
-      const pdfType = searchParams.get("type") || "normal";
-      const pdfFilename = pdfType === "full"
-        ? "milind-mishra-full-resume-2025.pdf"
-        : "milind-mishra-resume-2025.pdf";
       return NextResponse.redirect(
-        `${request.nextUrl.origin}/pdf/${pdfFilename}`,
+        `${request.nextUrl.origin}${RESUME_CONFIG.pdfPath()}`,
         302
       );
 
