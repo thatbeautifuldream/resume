@@ -1,3 +1,5 @@
+"use client";
+
 import { projects } from "@/lib/projects";
 import {
   Card,
@@ -7,6 +9,9 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Star, GitFork } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { useState, useMemo } from "react";
+import Fuse from "fuse.js";
 
 function formatDate(dateString: string) {
   const date = new Date(dateString);
@@ -69,11 +74,47 @@ function ProjectCard({ project }: { project: (typeof projects)[number] }) {
 }
 
 export default function ProjectsPage() {
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const fuse = useMemo(
+    () =>
+      new Fuse(projects, {
+        keys: ["name", "description", "language"],
+        threshold: 0.3,
+        includeScore: true,
+      }),
+    []
+  );
+
+  const filteredProjects = useMemo(() => {
+    if (!searchQuery.trim()) {
+      return projects;
+    }
+    return fuse.search(searchQuery).map((result) => result.item);
+  }, [searchQuery, fuse]);
+
   return (
-    <div className="grid gap-3 md:grid-cols-2 mb-4">
-      {projects.map((project) => (
-        <ProjectCard key={project.id} project={project} />
-      ))}
+    <div className="space-y-4">
+      <div className="sticky top-12 z-10 bg-background pt-4 pb-4">
+        <Input
+          type="text"
+          placeholder="Search projects..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="w-full"
+        />
+      </div>
+      {filteredProjects.length > 0 ? (
+        <div className="grid gap-3 md:grid-cols-2 mb-4">
+          {filteredProjects.map((project) => (
+            <ProjectCard key={project.id} project={project} />
+          ))}
+        </div>
+      ) : (
+        <div className="text-center py-12 text-muted-foreground">
+          <p className="truncate">No projects found matching "{searchQuery}"</p>
+        </div>
+      )}
     </div>
   );
 }

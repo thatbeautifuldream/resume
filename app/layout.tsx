@@ -8,10 +8,7 @@ import { NuqsAdapter } from "nuqs/adapters/next/app";
 import type React from "react";
 import { Suspense } from "react";
 import { ThemeProvider } from "@/components/providers/theme-provider";
-import {
-  stixTwoText,
-  geistMono,
-} from "@/lib/fonts";
+import { stixTwoText, geistMono } from "@/lib/fonts";
 
 import "./globals.css";
 
@@ -44,7 +41,10 @@ export default function RootLayout({
           <NuqsAdapter>
             <Suspense fallback={null}>
               <Header
-                leftItems={[{ key: "chat", label: "Chat", href: "/chat" }]}
+                leftItems={[
+                  { key: "projects", label: "Projects", href: "/projects" },
+                  { key: "chat", label: "Chat", href: "/chat" },
+                ]}
               />
             </Suspense>
             <main className="container mx-auto px-4 sm:px-6 lg:px-8 pt-[60px] print:pt-0">

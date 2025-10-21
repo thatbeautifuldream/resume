@@ -54,6 +54,9 @@ importers:
       deepmerge:
         specifier: ^4.3.1
         version: 4.3.1
+      fuse.js:
+        specifier: ^7.1.0
+        version: 7.1.0
       langsmith:
         specifier: ^0.3.72
         version: 0.3.72(@opentelemetry/api@1.9.0)
@@ -1481,6 +1484,10 @@ packages:
 
   function-bind@1.1.2:
     resolution: {integrity: sha512-7XHNxH7qX9xG5mIwxkhumTox/MIRNcOgDrxWsMt2pAr23WHp6MrRlN7FBSFpCpr+oVO0F744iUgR82nJMfG2SA==}
+
+  fuse.js@7.1.0:
+    resolution: {integrity: sha512-trLf4SzuuUxfusZADLINj+dE8clK1frKdmqiJNb1Es75fmI5oY6X2mxLVUciLLjxqw/xr72Dhy+lER6dGd02FQ==}
+    engines: {node: '>=10'}
 
   get-caller-file@2.0.5:
     resolution: {integrity: sha512-DyFP3BM/3YHTQOCUL/w0OZHR0lpKeGrxotcHWcqNEdnltqFwXVfhEBQ94eIo34AfQpo0rGki4cyIiftY06h2Fg==}
@@ -3927,6 +3934,8 @@ snapshots:
       react-dom: 19.2.0(react@19.2.0)
 
   function-bind@1.1.2: {}
+
+  fuse.js@7.1.0: {}
 
   get-caller-file@2.0.5: {}
 
