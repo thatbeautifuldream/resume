@@ -1,5 +1,3 @@
-"use client";
-
 import { Badge } from "@/components/ui/badge";
 import { formatDate, range } from "@/lib/format";
 import type {
@@ -17,7 +15,6 @@ import type {
 } from "@/lib/resume-schema";
 import Link from "next/link";
 import type * as React from "react";
-import { useState } from "react";
 
 function ResumeSection({
   title,
@@ -75,16 +72,6 @@ function ProfileLinkWithNetwork({ profile }: { profile: Profile }) {
 }
 
 function ResumeHeaderItem({ basics }: { basics: Basics }) {
-  const [emailCopied, setEmailCopied] = useState(false);
-
-  const handleEmailClick = async () => {
-    if (basics.email) {
-      await navigator.clipboard.writeText(basics.email);
-      setEmailCopied(true);
-      setTimeout(() => setEmailCopied(false), 2000);
-    }
-  };
-
   return (
     <header className="text-left space-y-3 md:space-y-4">
       <div className="space-y-3 md:space-y-4">
@@ -94,13 +81,12 @@ function ResumeHeaderItem({ basics }: { basics: Basics }) {
 
         <div className="flex flex-wrap gap-2 sm:gap-3 text-xs sm:text-sm">
           {basics.email && (
-            <Link
-              href="#"
-              onClick={handleEmailClick}
-              className="hover:underline cursor-pointer print:cursor-default"
+            <a
+              href={`mailto:${basics.email}`}
+              className="hover:underline cursor-pointer print:cursor-default active:opacity-75 transition-opacity"
             >
-              {emailCopied ? "Copied to clipboard!" : basics.email}
-            </Link>
+              {basics.email}
+            </a>
           )}
           {basics.phone && <a href={`tel:${basics.phone}`}>{basics.phone}</a>}
           {basics.url && (
