@@ -1,5 +1,5 @@
 import { Loading } from "@/components/loading";
-import { ResumeView } from "@/components/resume/resume";
+import { ResumeView } from "@/components/resume";
 import { resume } from "@/lib/resume";
 import { Suspense } from "react";
 
