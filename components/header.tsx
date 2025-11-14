@@ -1,6 +1,3 @@
-"use client";
-
-import { Clock } from "@/components/clock";
 import { ThemeToggle } from "@/components/theme-toggle";
 import Link from "next/link";
 
@@ -37,7 +34,6 @@ export function Header({ leftItems = [] }: THeaderConfig) {
             ))}
           </div>
           <div className="flex gap-x-3 items-center">
-            <Clock timeZone="Asia/Kolkata" />
             <ThemeToggle />
           </div>
         </div>
