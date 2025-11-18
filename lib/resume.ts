@@ -372,6 +372,13 @@ export const resume: Resume = {
   ],
   talks: [
     {
+      event: "React Play Bengaluru Meetup",
+      date: "2025-11-15",
+      title: "Mastering ViewTransition in React for Stunning UI Updates",
+      url: "https://www.meetup.com/reactplay-bengaluru/events/311437528",
+      summary: "View transition animation and animation devtooling talk.",
+    },
+    {
       event: "React Play x React Bangalore Meetup",
       date: "2025-05-17",
       title: "Building Real-Time Applications with Reactive Databases",
