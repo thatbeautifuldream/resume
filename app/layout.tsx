@@ -42,7 +42,7 @@ export default function RootLayout({
             <Suspense fallback={null}>
               <Header
                 leftItems={[
-                  { key: "projects", label: "Projects", href: "/projects" },
+                  // { key: "projects", label: "Projects", href: "/projects" },
                   { key: "chat", label: "Chat", href: "/chat" },
                 ]}
               />
