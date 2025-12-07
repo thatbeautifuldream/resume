@@ -47,33 +47,24 @@ export const resume: Resume = {
   },
   work: [
     {
-      name: "Thine by Foyer",
-      location: "Bangalore Urban, Karnataka, India",
-      position: "Design Engineer",
-      logo: "/logos/alwaysthine_logo.jpeg",
-      startDate: "2025-10-01",
-      summary:
-        "Designing advanced, animation-centric product experiences for Thine's web platform.",
-      highlights: [
-        "Building a new landing page with an advanced video timeline for engaging media-rich introductions.",
-        "Creating split text animations for the manifesto and marketing pages, enhancing visual storytelling.",
-      ],
-    },
-    {
-      name: "Merlin AI by Foyer",
+      name: "Foyer (Merlin AI & Thine)",
       location: "Bengaluru, Karnataka, India",
       position: "Product Engineer",
-      url: "https://getmerlin.in",
-      logo: "/logos/merlin_ai_assistant_logo.jpeg",
       startDate: "2025-02-21",
-      endDate: "2025-10-01",
+      logo: "/logos/merlin_ai_assistant_logo.jpeg",
       summary:
-        "Driving product engineering initiatives for Merlin AI, focused on seamless AI integration and next-gen chat experiences.",
+        "Frontend-focused product engineering across Merlin AI and Thine, building performant, animation-rich, and user-centric web experiences.",
       highlights: [
-        "Shipped ChatGPT Imports UI, enabling 10,000+ users to migrate chat history smoothly.",
-        "Launched project-based chat history pages, improving user navigation and increasing session retention by 15%.",
-        "Revamped the Model Selector, boosting model adoption by 80% and improving user satisfaction scores by 30%.",
-        "Led development of a prompt enhancement feature, improving real-time UX for 2M+ users by bridging backend streaming with a responsive frontend.",
+        // Merlin AI contributions
+        "Shipped ChatGPT Imports UI, enabling 10,000+ users to migrate chat history seamlessly.",
+        "Built project-based chat history pages, improving navigation and increasing session retention by 15%.",
+        "Revamped the Model Selector, boosting model adoption by 80% and improving satisfaction by 30%.",
+        "Led real-time prompt enhancements, optimizing streaming UX for 2M+ users through responsive frontend architecture.",
+
+        // Thine contributions
+        "Engineered animation-centric product experiences for Thine's web platform.",
+        "Developing a landing page with a video timeline for rich, interactive visual storytelling.",
+        "Implemented advanced split-text animations to elevate manifesto and marketing page engagement.",
       ],
     },
     {
