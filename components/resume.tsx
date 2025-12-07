@@ -379,7 +379,7 @@ function ReferenceTestimonial({ items }: { items: Reference[] }) {
           key={r.name}
           className="italic border-l-4 border-border pl-4 space-y-2 text-sm md:text-base"
         >
-          <div>"{r.reference}"</div>
+          <div>{r.reference}</div>
           <footer className="text-xs md:text-sm font-semibold">
             — {r.name} ({r.title})
           </footer>

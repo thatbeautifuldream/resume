@@ -442,7 +442,7 @@ export const resume: Resume = {
       name: "Akash Bhadange",
       title: "CEO, Peerlist",
       reference:
-        "100% AGREE! Also, the way team has launched the project is commendable. This is by far the most successful project launch on Peerlist",
+        "100% AGREE! Also, the way team has launched the project is commendable. This is by far the most successful project launch on Peerlist - Appreciation on AI Roadmap Generator launch!",
     },
   ],
   contributions: [
