@@ -147,6 +147,9 @@ function WorkExperienceItem({ item }: { item: Work }) {
 }
 
 function ProjectPortfolioItem({ item }: { item: Project }) {
+  // Use single date if available, otherwise fall back to date range
+  const dateDisplay = item.date ? formatDate(item.date) : range(item.startDate, item.endDate);
+
   return (
     <div className="space-y-3">
       <div className="space-y-1">
@@ -157,7 +160,7 @@ function ProjectPortfolioItem({ item }: { item: Project }) {
                 {item.name}
               </strong>
               <em className="sm:mt-0 mt-1 text-xs md:text-sm print:text-xs print:mt-0">
-                {range(item.startDate, item.endDate)}
+                {dateDisplay}
               </em>
             </div>
             {item.url && (

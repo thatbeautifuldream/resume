@@ -114,6 +114,7 @@ export const ResumeSchema = z.object({
         description: z.string().optional(),
         highlights: z.array(z.string()).default([]),
         keywords: z.array(z.string()).default([]),
+        date: isoDate.optional(),
         startDate: isoDate.optional(),
         endDate: isoDate.optional(),
         url: url.optional(),

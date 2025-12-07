@@ -314,51 +314,104 @@ export const resume: Resume = {
   ],
   projects: [
     {
-      name: "AI Roadmap Generator",
-      description:
-        "Web app generating personalized and visual learning roadmaps powered by Next.js, React, Canvas, and LLMs. Used by thousands of learners and engineers to break down any tech domain.",
-      highlights: [
-        "Generated over 250 roadmaps and reached 5,600+ unique visitors within months of launch.",
-        "Features real-time topic-to-roadmap generation with highly interactive visualizations, empowering rapid self-learning.",
-        "Recognized as a successful project launch on Peerlist; highlighted for exceptional product execution.",
-        "Includes privacy-friendly, shareable roadmaps and book recommendations, all built with scalable, privacy-first engineering.",
-        "Led frontend, LLM integration, and roadmap visualization; orchestrated team-wide product improvements.",
+      "name": "Thine Landing",
+      "description": "Animated landing experience for Thine, a reflective AI companion.",
+      "highlights": [
+        "Delivered smooth transitions, scroll animations, and expressive motion design.",
+        "Designed with Tailwind, Framer Motion, and custom animation systems.",
+        "Optimized for fast load performance and emotional impact."
       ],
-      url: "https://airoadmapgenerator.com",
-      keywords: ["Next.js", "React", "TypeScript", "OpenAI", "Figma"],
+      "url": "https://www.thine.com",
+      "keywords": ["Tailwind CSS", "Framer Motion", "CSS Animation"],
+      "date": "2025-11-01"
     },
     {
-      name: "Sideprojects Directory",
-      description:
-        "Platform surfacing and auto-profiling open-source side projects from GitHub, growing project visibility and developer collaboration.",
-      highlights: [
-        "Indexed dozens of unique side projects, driving organic discovery and supporting project-based hiring.",
-        "Enabled GitHub-based auto-profile import, reducing project onboarding to seconds.",
-        "Facilitated connections between early-stage engineers, makers, and hiring managers.",
-        "Improved open-source visibility, with multiple projects receiving new contributors through directory exposure.",
+      "name": "Models Surf",
+      "description": "Interactive directory for exploring, filtering, and comparing AI models and their capabilities.",
+      "highlights": [
+        "Built lightweight searchable UI optimized with virtualization.",
+        "Designed for discoverability and developer-first exploration.",
+        "Open-source and built with clean modular architecture."
       ],
-      url: "https://sideprojects.directory",
-      keywords: ["Next.js", "React", "TypeScript", "GitHub API", "Vercel"],
+      "url": "https://models.surf",
+      "keywords": ["Next.js", "Models", "Virtualisation"],
+      "date": "2025-09-01"
     },
     {
-      name: "JSON Visualizer",
-      description:
-        "Interactive tool for tree/grid visualization of complex JSON, built for dev teams to debug and understand frontend/backend data structures.",
-      highlights: [
-        "Adopted by hundreds of developers for production debugging and API integration.",
-        "Supports large dataset rendering and deep tree navigation; praised for performance vs. other online tools.",
-        "Open-source and extensible, referenced as a recommended resource in developer forums.",
-        "Designed intuitive UI for both technical and non-technical users, reducing time to diagnose data issues.",
+      "name": "Merlin Projects",
+      "description": "AI-powered personal knowledge base for collecting, organizing, and querying content with contextual understanding.",
+      "highlights": [
+        "Supports search and retrieval using LLMs and RAG patterns.",
+        "Built for organizing web links, notes, and documents into a unified knowledge layer.",
+        "Optimized around latency and streaming user workflows with React Query.",
+        "Delivered frictionless knowledge exploration through a clean interface."
       ],
-      url: "https://jsonvisualiser.com",
-      keywords: [
-        "Next.js",
-        "React",
-        "TypeScript",
-        "Zustand",
-        "Monaco",
-        "json-tree",
+      "url": "https://www.getmerlin.in/chat/projects",
+      "keywords": ["Next.js", "React Query", "LLMs", "RAG"],
+      "date": "2025-08-01"
+    },
+    {
+      "name": "TypeScript Playground",
+      "description": "Modern browser-based TS/JS playground with real-time execution and console output.",
+      "highlights": [
+        "Built using TypeScript Compiler API for accurate diagnostics and evaluation.",
+        "Open-source tool used by learners and interviewers.",
+        "Smooth execution sandbox with intuitive editor-console interactions."
       ],
+      "url": "https://ts.milind.app",
+      "keywords": ["Next.js", "TypeScript Compiler API", "Code Sandboxing"],
+      "date": "2025-08-01"
+    },
+    {
+      "name": "Rizzboard",
+      "description": "Fun meme soundboard where your most played sounds float to the top.",
+      "highlights": [
+        "Built with delightful animations using Framer Motion.",
+        "Persistent state using Zustand for ranking and usage tracking.",
+        "Lightweight, fast and mobile-responsive."
+      ],
+      "url": "https://rizzboard.milind.app",
+      "keywords": ["Next.js", "Framer Motion", "Zustand", "useSound"],
+      "date": "2025-08-01"
+    },
+    {
+      "name": "Saral Admin Dashboard",
+      "description": "Revamped Saral’s admin dashboard with improved design system and visibility of operational metrics.",
+      "highlights": [
+        "Reduced onboarding time and improved data discoverability for internal teams.",
+        "Delivered clean, intuitive UI powered by TanStack Router and Framer Motion.",
+        "Improved insights and data aggregation flow across modules."
+      ],
+      "url": "https://milindmishra.com/project/saral-admin-dashboard",
+      "keywords": ["TanStack Router", "Framer Motion", "Data Aggregation"],
+      "date": "2025-01-01"
+    },
+    {
+      "name": "JSON Visualizer",
+      "description": "Interactive visualization tool for nested JSON data structures to aid debugging and comprehension.",
+      "highlights": [
+        "Supports large datasets with efficient tree traversal and grid views.",
+        "Used by hundreds of developers for integration debugging and backend validation.",
+        "Praised for clarity, performance, and usability compared to alternatives.",
+        "Open-source and referenced within developer community discussions."
+      ],
+      "url": "https://jsonvisualiser.com",
+      "keywords": ["React", "TypeScript", "D3.js"],
+      "date": "2024-10-01"
+    },
+    {
+      "name": "AI Roadmap Generator",
+      "description": "Generates personalized learning paths leveraging LLMs and interactive visualizations.",
+      "highlights": [
+        "Built using Next.js, React, TypeScript, Canvas, and LLMs; used by thousands of engineers.",
+        "Generated 250+ roadmaps and attracted over 5,600 unique visitors organically.",
+        "Delivers real-time structured roadmap generation with intuitive navigation.",
+        "Open-source with privacy-friendly sharing, topic clustering, and recommendations.",
+        "Led full-stack architecture, visualization engine, and complete product UX."
+      ],
+      "url": "https://airoadmapgenerator.com",
+      "keywords": ["Next.js", "React", "TypeScript", "Canvas", "LLMs"],
+      "date": "2024-08-01"
     },
   ],
   talks: [
