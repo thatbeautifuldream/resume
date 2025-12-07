@@ -8,7 +8,7 @@ export const resume: Resume = {
     phone: "+919631333128",
     url: "https://milindmishra.com",
     summary:
-      "Full-stack software engineer specializing in React, Next.js, and scalable product engineering. Experienced in building AI-integrated SaaS platforms serving millions of users with solid foundations in system design, component architecture, and performance optimization. Contributor to open-source at Vercel and frequent speaker at React community meetups.",
+      "Frontend software engineer specializing in React, Next.js, and high-performance UI engineering. Skilled in building scalable, user-centric web applications with strong foundations in component architecture, design systems, performance optimization, and accessibility. Experienced in shipping AI-integrated SaaS platforms to large user bases. Active contributor to the React ecosystem and frequent speaker at community meetups.",
     location: {
       address: "Zolo Darren, BTM Layout",
       postalCode: "560034",
@@ -396,6 +396,7 @@ export const resume: Resume = {
   references: [
     {
       name: "Akash Bhadange",
+      title: "CEO, Peerlist",
       reference:
         "100% AGREE! Also, the way team has launched the project is commendable. This is by far the most successful project launch on Peerlist",
     },

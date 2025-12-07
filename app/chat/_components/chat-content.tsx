@@ -22,15 +22,15 @@ const CHAT_HISTORY_KEY = "resume-chat-history";
 
 const ChatContext = createContext<
   | (ReturnType<typeof useChat> & {
-      messages: ReturnType<typeof useChatMessages>;
-      chatState: ReturnType<typeof useChatStoreState>;
-      input: string;
-      setInput: (value: string) => void;
-      inputRef: React.RefObject<HTMLTextAreaElement | null>;
-      hasMessages: boolean;
-      isLoaded: boolean;
-      clearChat: () => Promise<void>;
-    })
+    messages: ReturnType<typeof useChatMessages>;
+    chatState: ReturnType<typeof useChatStoreState>;
+    input: string;
+    setInput: (value: string) => void;
+    inputRef: React.RefObject<HTMLTextAreaElement | null>;
+    hasMessages: boolean;
+    isLoaded: boolean;
+    clearChat: () => Promise<void>;
+  })
   | null
 >(null);
 
@@ -45,9 +45,8 @@ function useChatContext() {
 function Message({ message }: { message: any }) {
   return (
     <div
-      className={`w-full ${
-        message.role === "user" ? "text-right" : "text-left"
-      }`}
+      className={`w-full ${message.role === "user" ? "text-right" : "text-left"
+        }`}
     >
       {message.parts.map((part: any, index: number) => {
         if (part.type === "text" && message.role === "user") {
@@ -200,13 +199,12 @@ function Input() {
           title={
             status === "submitted" ? "Stop generating response" : "Send message"
           }
-          className={`mr-2 mb-2 p-2 rounded-full transition-all duration-200 flex items-center justify-center ${
-            status === "ready" && input.trim()
+          className={`mr-2 mb-2 p-2 rounded-full transition-all duration-200 flex items-center justify-center ${status === "ready" && input.trim()
               ? "bg-primary text-primary-foreground hover:bg-primary/90 cursor-pointer"
               : status === "submitted"
-              ? "bg-muted text-muted-foreground hover:bg-muted/80 cursor-pointer"
-              : "bg-muted text-muted-foreground cursor-not-allowed opacity-50"
-          }`}
+                ? "bg-muted text-muted-foreground hover:bg-muted/80 cursor-pointer"
+                : "bg-muted text-muted-foreground cursor-not-allowed opacity-50"
+            }`}
         >
           {status === "submitted" ? (
             <Square className="size-4" fill="currentColor" />
@@ -336,19 +334,17 @@ function ChatContentLayout() {
     <>
       <Chat.Messages />
       <div
-        className={`${
-          !hasMessages
+        className={`${!hasMessages
             ? "flex-1 flex flex-col items-center justify-center p-4"
             : ""
-        }`}
+          }`}
         style={!hasMessages ? { transform: "translateY(-10vh)" } : {}}
       >
         <Chat.Welcome />
         <motion.div
           layout
-          className={`w-full max-w-full lg:max-w-[896px] lg:mx-auto p-4 print:hidden ${
-            hasMessages ? "flex-shrink-0" : ""
-          }`}
+          className={`w-full max-w-full lg:max-w-[896px] lg:mx-auto p-4 print:hidden ${hasMessages ? "flex-shrink-0" : ""
+            }`}
         >
           <Chat.ClearButton />
           <Chat.Input />

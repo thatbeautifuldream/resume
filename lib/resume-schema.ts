@@ -1,3 +1,4 @@
+import { title } from "process";
 import { z } from "zod";
 
 const url = z.string().url();
@@ -147,6 +148,7 @@ export const ResumeSchema = z.object({
     .array(
       z.object({
         name: z.string(),
+        title: z.string(),
         reference: z.string(),
       })
     )

@@ -378,7 +378,7 @@ function ReferenceTestimonial({ items }: { items: Reference[] }) {
         >
           <div>"{r.reference}"</div>
           <footer className="text-xs md:text-sm font-semibold">
-            — {r.name}
+            — {r.name} ({r.title})
           </footer>
         </blockquote>
       ))}
