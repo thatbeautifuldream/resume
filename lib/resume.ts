@@ -82,10 +82,10 @@ export const resume: Resume = {
       summary:
         "Built core features and internal tools improving efficiency and decision-making for influencer campaigns.",
       highlights: [
-        "Delivered revamped dashboard—reduced onboarding and insight delivery time by 30%.",
-        "Engineered a multi-select drag-and-drop feature for campaign management, increasing ops efficiency by 40% for large-scale campaigns.",
-        "Built a content submission system to streamline influencer-brand collaboration, reducing content approval times by 60%.",
         "Enhanced real-time campaign metric tracking, empowering managers with data to improve campaign ROI by up to 20%.",
+        "Built a content submission system to streamline influencer-brand collaboration, reducing content approval times by 60%.",
+        "Engineered a multi-select drag-and-drop feature for campaign management, increasing ops efficiency by 40% for large-scale campaigns.",
+        "Delivered revamped dashboard—reduced onboarding and insight delivery time by 30%.",
       ],
     },
     {
@@ -99,11 +99,11 @@ export const resume: Resume = {
       summary:
         "Architected and launched a decentralized skill validation protocol, revolutionizing unbiased, transparent candidate evaluation for tech hiring.",
       highlights: [
-        "Led MVP development for validators, candidates, and recruiters.",
-        "Designed and implemented a voting-based consensus algorithm to ensure fair and transparent skill validation across a network of 150+ validators.",
-        "Built proctored assessment workflow with real-time streaming, cutting time-to-interview by 50%.",
-        "Launched recruiter dashboard with skill heatmaps, driving smarter hiring for 20+ partners.",
         "Scaled cloud infra (EC2, NGINX, PM2, Next.js) to support 5000+ actions on the platform.",
+        "Launched recruiter dashboard with skill heatmaps, driving smarter hiring for 20+ partners.",
+        "Built proctored assessment workflow with real-time streaming, cutting time-to-interview by 50%.",
+        "Designed and implemented a voting-based consensus algorithm to ensure fair and transparent skill validation across a network of 150+ validators.",
+        "Led MVP development for validators, candidates, and recruiters.",
       ],
     },
     {
@@ -117,9 +117,9 @@ export const resume: Resume = {
       summary:
         "Delivered AI-powered products for hiring and skills validation as an independent engineer.",
       highlights: [
-        "Built recruiter analytics platform with advanced candidate search.",
-        "Engineered an AI-powered quiz system with Vercel AI SDK and OpenAI.",
         "Deployed scalable Next.js UIs with AI workflow integration.",
+        "Engineered an AI-powered quiz system with Vercel AI SDK and OpenAI.",
+        "Built recruiter analytics platform with advanced candidate search.",
       ],
     },
     {
@@ -132,7 +132,11 @@ export const resume: Resume = {
       endDate: "2024-01-31",
       summary: "Built marketing pages and platform features.",
       highlights: [
-        "Collaborated with team to build recruiting pipeline, reducing manual work for hiring managers.",
+        "Developed internal tools and handled DevOps solutions to streamline operational workflows.",
+        "Engineered job seeker dashboard and application flow for enhanced user experience.",
+        "Designed and built consumer-facing landing page to drive user acquisition.",
+        "Collaborated with cross-functional team to build recruiting pipeline, reducing manual workload for hiring managers.",
+        "Played key role in building the StartupHire founding team through candidate sourcing, interview coordination, and talent acquisition processes.",
       ],
     },
     {
@@ -146,9 +150,9 @@ export const resume: Resume = {
       summary:
         "Built and optimized indoor positioning system interfaces for a cutting-edge IoT research project.",
       highlights: [
-        "Developed a frontend for an MQTT-powered indoor positioning platform to visualize real-time data from IoT devices.",
-        "Enhanced UWB positioning accuracy from 20cm to under 10cm—significantly improving research outcomes.",
         "Enabled 3D real-time visualization of tracking data for production ready factories and research labs.",
+        "Enhanced UWB positioning accuracy from 20cm to under 10cm—significantly improving research outcomes.",
+        "Developed a frontend for an MQTT-powered indoor positioning platform to visualize real-time data from IoT devices.",
       ],
     },
     {
@@ -162,9 +166,9 @@ export const resume: Resume = {
       summary:
         "Developed core 3D visualization and internal infra tools for proprietary IoT positioning solutions.",
       highlights: [
-        "Produced frontend for 3D positioning platform, supporting live deployments.",
-        "Created and maintained the marketing site for B2B outreach.",
         "Dockerized and maintained internal services, achieving 99.9% uptime and cutting deployment times by 80%.",
+        "Created and maintained the marketing site for B2B outreach.",
+        "Produced frontend for 3D positioning platform, supporting live deployments.",
       ],
     },
     {
@@ -178,9 +182,9 @@ export const resume: Resume = {
       summary:
         "Designed intuitive user experiences and managed design systems for ed-tech platforms.",
       highlights: [
-        "Created user flows for hiring and onboarding.",
-        "Managed a scalable design system, increasing developer velocity by 30%.",
         "Crafted marketing collateral for two campaign launches, contributing to a 20% increase in lead generation.",
+        "Managed a scalable design system, increasing developer velocity by 30%.",
+        "Created user flows for hiring and onboarding.",
       ],
     },
     {
@@ -194,8 +198,8 @@ export const resume: Resume = {
       summary:
         "Authored and curated technical content for HTML/CSS/JS modules, driving learning impact for novices.",
       highlights: [
-        "Created beginner-friendly learning content adopted by 2,000+ new users.",
         "Structured and reviewed curriculum, improving student course completion rates by 40%.",
+        "Created beginner-friendly learning content adopted by 2,000+ new users.",
       ],
     },
   ],
