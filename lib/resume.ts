@@ -53,18 +53,22 @@ export const resume: Resume = {
       startDate: "2025-02-21",
       logo: "/logos/merlin_ai_assistant_logo.jpeg",
       summary:
-        "Frontend-focused product engineering across Merlin AI and Thine, building performant, animation-rich, and user-centric web experiences.",
+        "Product engineering ownership across Merlin AI and Thine, spanning core platform maintenance, growth, payments, churn reduction, and revenue-impacting product initiatives, alongside high-performance frontend development.",
       highlights: [
-        // Merlin AI contributions
-        "Shipped ChatGPT Imports UI, enabling 10,000+ users to migrate chat history seamlessly.",
-        "Built project-based chat history pages, improving navigation and increasing session retention by 15%.",
-        "Revamped the Model Selector, boosting model adoption by 80% and improving satisfaction by 30%.",
-        "Led real-time prompt enhancements, optimizing streaming UX for 2M+ users through responsive frontend architecture.",
+        // Merlin AI – Platform, Growth & Revenue
+        "Took end-to-end ownership of Merlin AI’s platform health, including maintenance, stability, and production issue resolution across critical user flows.",
+        "Led payments and subscription lifecycle improvements, optimizing billing reliability and reducing payment-related drop-offs.",
+        "Designed and shipped churn-reduction strategies across cancellation and downgrade flows, directly improving customer retention.",
+        "Drove revenue-focused product updates by identifying high-impact user friction points and shipping meaningful feature improvements to retain and upsell users.",
+        "Shipped ChatGPT Imports UI, enabling 10,000+ users to migrate chat history seamlessly and accelerating product adoption.",
+        "Built project-based chat history pages, improving navigation clarity and increasing session retention by 15%.",
+        "Revamped the Model Selector, boosting model adoption by 80% and improving user satisfaction by 30%.",
+        "Led real-time prompt and streaming UX enhancements, supporting smooth, responsive interactions for 2M+ users.",
 
-        // Thine contributions
-        "Engineered animation-centric product experiences for Thine's web platform.",
-        "Developing a landing page with a video timeline for rich, interactive visual storytelling.",
-        "Implemented advanced split-text animations to elevate manifesto and marketing page engagement.",
+        // Thine – Product Experience
+        "Engineered animation-centric product experiences for Thine’s web platform with a strong focus on visual storytelling and brand expression.",
+        "Developing an interactive landing page featuring a video timeline to communicate product narrative and value.",
+        "Implemented advanced split-text and motion-driven animations to elevate engagement across manifesto and marketing pages.",
       ],
     },
     {
