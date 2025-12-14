@@ -27,11 +27,24 @@ async function killPortProcess(port: number): Promise<void> {
         }
       }
 
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      await waitForPortToBeFree(port);
     }
   } catch (error) {
     console.log(`No processes found using port ${port}`);
   }
+}
+
+async function waitForPortToBeFree(port: number): Promise<void> {
+  const maxAttempts = 10;
+  for (let i = 0; i < maxAttempts; i++) {
+    try {
+      await execAsync(`lsof -ti:${port}`);
+      await new Promise(resolve => setTimeout(resolve, 100));
+    } catch {
+      return;
+    }
+  }
+  throw new Error(`Port ${port} is still in use after killing processes`);
 }
 
 async function startLocalServer() {
@@ -58,30 +71,33 @@ async function startLocalServer() {
     stdio: "pipe"
   });
 
-  await new Promise<void>((resolve, reject) => {
-    let ready = false;
-
-    server.stdout?.on("data", (data) => {
-      const output = data.toString();
-      console.log(output);
-      if (output.includes("localhost") || output.includes(`started server on`) || output.includes(`ready on`)) {
-        ready = true;
-        resolve();
-      }
-    });
-
-    server.stderr?.on("data", (data) => {
-      console.error(data.toString());
-    });
-
-    setTimeout(() => {
-      if (!ready) {
-        reject(new Error("Server did not start within 30 seconds"));
-      }
-    }, 30000);
-  });
-
+  await waitForServerReady(LOCAL_PORT);
   return server;
+}
+
+async function waitForServerReady(port: number): Promise<void> {
+  console.log(`Waiting for server to be ready on port ${port}...`);
+  const maxAttempts = 30; // 3 seconds with 100ms intervals
+  const checkInterval = 100;
+
+  for (let i = 0; i < maxAttempts; i++) {
+    try {
+      const response = await fetch(`http://localhost:${port}/`, {
+        method: 'GET',
+        signal: AbortSignal.timeout(500)
+      });
+
+      if (response.ok) {
+        console.log(`Server is ready on http://localhost:${port}/`);
+        return;
+      }
+    } catch {
+    }
+
+    await new Promise(resolve => setTimeout(resolve, checkInterval));
+  }
+
+  throw new Error(`Server failed to start on port ${port} within ${maxAttempts * checkInterval / 1000} seconds`);
 }
 
 export async function printResumeToPdf() {
@@ -90,8 +106,6 @@ export async function printResumeToPdf() {
   try {
     server = await startLocalServer();
     console.log(`Fetching resume from ${RESUME_URL}...`);
-
-    await new Promise(resolve => setTimeout(resolve, 2000));
 
     const browser = await puppeteer.launch({ headless: true });
     const page = await browser.newPage();
@@ -122,6 +136,7 @@ export async function printResumeToPdf() {
     if (server) {
       console.log("Shutting down local server...");
       server.kill();
+      server.unref();
     }
   }
 }
