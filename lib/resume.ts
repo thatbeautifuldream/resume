@@ -57,8 +57,8 @@ export const resume: Resume = {
       highlights: [
         // Merlin AI – Platform, Growth & Revenue
         "Took end-to-end ownership of Merlin AI’s platform health, including maintenance, stability, and production issue resolution across critical user flows.",
-        "Led payments and subscription lifecycle improvements, optimizing billing reliability and reducing payment-related drop-offs.",
-        "Designed and shipped churn-reduction strategies across cancellation and downgrade flows, directly improving customer retention.",
+        "Improved payments and subscription lifecycle improvements, optimizing billing reliability and reducing payment-related drop-offs.",
+        "Shipped churn-reduction strategies across cancellation and downgrade flows, directly improving customer retention.",
         "Drove revenue-focused product updates by identifying high-impact user friction points and shipping meaningful feature improvements to retain and upsell users.",
         "Shipped ChatGPT Imports UI, enabling 10,000+ users to migrate chat history seamlessly and accelerating product adoption.",
         "Built project-based chat history pages, improving navigation clarity and increasing session retention by 15%.",
