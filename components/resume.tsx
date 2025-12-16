@@ -1,5 +1,5 @@
 import { Badge } from "@/components/ui/badge";
-import { formatDate, range } from "@/lib/format";
+import { formatDate, range, rangeCompact } from "@/lib/format";
 import type {
   Basics,
   Certificates,
@@ -115,16 +115,24 @@ function WorkExperienceItem({ item }: { item: Work }) {
       <div className="space-y-1">
         <div className="flex gap-3 items-start print:gap-2 print:items-center">
           <div className="flex-1 min-w-0">
-            <div className="flex justify-between sm:flex-row flex-col sm:items-baseline items-start print:flex-row print:items-baseline">
+            <div className="flex justify-between items-baseline gap-2">
               <strong className="text-sm md:text-base print:text-sm">
                 {item.position || "Role"}
               </strong>
-              <em className="sm:mt-0 mt-1 text-xs md:text-sm print:text-xs print:mt-0">
-                {range(item.startDate, item.endDate)}
-              </em>
+              {item.workType && (
+                <em className="text-xs md:text-sm print:text-xs text-muted-foreground">
+                  {item.workType}
+                </em>
+              )}
             </div>
-            <div className="italic text-sm md:text-base print:text-sm">
-              {item.name}
+            <div className="flex justify-between items-baseline gap-2">
+              <span className="italic text-sm md:text-base print:text-sm">
+                {item.name}
+              </span>
+              <em className="text-xs md:text-sm print:text-xs whitespace-nowrap">
+                <span className="sm:hidden">{rangeCompact(item.startDate, item.endDate)}</span>
+                <span className="hidden sm:inline">{range(item.startDate, item.endDate)}</span>
+              </em>
             </div>
           </div>
         </div>
@@ -148,7 +156,9 @@ function WorkExperienceItem({ item }: { item: Work }) {
 
 function ProjectPortfolioItem({ item }: { item: Project }) {
   // Use single date if available, otherwise fall back to date range
-  const dateDisplay = item.date ? formatDate(item.date) : range(item.startDate, item.endDate);
+  const dateDisplay = item.date
+    ? formatDate(item.date)
+    : range(item.startDate, item.endDate);
 
   return (
     <div className="space-y-3">

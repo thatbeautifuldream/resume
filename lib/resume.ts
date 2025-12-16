@@ -50,6 +50,7 @@ export const resume: Resume = {
       name: "Foyer (Merlin AI & Thine)",
       location: "Bengaluru, Karnataka, India",
       position: "Product Engineer",
+      workType: "Full Time",
       startDate: "2025-02-21",
       logo: "/logos/merlin_ai_assistant_logo.jpeg",
       summary:
@@ -75,6 +76,7 @@ export const resume: Resume = {
       name: "SARAL - The Influencer OS",
       location: "Bengaluru, Karnataka, India",
       position: "Software Engineer",
+      workType: "Full Time",
       url: "https://getsaral.com",
       logo: "/logos/getsaral_logo.jpeg",
       startDate: "2024-12-28",
@@ -92,6 +94,7 @@ export const resume: Resume = {
       name: "Proof-of-Skill Protocol",
       location: "Bengaluru, Karnataka, India",
       position: "Founding Product Engineer",
+      workType: "Full Time",
       url: "https://proofofskill.org",
       logo: "/logos/proof_of_skill_logo.jpeg",
       startDate: "2024-06-01",
@@ -107,10 +110,11 @@ export const resume: Resume = {
       ],
     },
     {
-      name: "Freelance",
+      name: "Skillmates",
       location: "Bengaluru, Karnataka, India",
-      position: "Independent Contractor",
-      url: "https://milindmishra.com",
+      position: "Frontend Engineer",
+      workType: "Freelance",
+      url: "https://www.skillmates.io",
       logo: "/logos/milind_mishra_technologies_logo.jpeg",
       startDate: "2024-02-01",
       endDate: "2024-05-31",
@@ -126,6 +130,7 @@ export const resume: Resume = {
       name: "StartupHire",
       location: "Remote",
       position: "Software Engineer",
+      workType: "Full Time",
       url: "https://www.linkedin.com/company/startuphire",
       logo: "/logos/startuphire_logo.jpeg",
       startDate: "2023-08-01",
@@ -140,41 +145,30 @@ export const resume: Resume = {
       ],
     },
     {
-      name: "National Yang Ming Chiao Tung University",
+      name: "Locus Connect & NYCU",
       location: "Hsinchu, Taiwan",
-      position: "Research Assistant",
-      url: "https://www.nycu.edu.tw/",
-      logo: "/logos/nycu_logo.jpeg",
-      startDate: "2023-02-01",
+      position: "Software Engineer & Research Assistant",
+      workType: "Full Time",
+      url: "https://www.locusconnect.com/",
+      logo: "/logos/locus_connect_logo.jpeg",
+      startDate: "2022-07-01",
       endDate: "2023-07-31",
       summary:
-        "Built and optimized indoor positioning system interfaces for a cutting-edge IoT research project.",
+        "Joint R&D collaboration between Locus Connect and National Yang Ming Chiao Tung University. Where I developed 3D visualization and positioning systems for IoT solutions, bridging commercial product development and academic research.",
       highlights: [
+        "Dockerized and maintained internal services, achieving 99.9% uptime and cutting deployment times by 80%.",
+        "Produced frontend for 3D positioning platform, supporting live deployments.",
+        "Created and maintained the marketing site for B2B outreach.",
         "Enabled 3D real-time visualization of tracking data for production ready factories and research labs.",
         "Enhanced UWB positioning accuracy from 20cm to under 10cm—significantly improving research outcomes.",
         "Developed a frontend for an MQTT-powered indoor positioning platform to visualize real-time data from IoT devices.",
       ],
     },
     {
-      name: "Locus Connect",
-      location: "Hsinchu, Taiwan",
-      position: "Software Engineer",
-      url: "https://www.locusconnect.com/",
-      logo: "/logos/locus_connect_logo.jpeg",
-      startDate: "2022-07-01",
-      endDate: "2023-01-31",
-      summary:
-        "Developed core 3D visualization and internal infra tools for proprietary IoT positioning solutions.",
-      highlights: [
-        "Dockerized and maintained internal services, achieving 99.9% uptime and cutting deployment times by 80%.",
-        "Created and maintained the marketing site for B2B outreach.",
-        "Produced frontend for 3D positioning platform, supporting live deployments.",
-      ],
-    },
-    {
       name: "iNeuron.ai",
       location: "Bengaluru, Karnataka, India",
       position: "UX Designer",
+      workType: "Internship",
       url: "https://www.ineuron.ai/",
       logo: "/logos/ineuron_ai_logo.jpeg",
       startDate: "2022-05-01",
@@ -191,6 +185,7 @@ export const resume: Resume = {
       name: "Plusklass",
       location: "Remote",
       position: "Technical Writer",
+      workType: "Internship",
       url: "https://www.plusklass.com/",
       logo: "/logos/plusklass_logo.jpeg",
       startDate: "2022-01-01",
@@ -322,104 +317,112 @@ export const resume: Resume = {
   ],
   projects: [
     {
-      "name": "Thine Landing",
-      "description": "Animated landing experience for Thine, a reflective AI companion.",
-      "highlights": [
+      name: "Thine Landing",
+      description:
+        "Animated landing experience for Thine, a reflective AI companion.",
+      highlights: [
         "Delivered smooth transitions, scroll animations, and expressive motion design.",
         "Designed with Tailwind, Framer Motion, and custom animation systems.",
-        "Optimized for fast load performance and emotional impact."
+        "Optimized for fast load performance and emotional impact.",
       ],
-      "url": "https://www.thine.com",
-      "keywords": ["Tailwind CSS", "Framer Motion", "CSS Animation"],
-      "date": "2025-11-01"
+      url: "https://www.thine.com",
+      keywords: ["Tailwind CSS", "Framer Motion", "CSS Animation"],
+      date: "2025-11-01",
     },
     {
-      "name": "Models Surf",
-      "description": "Interactive directory for exploring, filtering, and comparing AI models and their capabilities.",
-      "highlights": [
+      name: "Models Surf",
+      description:
+        "Interactive directory for exploring, filtering, and comparing AI models and their capabilities.",
+      highlights: [
         "Built lightweight searchable UI optimized with virtualization.",
         "Designed for discoverability and developer-first exploration.",
-        "Open-source and built with clean modular architecture."
+        "Open-source and built with clean modular architecture.",
       ],
-      "url": "https://models.surf",
-      "keywords": ["Next.js", "Models", "Virtualisation"],
-      "date": "2025-09-01"
+      url: "https://models.surf",
+      keywords: ["Next.js", "Models", "Virtualisation"],
+      date: "2025-09-01",
     },
     {
-      "name": "Merlin Projects",
-      "description": "AI-powered personal knowledge base for collecting, organizing, and querying content with contextual understanding.",
-      "highlights": [
+      name: "Merlin Projects",
+      description:
+        "AI-powered personal knowledge base for collecting, organizing, and querying content with contextual understanding.",
+      highlights: [
         "Supports search and retrieval using LLMs and RAG patterns.",
         "Built for organizing web links, notes, and documents into a unified knowledge layer.",
         "Optimized around latency and streaming user workflows with React Query.",
-        "Delivered frictionless knowledge exploration through a clean interface."
+        "Delivered frictionless knowledge exploration through a clean interface.",
       ],
-      "url": "https://www.getmerlin.in/chat/projects",
-      "keywords": ["Next.js", "React Query", "LLMs", "RAG"],
-      "date": "2025-08-01"
+      url: "https://www.getmerlin.in/chat/projects",
+      keywords: ["Next.js", "React Query", "LLMs", "RAG"],
+      date: "2025-08-01",
     },
     {
-      "name": "TypeScript Playground",
-      "description": "Modern browser-based TS/JS playground with real-time execution and console output.",
-      "highlights": [
+      name: "TypeScript Playground",
+      description:
+        "Modern browser-based TS/JS playground with real-time execution and console output.",
+      highlights: [
         "Built using TypeScript Compiler API for accurate diagnostics and evaluation.",
         "Open-source tool used by learners and interviewers.",
-        "Smooth execution sandbox with intuitive editor-console interactions."
+        "Smooth execution sandbox with intuitive editor-console interactions.",
       ],
-      "url": "https://ts.milind.app",
-      "keywords": ["Next.js", "TypeScript Compiler API", "Code Sandboxing"],
-      "date": "2025-08-01"
+      url: "https://ts.milind.app",
+      keywords: ["Next.js", "TypeScript Compiler API", "Code Sandboxing"],
+      date: "2025-08-01",
     },
     {
-      "name": "Rizzboard",
-      "description": "Fun meme soundboard where your most played sounds float to the top.",
-      "highlights": [
+      name: "Rizzboard",
+      description:
+        "Fun meme soundboard where your most played sounds float to the top.",
+      highlights: [
         "Built with delightful animations using Framer Motion.",
         "Persistent state using Zustand for ranking and usage tracking.",
-        "Lightweight, fast and mobile-responsive."
+        "Lightweight, fast and mobile-responsive.",
       ],
-      "url": "https://rizzboard.milind.app",
-      "keywords": ["Next.js", "Framer Motion", "Zustand", "useSound"],
-      "date": "2025-08-01"
+      url: "https://rizzboard.milind.app",
+      keywords: ["Next.js", "Framer Motion", "Zustand", "useSound"],
+      date: "2025-08-01",
     },
     {
-      "name": "Saral Admin Dashboard",
-      "description": "Revamped Saral’s admin dashboard with improved design system and visibility of operational metrics.",
-      "highlights": [
+      name: "Saral Admin Dashboard",
+      description:
+        "Revamped Saral’s admin dashboard with improved design system and visibility of operational metrics.",
+      highlights: [
         "Reduced onboarding time and improved data discoverability for internal teams.",
         "Delivered clean, intuitive UI powered by TanStack Router and Framer Motion.",
-        "Improved insights and data aggregation flow across modules."
+        "Improved insights and data aggregation flow across modules.",
       ],
-      "url": "https://milindmishra.com/project/saral-admin-dashboard",
-      "keywords": ["TanStack Router", "Framer Motion", "Data Aggregation"],
-      "date": "2025-01-01"
+      url: "https://milindmishra.com/project/saral-admin-dashboard",
+      keywords: ["TanStack Router", "Framer Motion", "Data Aggregation"],
+      date: "2025-01-01",
     },
     {
-      "name": "JSON Visualizer",
-      "description": "Interactive visualization tool for nested JSON data structures to aid debugging and comprehension.",
-      "highlights": [
+      name: "JSON Visualizer",
+      description:
+        "Interactive visualization tool for nested JSON data structures to aid debugging and comprehension.",
+      highlights: [
         "Supports large datasets with efficient tree traversal and grid views.",
         "Used by hundreds of developers for integration debugging and backend validation.",
         "Praised for clarity, performance, and usability compared to alternatives.",
-        "Open-source and referenced within developer community discussions."
+        "Open-source and referenced within developer community discussions.",
       ],
-      "url": "https://jsonvisualiser.com",
-      "keywords": ["React", "TypeScript", "D3.js"],
-      "date": "2024-10-01"
+      url: "https://jsonvisualiser.com",
+      keywords: ["React", "TypeScript", "D3.js"],
+      date: "2024-10-01",
     },
     {
-      "name": "AI Roadmap Generator",
-      "description": "Generates personalized learning paths leveraging LLMs and interactive visualizations.",
-      "highlights": [
+      name: "AI Roadmap Generator",
+      description:
+        "Generates personalized learning paths leveraging LLMs and interactive visualizations.",
+      highlights: [
         "Built using Next.js, React, TypeScript, Canvas, and LLMs; used by thousands of engineers.",
         "Generated 250+ roadmaps and attracted over 5,600 unique visitors organically.",
         "Delivers real-time structured roadmap generation with intuitive navigation.",
         "Open-source with privacy-friendly sharing, topic clustering, and recommendations.",
-        "Led full-stack architecture, visualization engine, and complete product UX."
+        "Led full-stack architecture, visualization engine, and complete product UX.",
       ],
-      "url": "https://airoadmapgenerator.com",
-      "keywords": ["Next.js", "React", "TypeScript", "Canvas", "LLMs"],
-      "date": "2024-08-01"
+      url: "https://airoadmapgenerator.com",
+      keywords: ["Next.js", "React", "TypeScript", "Canvas", "LLMs"],
+      date: "2024-08-01",
     },
   ],
   talks: [

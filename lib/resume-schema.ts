@@ -50,6 +50,15 @@ export const ResumeSchema = z.object({
         endDate: isoDate.optional(),
         summary: z.string().optional(),
         highlights: z.array(z.string()).default([]),
+        workType: z
+          .enum([
+            "Full Time",
+            "Part Time",
+            "Contract",
+            "Internship",
+            "Freelance",
+          ])
+          .optional(),
       })
     )
     .default([]),
