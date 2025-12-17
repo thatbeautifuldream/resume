@@ -130,8 +130,12 @@ function WorkExperienceItem({ item }: { item: Work }) {
                 {item.name}
               </span>
               <em className="text-xs md:text-sm print:text-xs whitespace-nowrap">
-                <span className="sm:hidden">{rangeCompact(item.startDate, item.endDate)}</span>
-                <span className="hidden sm:inline">{range(item.startDate, item.endDate)}</span>
+                <span className="sm:hidden">
+                  {rangeCompact(item.startDate, item.endDate)}
+                </span>
+                <span className="hidden sm:inline">
+                  {range(item.startDate, item.endDate)}
+                </span>
               </em>
             </div>
           </div>
@@ -404,11 +408,11 @@ export function ResumeView({ data }: { data: Resume }) {
     <article className="space-y-6 py-4 md:py-8">
       <ResumeHeaderItem basics={data.basics} />
 
-      {!!data.work?.length && (
-        <ResumeSection title="Experience">
-          <div className="space-y-8">
-            {data.work.map((w) => (
-              <WorkExperienceItem key={w.name} item={w} />
+      {!!data.talks?.length && (
+        <ResumeSection title="Talks">
+          <div className="space-y-5">
+            {data.talks.map((t) => (
+              <TalkPresentationItem key={t.title} item={t} />
             ))}
           </div>
         </ResumeSection>
@@ -424,8 +428,18 @@ export function ResumeView({ data }: { data: Resume }) {
         </ResumeSection>
       )}
 
+      {!!data.work?.length && (
+        <ResumeSection title="Experience">
+          <div className="space-y-8">
+            {data.work.map((w) => (
+              <WorkExperienceItem key={w.name} item={w} />
+            ))}
+          </div>
+        </ResumeSection>
+      )}
+
       {!!data.projects?.length && (
-        <ResumeSection title="Projects">
+        <ResumeSection title="Products">
           <div className="space-y-8">
             {data.projects.map((p) => (
               <ProjectPortfolioItem key={p.name} item={p} />
@@ -449,16 +463,6 @@ export function ResumeView({ data }: { data: Resume }) {
           <div className="space-y-5">
             {data.certificates.map((c) => (
               <CertificateAchievementItem key={c.name} item={c} />
-            ))}
-          </div>
-        </ResumeSection>
-      )}
-
-      {!!data.talks?.length && (
-        <ResumeSection title="Talks">
-          <div className="space-y-5">
-            {data.talks.map((t) => (
-              <TalkPresentationItem key={t.title} item={t} />
             ))}
           </div>
         </ResumeSection>
