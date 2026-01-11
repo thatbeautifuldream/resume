@@ -1,5 +1,5 @@
-import { ThemeToggle } from "@/components/theme-toggle";
 import Link from "next/link";
+import { HeaderMenu } from "@/components/header-menu";
 
 export type THeaderItem = {
   key: string;
@@ -34,7 +34,7 @@ export function Header({ leftItems = [] }: THeaderConfig) {
             ))}
           </div>
           <div className="flex gap-x-3 items-center">
-            <ThemeToggle />
+            <HeaderMenu />
           </div>
         </div>
       </div>
