@@ -408,6 +408,36 @@ export function ResumeView({ data }: { data: Resume }) {
     <article className="space-y-6 py-4 md:py-8">
       <ResumeHeaderItem basics={data.basics} />
 
+      {!!data.work?.length && (
+        <ResumeSection title="Experience">
+          <div className="space-y-8">
+            {data.work.map((w) => (
+              <WorkExperienceItem key={w.name} item={w} />
+            ))}
+          </div>
+        </ResumeSection>
+      )}
+
+      {!!data.projects?.length && (
+        <ResumeSection title="Projects">
+          <div className="space-y-8">
+            {data.projects.map((p) => (
+              <ProjectPortfolioItem key={p.name} item={p} />
+            ))}
+          </div>
+        </ResumeSection>
+      )}
+
+      {!!data.education?.length && (
+        <ResumeSection title="Education">
+          <div className="space-y-5">
+            {data.education.map((e) => (
+              <EducationCredentialItem key={e.institution} item={e} />
+            ))}
+          </div>
+        </ResumeSection>
+      )}
+
       {!!data.talks?.length && (
         <ResumeSection title="Talks">
           <div className="space-y-5">
@@ -423,36 +453,6 @@ export function ResumeView({ data }: { data: Resume }) {
           <div className="space-y-5">
             {data.contributions.map((c) => (
               <OpenSourceContributionItem key={c.repository} item={c} />
-            ))}
-          </div>
-        </ResumeSection>
-      )}
-
-      {!!data.work?.length && (
-        <ResumeSection title="Experience">
-          <div className="space-y-8">
-            {data.work.map((w) => (
-              <WorkExperienceItem key={w.name} item={w} />
-            ))}
-          </div>
-        </ResumeSection>
-      )}
-
-      {!!data.projects?.length && (
-        <ResumeSection title="Products">
-          <div className="space-y-8">
-            {data.projects.map((p) => (
-              <ProjectPortfolioItem key={p.name} item={p} />
-            ))}
-          </div>
-        </ResumeSection>
-      )}
-
-      {!!data.education?.length && (
-        <ResumeSection title="Education">
-          <div className="space-y-5">
-            {data.education.map((e) => (
-              <EducationCredentialItem key={e.institution} item={e} />
             ))}
           </div>
         </ResumeSection>
