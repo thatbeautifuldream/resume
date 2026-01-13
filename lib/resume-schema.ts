@@ -57,6 +57,7 @@ export const ResumeSchema = z.object({
             "Contract",
             "Internship",
             "Freelance",
+            "Full Time / Contract",
           ])
           .optional(),
       })

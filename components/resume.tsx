@@ -101,7 +101,7 @@ function ResumeHeaderItem({ basics }: { basics: Basics }) {
 
         {basics.summary && (
           <div className="border-l-4 pl-3 sm:pl-4 space-y-2">
-            <p className="text-xs sm:text-sm md:text-base">{basics.summary}</p>
+            <p className="text-xs sm:text-sm md:text-base italic">{basics.summary}</p>
           </div>
         )}
       </div>
