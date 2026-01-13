@@ -8,7 +8,7 @@ import { NuqsAdapter } from "nuqs/adapters/next/app";
 import type React from "react";
 import { Suspense } from "react";
 import { ThemeProvider } from "@/components/providers/theme-provider";
-import { stixTwoText, geistMono } from "@/lib/fonts";
+import { sans } from "@/lib/fonts";
 
 import "./globals.css";
 
@@ -23,11 +23,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      suppressHydrationWarning
-      className={`${stixTwoText.variable} ${geistMono.variable}`}
-    >
+    <html lang="en" suppressHydrationWarning className={sans.variable}>
       <head>
         <meta
           name="viewport"

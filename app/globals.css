@@ -150,7 +150,7 @@
 
   body {
     @apply bg-background text-foreground text-sm md:text-base;
-    font-family: var(--font-stix-two-text), -apple-system, BlinkMacSystemFont,
+    font-family: var(--font-sans), -apple-system, BlinkMacSystemFont,
       "Segoe UI", Roboto, sans-serif;
     line-height: 1.8;
     min-height: 100vh;
@@ -167,7 +167,7 @@
   h4,
   h5,
   h6 {
-    font-family: var(--font-stix-two-text), -apple-system, BlinkMacSystemFont,
+    font-family: var(--font-sans), -apple-system, BlinkMacSystemFont,
       "Segoe UI", Roboto, sans-serif;
   }
 
@@ -204,7 +204,7 @@
 
   code,
   pre {
-    font-family: var(--font-geist-mono), Menlo, Monaco, Consolas,
+    font-family: var(--font-sans), Menlo, Monaco, Consolas,
       "Liberation Mono", "Courier New", monospace;
     font-size: 85%;
     hyphens: none;
