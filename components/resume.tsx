@@ -73,11 +73,19 @@ function ProfileLinkWithNetwork({ profile }: { profile: Profile }) {
 
 function ResumeHeaderItem({ basics }: { basics: Basics }) {
   return (
-    <header className="text-left space-y-3 md:space-y-4">
-      <div className="space-y-3 md:space-y-4">
+    <header className="text-left space-y-2 md:space-y-3">
+      <div className="space-y-2 md:space-y-3">
         <h2 className="font-semibold text-base sm:text-lg md:text-xl lg:text-2xl">
           {basics.name.toUpperCase()}
         </h2>
+
+        {basics.summary && (
+          <div className="border-l-4 pl-3 sm:pl-4 space-y-2">
+            <p className="text-xs sm:text-sm md:text-base italic">
+              {basics.summary}
+            </p>
+          </div>
+        )}
 
         <div className="flex flex-wrap gap-2 sm:gap-3 text-xs sm:text-sm">
           {basics.email && (
@@ -98,12 +106,6 @@ function ResumeHeaderItem({ basics }: { basics: Basics }) {
             <ProfileLinkWithNetwork key={p.network} profile={p} />
           ))}
         </div>
-
-        {basics.summary && (
-          <div className="border-l-4 pl-3 sm:pl-4 space-y-2">
-            <p className="text-xs sm:text-sm md:text-base italic">{basics.summary}</p>
-          </div>
-        )}
       </div>
     </header>
   );
@@ -247,37 +249,26 @@ function EducationCredentialItem({ item }: { item: Education }) {
 
 function CertificateAchievementItem({ item }: { item: Certificates }) {
   return (
-    <div className="space-y-1">
-      <div className="flex justify-between items-baseline sm:flex-row flex-col sm:items-baseline">
-        {item.url ? (
-          <a
-            href={item.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-semibold hover:underline text-sm md:text-base"
-          >
-            <strong>{item.name}</strong>
-          </a>
-        ) : (
-          <strong className="text-sm md:text-base">{item.name}</strong>
-        )}
-        <div className="sm:flex sm:gap-4 sm:items-baseline">
-          {item.issuer && (
-            <div className="italic hidden sm:block float-right text-sm md:text-base">
-              {item.issuer}
-            </div>
-          )}
-          {item.date && (
-            <em className="sm:mt-0 mt-1 text-xs md:text-sm">{item.date}</em>
-          )}
-        </div>
-      </div>
-      {item.issuer && (
-        <div className="italic sm:hidden text-sm md:text-base">
-          {item.issuer}
-        </div>
+    <span className="inline-flex items-baseline gap-1 text-sm md:text-base">
+      {item.url ? (
+        <a
+          href={item.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="font-semibold hover:underline"
+        >
+          {item.name}
+        </a>
+      ) : (
+        <span className="font-semibold">{item.name}</span>
       )}
-    </div>
+      {item.issuer && <span className="italic">({item.issuer})</span>}
+      {item.date && (
+        <span className="text-xs md:text-sm text-muted-foreground">
+          [{item.date}]
+        </span>
+      )}
+    </span>
   );
 }
 
@@ -460,7 +451,7 @@ export function ResumeView({ data }: { data: Resume }) {
 
       {!!data.certificates?.length && (
         <ResumeSection title="Certificates">
-          <div className="space-y-5">
+          <div className="flex flex-wrap gap-x-4 gap-y-2 items-baseline">
             {data.certificates.map((c) => (
               <CertificateAchievementItem key={c.name} item={c} />
             ))}
