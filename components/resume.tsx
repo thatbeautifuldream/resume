@@ -384,82 +384,115 @@ function ReferenceTestimonial({ items }: { items: Reference[] }) {
   );
 }
 
+const RESUME_SECTION_ORDER: (keyof Resume)[] = [
+  "work",
+  "projects",
+  "talks",
+  "contributions",
+  "certificates",
+  "education",
+  "skills",
+  "references",
+];
+
+const SECTION_CONFIG: Partial<
+  Record<
+    keyof Resume,
+    {
+      title: string;
+      render: (items: any) => React.ReactNode;
+    }
+  >
+> = {
+  work: {
+    title: "Experience",
+    render: (items: Work[]) => (
+      <div className="space-y-8">
+        {items.map((w) => (
+          <WorkExperienceItem key={w.name} item={w} />
+        ))}
+      </div>
+    ),
+  },
+  projects: {
+    title: "Projects",
+    render: (items: Project[]) => (
+      <div className="space-y-8">
+        {items.map((p) => (
+          <ProjectPortfolioItem key={p.name} item={p} />
+        ))}
+      </div>
+    ),
+  },
+  education: {
+    title: "Education",
+    render: (items: Education[]) => (
+      <div className="space-y-5">
+        {items.map((e) => (
+          <EducationCredentialItem key={e.institution} item={e} />
+        ))}
+      </div>
+    ),
+  },
+  talks: {
+    title: "Talks",
+    render: (items: Talks[]) => (
+      <div className="space-y-5">
+        {items.map((t) => (
+          <TalkPresentationItem key={t.title} item={t} />
+        ))}
+      </div>
+    ),
+  },
+  contributions: {
+    title: "Open Source Contributions",
+    render: (items: Contribution[]) => (
+      <div className="space-y-5">
+        {items.map((c) => (
+          <OpenSourceContributionItem key={c.repository} item={c} />
+        ))}
+      </div>
+    ),
+  },
+  certificates: {
+    title: "Certificates",
+    render: (items: Certificates[]) => (
+      <div className="flex flex-wrap gap-x-4 gap-y-2 items-baseline">
+        {items.map((c) => (
+          <CertificateAchievementItem key={c.name} item={c} />
+        ))}
+      </div>
+    ),
+  },
+  skills: {
+    title: "Skills",
+    render: (items: Skill[]) => <SkillsProficiency skills={items} />,
+  },
+  references: {
+    title: "References",
+    render: (items: Reference[]) => <ReferenceTestimonial items={items} />,
+  },
+};
+
 export function ResumeView({ data }: { data: Resume }) {
   return (
     <article className="space-y-6 py-4 md:py-8">
       <ResumeHeaderItem basics={data.basics} />
 
-      {!!data.work?.length && (
-        <ResumeSection title="Experience">
-          <div className="space-y-8">
-            {data.work.map((w) => (
-              <WorkExperienceItem key={w.name} item={w} />
-            ))}
-          </div>
-        </ResumeSection>
-      )}
+      {RESUME_SECTION_ORDER.map((sectionKey) => {
+        const section = SECTION_CONFIG[sectionKey];
+        const sectionData = data[sectionKey];
 
-      {!!data.projects?.length && (
-        <ResumeSection title="Projects">
-          <div className="space-y-8">
-            {data.projects.map((p) => (
-              <ProjectPortfolioItem key={p.name} item={p} />
-            ))}
-          </div>
-        </ResumeSection>
-      )}
+        if (!section) return null;
+        if (!sectionData || (Array.isArray(sectionData) && !sectionData.length))
+          return null;
 
-      {!!data.education?.length && (
-        <ResumeSection title="Education">
-          <div className="space-y-5">
-            {data.education.map((e) => (
-              <EducationCredentialItem key={e.institution} item={e} />
-            ))}
-          </div>
-        </ResumeSection>
-      )}
-
-      {!!data.talks?.length && (
-        <ResumeSection title="Talks">
-          <div className="space-y-5">
-            {data.talks.map((t) => (
-              <TalkPresentationItem key={t.title} item={t} />
-            ))}
-          </div>
-        </ResumeSection>
-      )}
-
-      {!!data.contributions?.length && (
-        <ResumeSection title="Open Source Contributions">
-          <div className="space-y-5">
-            {data.contributions.map((c) => (
-              <OpenSourceContributionItem key={c.repository} item={c} />
-            ))}
-          </div>
-        </ResumeSection>
-      )}
-
-      {!!data.certificates?.length && (
-        <ResumeSection title="Certificates">
-          <div className="flex flex-wrap gap-x-4 gap-y-2 items-baseline">
-            {data.certificates.map((c) => (
-              <CertificateAchievementItem key={c.name} item={c} />
-            ))}
-          </div>
-        </ResumeSection>
-      )}
-
-      {!!data.skills?.length && (
-        <ResumeSection title="Skills">
-          <SkillsProficiency skills={data.skills} />
-        </ResumeSection>
-      )}
-
-      {!!data.references?.length && (
-        <ResumeSection title="References">
-          <ReferenceTestimonial items={data.references} />
-        </ResumeSection>
-      )}
+        return (
+          <ResumeSection key={sectionKey} title={section.title}>
+            {section.render(sectionData as any)}
+          </ResumeSection>
+        );
+      })}
 
       <ResumeFooter />
     </article>
