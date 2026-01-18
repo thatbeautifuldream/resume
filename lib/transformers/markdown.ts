@@ -60,12 +60,7 @@ export function resumeToMarkdown(resume: Resume): string {
 
   if (resume.skills?.length) {
     sections.push("\n## Skills");
-    resume.skills.forEach((skill) => {
-      sections.push(`\n**${skill.name}** (${skill.level})`);
-      if (skill.keywords?.length) {
-        sections.push(skill.keywords.join(" • "));
-      }
-    });
+    sections.push(resume.skills.join(" • "));
   }
 
   if (resume.projects?.length) {

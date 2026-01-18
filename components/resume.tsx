@@ -1,4 +1,3 @@
-import { Badge } from "@/components/ui/badge";
 import { formatDate, range, rangeCompact } from "@/lib/format";
 import type {
   Basics,
@@ -352,24 +351,15 @@ function TalkPresentationItem({ item }: { item: Talks }) {
 function SkillsProficiency({ skills }: { skills: Skill[] }) {
   if (!skills?.length) return null;
   return (
-    <div className="space-y-3">
-      {skills.map((s) => (
-        <div key={s.name} className="space-y-2">
-          <div className="font-semibold text-sm md:text-base">{s.name}</div>
-          {!!s.keywords?.length && (
-            <div className="flex flex-wrap gap-2">
-              {s.keywords.map((keyword) => (
-                <Badge
-                  key={keyword}
-                  variant="outline"
-                  className="text-xs md:text-sm"
-                >
-                  {keyword}
-                </Badge>
-              ))}
-            </div>
-          )}
-        </div>
+    <div className="flex flex-wrap gap-x-3 text-sm md:text-base font-medium">
+      {skills.map((skill) => (
+        <a
+          key={skill}
+          href={`/chat?q=${encodeURIComponent(`Tell me about ${skill} - what is it, and how has Milind used this skill in his work? How proficient is he with ${skill}?`)}`}
+          className="hover:underline"
+        >
+          {skill}
+        </a>
       ))}
     </div>
   );

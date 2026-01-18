@@ -92,9 +92,7 @@ export function resumeToJsonLd(resume: Resume): PersonJsonLd {
     endDate: edu.endDate || ""
   })) || [];
 
-  const knowsAbout = resume.skills?.flatMap(skill =>
-    skill.keywords || [skill.name]
-  ) || [];
+  const knowsAbout = resume.skills || [];
 
   const hasCredential = resume.certificates?.map(cert => ({
     "@type": "EducationalOccupationalCredential" as const,
@@ -147,7 +145,7 @@ export function resumeToJsonLd(resume: Resume): PersonJsonLd {
     sameAs,
     worksFor,
     alumniOf,
-    knowsAbout: [...new Set(knowsAbout)], // Remove duplicates
+    knowsAbout,
     hasCredential,
     owns
   };

@@ -16,6 +16,7 @@ import { DefaultChatTransport } from "ai";
 import { ArrowUp, Square } from "lucide-react";
 import { motion } from "motion/react";
 import { createContext, useContext, useEffect, useRef, useState } from "react";
+import { useQueryState } from "nuqs";
 
 const CHAT_STORE_ID = "persistent-chat";
 const CHAT_HISTORY_KEY = "resume-chat-history";
@@ -239,6 +240,7 @@ function Chat({ children }: { children: React.ReactNode }) {
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const hasMessages = messages.length > 0;
   const [isLoaded, setIsLoaded] = useState(false);
+  const [queryParam, setQueryParam] = useQueryState("q");
 
   const clearChat = async () => {
     try {
@@ -290,6 +292,13 @@ function Chat({ children }: { children: React.ReactNode }) {
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, []);
+
+  useEffect(() => {
+    if (isLoaded && queryParam && status === "ready") {
+      sendMessage({ text: queryParam });
+      setQueryParam(null);
+    }
+  }, [isLoaded, queryParam, status, sendMessage, setQueryParam]);
 
   const contextValue = {
     sendMessage,

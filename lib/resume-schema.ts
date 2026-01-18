@@ -100,15 +100,7 @@ export const ResumeSchema = z.object({
       })
     )
     .default([]),
-  skills: z
-    .array(
-      z.object({
-        name: z.string(),
-        level: z.string().optional(),
-        keywords: z.array(z.string()).default([]),
-      })
-    )
-    .default([]),
+  skills: z.array(z.string()).default([]),
   languages: z
     .array(
       z.object({
@@ -189,7 +181,7 @@ export type Work = Resume["work"][number];
 export type Volunteer = Resume["volunteer"][number];
 export type Education = Resume["education"][number];
 export type Award = Resume["awards"][number];
-export type Skill = Resume["skills"][number];
+export type Skill = string;
 export type Language = Resume["languages"][number];
 export type Project = Resume["projects"][number];
 export type Certificates = Resume["certificates"][number];
