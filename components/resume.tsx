@@ -50,11 +50,11 @@ function ResumeFooter() {
 function ProfileLinkWithNetwork({ profile }: { profile: Profile }) {
   const getNetworkLabel = (network: string, username?: string) => {
     const n = network.toLowerCase();
-    if (n.includes("github")) return `github/${username || ""}`;
+    if (n.includes("github")) return `gh/${username || ""}`;
     if (n.includes("twitter") || n === "x") return `x/${username || ""}`;
-    if (n.includes("linkedin")) return `linkedin/${username || ""}`;
-    if (n.includes("youtube")) return `youtube/${username || ""}`;
-    if (n.includes("cal")) return `cal.com/${username || ""}`;
+    if (n.includes("linkedin")) return `li/${username || ""}`;
+    if (n.includes("youtube")) return `yt/${username || ""}`;
+    if (n.includes("cal")) return `cal/${username || ""}`;
     return username || profile.url || network;
   };
 
@@ -351,7 +351,7 @@ function TalkPresentationItem({ item }: { item: Talks }) {
 function SkillsProficiency({ skills }: { skills: Skill[] }) {
   if (!skills?.length) return null;
   return (
-    <div className="flex flex-wrap gap-x-3 text-sm md:text-base font-medium">
+    <div className="flex flex-wrap gap-x-3 text-sm md:text-base font-semibold">
       {skills.map((skill) => (
         <a
           key={skill}
