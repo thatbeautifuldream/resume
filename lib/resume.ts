@@ -8,7 +8,7 @@ export const resume: Resume = {
     phone: "+919631333128",
     url: "https://milindmishra.com",
     summary:
-      "Software engineer specializing in React, Next.js, and high-performance UI engineering.",
+      "Software engineer specializing in React and high-performance UI engineering.",
     location: {
       address: "Zolo Darren, BTM Layout",
       postalCode: "560034",
@@ -200,25 +200,19 @@ export const resume: Resume = {
   ],
   talks: [
     {
-      event: "React Play Bengaluru Meetup",
-      date: "2025-11-15",
       title: "Mastering ViewTransition in React for Stunning UI Updates",
-      url: "https://www.meetup.com/reactplay-bengaluru/events/311437528",
-      summary: "View transition animation and animation devtooling talk.",
+      organiser: "React Play Bengaluru",
+      link: "https://www.meetup.com/reactplay-bengaluru/events/311437528",
     },
     {
-      event: "React Play x React Bangalore Meetup",
-      date: "2025-05-17",
       title: "Building Real-Time Applications with Reactive Databases",
-      url: "https://www.meetup.com/reactplay-bengaluru/events/307690438/",
-      summary: "Real-time applications with React and Convex.",
+      organiser: "React Play x React Bangalore",
+      link: "https://www.meetup.com/reactplay-bengaluru/events/307690438/",
     },
     {
-      event: "React Bangalore Meetup",
-      date: "2025-04-12",
       title: "AI for React Developers",
-      url: "https://www.meetup.com/reactjs-bangalore/events/306320480/",
-      summary: "A deep-dive into Vercel's AI SDK.",
+      organiser: "React Bangalore",
+      link: "https://www.meetup.com/reactjs-bangalore/events/306320480/",
     },
   ],
   references: [
@@ -240,8 +234,7 @@ export const resume: Resume = {
       url: "https://github.com/vercel/streamdown/pull/102",
     },
     {
-      title:
-        "feat: add image download functionality with hover controls #103",
+      title: "feat: add image download functionality with hover controls #103",
       url: "https://github.com/vercel/streamdown/pull/103",
     },
     {

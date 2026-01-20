@@ -138,10 +138,8 @@ export const ResumeSchema = z.object({
     .array(
       z.object({
         title: z.string(),
-        event: z.string().optional(),
-        date: isoDate.optional(),
-        url: url.optional(),
-        summary: z.string().optional(),
+        organiser: z.string(),
+        link: url.optional(),
       })
     )
     .default([]),

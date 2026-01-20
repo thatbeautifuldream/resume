@@ -58,7 +58,7 @@ export interface PersonJsonLd {
   performerIn?: Array<{
     "@type": "Event";
     name: string;
-    startDate: string;
+    startDate?: string;
     url?: string;
     description?: string;
     workPerformed: {
@@ -116,10 +116,8 @@ export function resumeToJsonLd(resume: Resume): PersonJsonLd {
 
   const performerIn = resume.talks?.map(talk => ({
     "@type": "Event" as const,
-    name: talk.event || "",
-    startDate: talk.date || "",
-    url: talk.url,
-    description: talk.summary,
+    name: talk.organiser || "",
+    url: talk.link,
     workPerformed: {
       "@type": "CreativeWork" as const,
       name: talk.title

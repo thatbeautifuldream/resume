@@ -84,10 +84,8 @@ export function resumeToMarkdown(resume: Resume): string {
   if (resume.talks?.length) {
     sections.push("\n## Speaking");
     resume.talks.forEach((talk) => {
-      const talkDate = talk.date ? formatDate(talk.date) : "Unknown";
-      sections.push(`\n**${talk.title}** - ${talk.event} (${talkDate})`);
-      if (talk.summary) sections.push(talk.summary);
-      if (talk.url) sections.push(`[Event Link](${talk.url})`);
+      sections.push(`\n**${talk.title}** - ${talk.organiser}`);
+      if (talk.link) sections.push(`[Event Link](${talk.link})`);
     });
   }
 

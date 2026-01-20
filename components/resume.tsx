@@ -23,8 +23,8 @@ function ResumeSection({
   children: React.ReactNode;
 }) {
   return (
-    <section className="space-y-3">
-      <h4 className="pb-1 uppercase font-semibold border-b">{title}</h4>
+    <section className="space-y-2">
+      <h4 className="uppercase font-semibold border-b">{title}</h4>
       <div>{children}</div>
     </section>
   );
@@ -71,40 +71,49 @@ function ProfileLinkWithNetwork({ profile }: { profile: Profile }) {
 }
 
 function ResumeHeaderItem({ basics }: { basics: Basics }) {
+  const contactItems: { key: string; element: React.ReactNode }[] = [];
+
+  if (basics.email) {
+    contactItems.push({
+      key: "email",
+      element: (
+        <a href={`mailto:${basics.email}`} className="hover:underline">
+          {basics.email}
+        </a>
+      ),
+    });
+  }
+
+  if (basics.url) {
+    contactItems.push({
+      key: "url",
+      element: (
+        <Link href={basics.url} target="_blank" rel="noreferrer">
+          {basics.url.replace(/^https?:\/\//, "")}
+        </Link>
+      ),
+    });
+  }
+
+  if (basics.profiles) {
+    basics.profiles.forEach((p) => {
+      contactItems.push({
+        key: p.network || p.url || "",
+        element: <ProfileLinkWithNetwork profile={p} />,
+      });
+    });
+  }
+
   return (
-    <header className="text-left space-y-2 md:space-y-3">
-      <div className="space-y-2 md:space-y-3">
-        <h2 className="font-semibold text-base sm:text-lg md:text-xl lg:text-2xl">
-          {basics.name.toUpperCase()}
-        </h2>
+    <header className="text-center space-y-2">
+      <h1 className="font-semibold text-2xl md:text-3xl uppercase">
+        {basics.name}
+      </h1>
 
-        {basics.summary && (
-          <div className="border-l-4 pl-3 sm:pl-4 space-y-2">
-            <p className="text-xs sm:text-sm md:text-base italic">
-              {basics.summary}
-            </p>
-          </div>
-        )}
-
-        <div className="flex flex-wrap gap-2 sm:gap-3 text-xs sm:text-sm">
-          {basics.email && (
-            <a
-              href={`mailto:${basics.email}`}
-              className="hover:underline cursor-pointer print:cursor-default active:opacity-75 transition-opacity"
-            >
-              {basics.email}
-            </a>
-          )}
-          {basics.phone && <a href={`tel:${basics.phone}`}>{basics.phone}</a>}
-          {basics.url && (
-            <Link href={basics.url} target="_blank" rel="noreferrer">
-              {basics.url.replace(/^https?:\/\//, "")}
-            </Link>
-          )}
-          {basics.profiles?.map((p) => (
-            <ProfileLinkWithNetwork key={p.network} profile={p} />
-          ))}
-        </div>
+      <div className="text-sm md:text-base flex flex-wrap justify-center items-center gap-x-3 md:gap-x-4">
+        {contactItems.map((item) => (
+          <div key={item.key}>{item.element}</div>
+        ))}
       </div>
     </header>
   );
@@ -317,31 +326,25 @@ function OpenSourceContributionItem({ item }: { item: Contribution }) {
 
 function TalkPresentationItem({ item }: { item: Talks }) {
   return (
-    <div className="space-y-1">
-      <div className="flex justify-between sm:flex-row flex-col sm:items-baseline items-start">
-        {item.url ? (
-          <a
-            href={item.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-semibold hover:underline text-sm md:text-base"
-          >
-            <strong>{item.title}</strong>
-          </a>
-        ) : (
-          <strong className="text-sm md:text-base">{item.title}</strong>
-        )}
-        {item.date && (
-          <em className="sm:mt-0 mt-1 text-xs md:text-sm">
-            {formatDate(item.date)}
-          </em>
-        )}
-      </div>
-      {item.event && (
-        <div className="italic text-xs md:text-sm">{item.event}</div>
+    <div className="flex justify-between items-center gap-2">
+      {item.link ? (
+        <a
+          href={item.link}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-sm md:text-base hover:underline flex-1 leading-tight truncate"
+        >
+          {item.title}
+        </a>
+      ) : (
+        <span className="text-sm md:text-base flex-1 leading-tight truncate">
+          {item.title}
+        </span>
       )}
-      {item.summary && (
-        <p className="text-justify text-sm md:text-base">{item.summary}</p>
+      {item.organiser && (
+        <span className="text-xs md:text-sm text-muted-foreground whitespace-nowrap flex-shrink-0">
+          [{item.organiser}]
+        </span>
       )}
     </div>
   );
@@ -384,6 +387,7 @@ function ReferenceTestimonial({ items }: { items: Reference[] }) {
 }
 
 const RESUME_SECTION_ORDER: (keyof Resume)[] = [
+  "basics",
   "work",
   "projects",
   "talks",
@@ -403,6 +407,12 @@ const SECTION_CONFIG: Partial<
     }
   >
 > = {
+  basics: {
+    title: "Summary",
+    render: (basics: Basics) => (
+      <p className="text-sm md:text-base">{basics.summary}</p>
+    ),
+  },
   work: {
     title: "Experience",
     render: (items: Work[]) => (
@@ -436,7 +446,7 @@ const SECTION_CONFIG: Partial<
   talks: {
     title: "Talks",
     render: (items: Talks[]) => (
-      <div className="space-y-5">
+      <div className="space-y-2">
         {items.map((t) => (
           <TalkPresentationItem key={t.title} item={t} />
         ))}
