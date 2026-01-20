@@ -28,7 +28,7 @@ export const ResumeSchema = z.object({
         region: z.string().optional(),
       })
       .optional(),
-    timezone: z.string().optional(),
+    timezone: z.string(),
     profiles: z
       .array(
         z.object({
