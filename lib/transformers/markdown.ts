@@ -94,13 +94,22 @@ export function resumeToMarkdown(resume: Resume): string {
   if (resume.contributions?.length) {
     sections.push("\n## Open Source");
     resume.contributions.forEach((contrib) => {
-      const repoName = new URL(contrib.repository).pathname.split("/").slice(1).join("/");
+      const extractOrgAndRepo = (url: string) => {
+        try {
+          const parsedUrl = new URL(url);
+          const pathParts = parsedUrl.pathname.split("/").filter(Boolean);
+          if (pathParts.length >= 2) {
+            return `${pathParts[0]}/${pathParts[1]}`;
+          }
+          return "";
+        } catch {
+          return "";
+        }
+      };
+      const orgAndRepo = extractOrgAndRepo(contrib.url);
       sections.push(
-        `\n**${repoName}** - [${contrib.repository}](${contrib.repository})`
+        `- [${contrib.title}](${contrib.url})${orgAndRepo ? ` [${orgAndRepo}]` : ""}`
       );
-      contrib.prs?.forEach((pr) => {
-        sections.push(`- [${pr.title}](${pr.url})`);
-      });
     });
   }
 

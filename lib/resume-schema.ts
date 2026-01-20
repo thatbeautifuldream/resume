@@ -157,15 +157,8 @@ export const ResumeSchema = z.object({
   contributions: z
     .array(
       z.object({
-        repository: url,
-        prs: z
-          .array(
-            z.object({
-              title: z.string(),
-              url: url,
-            })
-          )
-          .default([]),
+        title: z.string(),
+        url: url,
       })
     )
     .default([]),
@@ -186,4 +179,3 @@ export type Certificates = Resume["certificates"][number];
 export type Talks = Resume["talks"][number];
 export type Reference = Resume["references"][number];
 export type Contribution = Resume["contributions"][number];
-export type PR = Resume["contributions"][number]["prs"][number];

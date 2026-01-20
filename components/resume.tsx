@@ -272,45 +272,44 @@ function CertificateAchievementItem({ item }: { item: Certificates }) {
 }
 
 function OpenSourceContributionItem({ item }: { item: Contribution }) {
-  const extractRepoPathAndName = (url: string) => {
-    const parsedUrl = new URL(url);
-    const path = parsedUrl.pathname.slice(1);
-    return {
-      repoPath: path,
-      repoName: path.split("/")[1],
-    };
+  const extractOrgAndRepo = (url: string) => {
+    try {
+      const parsedUrl = new URL(url);
+      const pathParts = parsedUrl.pathname.split("/").filter(Boolean);
+      // URL format: github.com/org/repo/pull/123
+      if (pathParts.length >= 2) {
+        return {
+          org: pathParts[0],
+          orgRepo: `${pathParts[0]}/${pathParts[1]}`,
+        };
+      }
+      return { org: "", orgRepo: "" };
+    } catch {
+      return { org: "", orgRepo: "" };
+    }
   };
 
-  const { repoPath, repoName } = extractRepoPathAndName(item.repository);
-  return (
-    <div className="space-y-2">
-      <div className="flex justify-between items-baseline">
-        <strong className="text-sm md:text-base">{repoName}</strong>
-        <a
-          href={item.repository}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-xs md:text-sm hover:underline"
-        >
-          {repoPath}
-        </a>
-      </div>
+  const { org, orgRepo } = extractOrgAndRepo(item.url);
 
-      {!!item.prs?.length && (
-        <div className="space-y-1">
-          {item.prs.map((pr) => (
-            <div key={pr.title} className="text-sm md:text-base">
-              <a
-                href={pr.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:underline"
-              >
-                {pr.title}
-              </a>
-            </div>
-          ))}
-        </div>
+  return (
+    <div className="flex justify-between items-center gap-2">
+      <a
+        href={item.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-sm md:text-base hover:underline flex-1 leading-tight truncate"
+      >
+        {item.title}
+      </a>
+      {orgRepo && (
+        <>
+          <span className="text-xs text-muted-foreground whitespace-nowrap md:hidden flex-shrink-0">
+            [{org}]
+          </span>
+          <span className="hidden md:inline text-sm text-muted-foreground whitespace-nowrap flex-shrink-0">
+            [{orgRepo}]
+          </span>
+        </>
       )}
     </div>
   );
@@ -447,9 +446,9 @@ const SECTION_CONFIG: Partial<
   contributions: {
     title: "Open Source Contributions",
     render: (items: Contribution[]) => (
-      <div className="space-y-5">
+      <div className="space-y-2">
         {items.map((c) => (
-          <OpenSourceContributionItem key={c.repository} item={c} />
+          <OpenSourceContributionItem key={c.url} item={c} />
         ))}
       </div>
     ),

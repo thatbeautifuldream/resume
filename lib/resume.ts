@@ -231,33 +231,23 @@ export const resume: Resume = {
   ],
   contributions: [
     {
-      repository: "https://github.com/vercel/streamdown",
-      prs: [
-        {
-          title:
-            "feat: add table markdown copy and csv/markdown download options #99",
-          url: "https://github.com/vercel/streamdown/pull/99",
-        },
-        {
-          title: "feat: add download functionality to code blocks #102",
-          url: "https://github.com/vercel/streamdown/pull/102",
-        },
-        {
-          title:
-            "feat: add image download functionality with hover controls #103",
-          url: "https://github.com/vercel/streamdown/pull/103",
-        },
-      ],
+      title:
+        "feat: add table markdown copy and csv/markdown download options #99",
+      url: "https://github.com/vercel/streamdown/pull/99",
     },
     {
-      repository: "https://github.com/vercel/ai-elements",
-      prs: [
-        {
-          title:
-            "feat: add speech to text input to prompt area and update test and example apps #112",
-          url: "https://github.com/vercel/ai-elements/pull/112",
-        },
-      ],
+      title: "feat: add download functionality to code blocks #102",
+      url: "https://github.com/vercel/streamdown/pull/102",
+    },
+    {
+      title:
+        "feat: add image download functionality with hover controls #103",
+      url: "https://github.com/vercel/streamdown/pull/103",
+    },
+    {
+      title:
+        "feat: add speech to text input to prompt area and update test and example apps #112",
+      url: "https://github.com/vercel/ai-elements/pull/112",
     },
   ],
   volunteer: [],
