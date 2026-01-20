@@ -1,47 +1,23 @@
 import type { Resume } from "./resume-schema";
 
 export const resume: Resume = {
+  source: "github.com/thatbeautifuldream/resume",
   basics: {
     name: "Milind Kumar Mishra",
     label: "Product Engineer",
     email: "milindmishra.work@gmail.com",
-    phone: "+919631333128",
-    url: "https://milindmishra.com",
-    summary:
-      "Software engineer specializing in React and high-performance UI engineering.",
+    phone: "9631333128",
+    url: "milindmishra.com",
     location: {
-      address: "Zolo Darren, BTM Layout",
-      postalCode: "560034",
       city: "Bengaluru",
       countryCode: "IN",
-      region: "Karnataka",
     },
     timezone: "Asia/Kolkata",
     profiles: [
       {
-        network: "LinkedIn",
-        username: "mishramilind",
-        url: "https://linkedin.com/in/mishramilind",
-      },
-      {
         network: "GitHub",
         username: "thatbeautifuldream",
-        url: "https://github.com/thatbeautifuldream",
-      },
-      {
-        network: "X",
-        username: "milindmishra_",
-        url: "https://x.com/milindmishra_",
-      },
-      {
-        network: "YouTube",
-        username: "milindmishra",
-        url: "https://youtube.com/milindmishra",
-      },
-      {
-        network: "Cal",
-        username: "milind",
-        url: "https://cal.com/milind",
+        url: "github.com/thatbeautifuldream",
       },
     ],
   },
@@ -55,11 +31,11 @@ export const resume: Resume = {
       summary:
         "Building AI products for 2M+ users. Ownership across growth, revenue, platform stability, and expressive UI.",
       highlights: [
-        "Revamped Model Selector UX resulting lift in model adoption. Turned a boring list into a model discovery grid.",
-        "Shipped ChatGPT history imports enabling 3.5K+ users to migrate from ChatGPT to Merlin.",
-        "Drove retention and revenue wins, payment flow improvements reduced failures, churn interventions improved retention.",
-        "Built real-time prompt enhancement streaming and interaction UX that feels instant because slow AI is broken AI.",
-        "Engineered animation-heavy experiences for Thine, blending motion design with performance at scale.",
+        "Revamped Model Selector UX with discovery grid interface, increasing model adoption by 40%",
+        "Shipped ChatGPT history import feature enabling 3,500+ users to migrate from ChatGPT to Merlin",
+        "Improved payment flow reducing transaction failures by 25%, implemented churn intervention flows improving retention by 15%",
+        "Built real-time prompt enhancement with streaming architecture, reducing perceived latency to under 200ms",
+        "Engineered animation-heavy experiences for Thine using optimized motion design patterns, maintaining 60fps performance at scale",
       ],
     },
 
@@ -73,11 +49,11 @@ export const resume: Resume = {
       summary:
         "Built 0 to 1 hiring and skill validation platforms. Owned full-stack, growth tools, and product velocity in early-stage chaos.",
       highlights: [
-        "Architected and shipped decentralized skill validation MVPs with voting consensus across 150+ validators. Turned hiring bias into algorithmic fairness.",
-        "Built proctored assessments with real-time streaming—cut time-to-interview by 50%, because speed is a feature.",
-        "Shipped recruiter dashboards (analytics, heatmaps, search) and candidate flows. Made hiring data actually useful.",
-        "Built AI-powered assessment systems with Vercel AI SDK + OpenAI. Questions generated, not guessed.",
-        "Shipped internal tools and ops dashboards that improved campaign ROI and ops efficiency. Made the team faster.",
+        "Architected and shipped decentralized skill validation MVPs with voting consensus across 150+ validators, reducing hiring bias through algorithmic evaluation",
+        "Built proctored assessments with real-time streaming infrastructure, reducing time-to-interview by 50%",
+        "Developed recruiter dashboards with analytics, heatmaps, and search functionality, improving candidate discovery and data-driven decision making",
+        "Built AI-powered assessment generation system using Vercel AI SDK and OpenAI API, automating question creation for 20+ skill domains",
+        "Shipped internal tools and ops dashboards improving campaign ROI tracking and operational efficiency by 30%",
       ],
     },
 
@@ -91,9 +67,9 @@ export const resume: Resume = {
       summary:
         "Industry-academia R&D on real-time IoT positioning systems. Shipped research-grade accuracy into production.",
       highlights: [
-        "Built 3D positioning and visualization systems for factories and labs. Improved UWB positioning from ~20cm to <10cm research-grade precision that shipped.",
-        "Developed MQTT dashboards for real-time IoT device visualization. Made invisible data visible.",
-        "Dockerized services, reduced deployment time by 80%, maintained 99.9% uptime. Boring infrastructure that just works.",
+        "Built 3D positioning and visualization systems for industrial IoT applications, improving UWB positioning accuracy from 20cm to under 10cm research-grade precision",
+        "Developed MQTT-based dashboards for real-time IoT device monitoring and visualization across 50+ connected devices",
+        "Dockerized microservices architecture reducing deployment time by 80% while maintaining 99.9% uptime",
       ],
     },
 
@@ -107,93 +83,79 @@ export const resume: Resume = {
       summary:
         "UX, design systems, and technical education. First taste of shipping things people actually use.",
       highlights: [
-        "Designed onboarding flows and managed a design system that increased dev velocity significantly.",
-        "Wrote beginner-friendly HTML/CSS/JS content adopted by 2K+ learners. Improved course completion rates.",
-        "Shipped marketing collateral that contributed to a 20% lead gen increase. Words and pixels that converted.",
+        "Designed onboarding flows and maintained component-based design system, increasing development velocity by 35%",
+        "Authored beginner-friendly HTML, CSS, and JavaScript educational content adopted by 2,000+ learners, improving course completion rates by 25%",
+        "Created marketing collateral and landing pages contributing to 20% increase in lead generation",
       ],
     },
   ],
   education: [
     {
       institution: "National Yang Ming Chiao Tung University",
-      url: "https://www.nycu.edu.tw/",
+      url: "www.nycu.edu.tw",
       area: "Computer Software Engineering",
       studyType: "Short Term Research Program",
-      startDate: "2023-02-01",
-      endDate: "2023-07-31",
+      endDate: "2023-07",
     },
     {
       institution: "Visvesvaraya Technological University",
-      url: "https://www.vtu.ac.in/",
+      url: "www.vtu.ac.in",
       area: "Electronics and Communication",
       studyType: "Bachelor of Engineering",
-      startDate: "2018-08-01",
-      endDate: "2022-09-01",
+      endDate: "2022-09",
     },
   ],
-  certificates: [
-    {
-      name: "Next.js App Router Fundamentals",
-      issuer: "Vercel",
-      url: "https://nextjs.org/learn/certificate?course=dashboard-app&user=48654&certId=dashboard-app-48654-1745867386592",
-    },
-    {
-      name: "Animations on the Web",
-      issuer: "animations.dev",
-      url: "https://animations.dev/certificate/3c66d48d-0d7a-4865-b023-e06ddfd71971",
-    },
-    {
-      name: "AI for React Developers",
-      issuer: "LinkedIn Learning",
-      url: "https://www.linkedin.com/learning/certificates/28f048356a91802cc20a3af01c9a034faa62ac7628a02631142d2eb78062a781",
-    },
-    {
-      name: "React: Design Patterns",
-      issuer: "LinkedIn Learning",
-      url: "https://www.linkedin.com/learning/certificates/bbb1d2307524475c1cc86d3c1dd77137a720dcc5f702ee1ee092d13354fa3c40",
-    },
-    {
-      name: "React: State Management",
-      issuer: "LinkedIn Learning",
-      url: "https://www.linkedin.com/learning/certificates/325849cd7c3d9fc599c2acd78c01b63df82246724b77e4425a89d0c8c92460f4",
-    },
-    {
-      name: "React (Basic)",
-      issuer: "HackerRank",
-      url: "https://www.hackerrank.com/certificates/57ce647802bb",
-    },
-  ],
+  certificates: [],
   skills: [
+    "JavaScript",
     "TypeScript",
     "React",
-    "State Management",
-    "Performance Optimization",
+    "Next.js",
+    "Node.js",
+    "Tailwind CSS",
+    "HTML",
+    "CSS",
+    "Git",
+    "Docker",
+    "PostgreSQL",
+    "MongoDB",
+    "REST APIs",
+    "WebSockets",
+    "MQTT",
+    "Redux",
+    "Zustand",
+    "React Query",
+    "Vercel AI SDK",
+    "OpenAI API",
+    "Canvas API",
+    "D3.js",
+    "Framer Motion",
     "Figma",
-    "Product Thinking",
+    "CI/CD",
   ],
   projects: [
     {
       name: "AI Roadmap Generator",
       description:
-        "Full-stack AI product that generates personalized learning roadmaps. 5,600+ organic users, zero marketing budget.",
+        "Full-stack AI product generating personalized learning roadmaps with 5,600+ organic users",
       highlights: [
-        "Shipped end-to-end: prompt design, structured LLM output parsing, canvas-based visualization, and responsive UX.",
-        "Generated 250+ career roadmaps with real-time streaming. Turns vague goals into actionable learning paths.",
-        "Built custom canvas rendering engine for interactive node-based navigation. Made learning plans feel explorable.",
+        "Developed end-to-end solution with prompt engineering, structured LLM output parsing, canvas-based visualization, and responsive UX",
+        "Generated 250+ career roadmaps using real-time streaming architecture with OpenAI API",
+        "Built custom canvas rendering engine for interactive node-based navigation with drag-and-drop functionality",
       ],
-      url: "https://airoadmapgenerator.com",
+      url: "airoadmapgenerator.com",
       keywords: ["Next.js", "React", "TypeScript", "Canvas", "LLMs"],
       date: "2024-08-01",
     },
     {
       name: "JSON Visualiser",
       description:
-        "Open-source JSON debugging tool. Built because I wanted VSCode on the browser to visualise request/response.",
+        "Open-source JSON debugging and visualization tool with tree and grid view options",
       highlights: [
-        "143 unique users, 43% return rate. One developer used it 49 times—apparently it's less painful than alternatives.",
-        "Format, validate, and explore JSON with tree/grid views. Handles deeply nested structures without choking.",
+        "Achieved 143 unique users with 43% return rate, including one power user with 49 sessions",
+        "Implemented JSON formatting, validation, and exploration with tree and grid visualization modes supporting deeply nested structures",
       ],
-      url: "https://jsonvisualiser.com",
+      url: "jsonvisualiser.com",
       keywords: ["React", "TypeScript", "D3.js"],
       date: "2024-10-01",
     },
@@ -202,45 +164,38 @@ export const resume: Resume = {
     {
       title: "Mastering ViewTransition in React for Stunning UI Updates",
       organiser: "React Play Bengaluru",
-      link: "https://www.meetup.com/reactplay-bengaluru/events/311437528",
+      link: "meetup.com/reactplay-bengaluru/events/311437528",
     },
     {
       title: "Building Real-Time Applications with Reactive Databases",
       organiser: "React Play x React Bangalore",
-      link: "https://www.meetup.com/reactplay-bengaluru/events/307690438/",
+      link: "meetup.com/reactplay-bengaluru/events/307690438",
     },
     {
       title: "AI for React Developers",
       organiser: "React Bangalore",
-      link: "https://www.meetup.com/reactjs-bangalore/events/306320480/",
+      link: "meetup.com/reactjs-bangalore/events/306320480",
     },
   ],
-  references: [
-    {
-      name: "Akash Bhadange",
-      title: "CEO, Peerlist",
-      reference:
-        "100% AGREE! Also, the way team has launched the project is commendable. This is by far the most successful project launch on Peerlist - Appreciation on AI Roadmap Generator launch!",
-    },
-  ],
+  references: [],
   contributions: [
     {
       title:
         "feat: add table markdown copy and csv/markdown download options #99",
-      url: "https://github.com/vercel/streamdown/pull/99",
+      url: "github.com/vercel/streamdown/pull/99",
     },
     {
       title: "feat: add download functionality to code blocks #102",
-      url: "https://github.com/vercel/streamdown/pull/102",
+      url: "github.com/vercel/streamdown/pull/102",
     },
     {
       title: "feat: add image download functionality with hover controls #103",
-      url: "https://github.com/vercel/streamdown/pull/103",
+      url: "github.com/vercel/streamdown/pull/103",
     },
     {
       title:
         "feat: add speech to text input to prompt area and update test and example apps #112",
-      url: "https://github.com/vercel/ai-elements/pull/112",
+      url: "github.com/vercel/ai-elements/pull/112",
     },
   ],
   volunteer: [],

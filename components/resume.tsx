@@ -30,17 +30,14 @@ function ResumeSection({
   );
 }
 
-function ResumeFooter() {
+function ResumeFooter({ source }: { source: string }) {
+  const sourceLink = source.startsWith("http") ? source : `https://${source}`;
   return (
     <footer className="mt-8 pt-4 text-center text-xs md:text-sm">
       <p className="text-muted-foreground">
         Source :{" "}
-        <a
-          href="https://github.com/thatbeautifuldream/resume"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          github.com/thatbeautifuldream/resume
+        <a href={sourceLink} target="_blank" rel="noopener noreferrer">
+          {source}
         </a>
       </p>
     </footer>
@@ -59,7 +56,13 @@ function ProfileLinkWithNetwork({ profile }: { profile: Profile }) {
   };
 
   const label = getNetworkLabel(profile.network || "", profile.username);
-  const href = profile.url || "#";
+  const rawHref = profile.url || "#";
+  const href =
+    rawHref !== "#"
+      ? rawHref.startsWith("http")
+        ? rawHref
+        : `https://${rawHref}`
+      : "#";
 
   return href !== "#" ? (
     <Link href={href} target="_blank" rel="noreferrer">
@@ -85,11 +88,14 @@ function ResumeHeaderItem({ basics }: { basics: Basics }) {
   }
 
   if (basics.url) {
+    const urlHref = basics.url.startsWith("http")
+      ? basics.url
+      : `https://${basics.url}`;
     contactItems.push({
       key: "url",
       element: (
-        <Link href={basics.url} target="_blank" rel="noreferrer">
-          {basics.url.replace(/^https?:\/\//, "")}
+        <Link href={urlHref} target="_blank" rel="noreferrer">
+          {basics.url}
         </Link>
       ),
     });
@@ -173,6 +179,11 @@ function ProjectPortfolioItem({ item }: { item: Project }) {
   const dateDisplay = item.date
     ? formatDate(item.date)
     : range(item.startDate, item.endDate);
+  const urlHref = item.url
+    ? item.url.startsWith("http")
+      ? item.url
+      : `https://${item.url}`
+    : undefined;
 
   return (
     <div className="space-y-3">
@@ -187,10 +198,10 @@ function ProjectPortfolioItem({ item }: { item: Project }) {
                 {dateDisplay}
               </em>
             </div>
-            {item.url && (
+            {urlHref && (
               <div className="text-sm md:text-base print:text-sm">
-                <a href={item.url} target="_blank" rel="noreferrer">
-                  {item.url.replace(/^https?:\/\//, "")}
+                <a href={urlHref} target="_blank" rel="noreferrer">
+                  {item.url}
                 </a>
               </div>
             )}
@@ -218,14 +229,23 @@ function ProjectPortfolioItem({ item }: { item: Project }) {
 
 function EducationCredentialItem({ item }: { item: Education }) {
   const title = [item.studyType, item.area].filter(Boolean).join(", ");
+  const dateDisplay = item.endDate
+    ? formatDate(item.endDate)
+    : range(item.startDate, item.endDate);
+  const urlHref = item.url
+    ? item.url.startsWith("http")
+      ? item.url
+      : `https://${item.url}`
+    : undefined;
+
   return (
     <div className="space-y-1">
       <div className="flex gap-3 items-start print:gap-2 print:items-center">
         <div className="flex-1 min-w-0 space-y-1">
           <div className="flex justify-between items-baseline sm:flex-row flex-col sm:items-baseline print:flex-row print:items-baseline">
-            {item.url ? (
+            {urlHref ? (
               <a
-                href={item.url}
+                href={urlHref}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="font-semibold hover:underline text-sm md:text-base print:text-sm"
@@ -238,7 +258,7 @@ function EducationCredentialItem({ item }: { item: Education }) {
               </strong>
             )}
             <em className="sm:mt-0 mt-1 text-xs md:text-sm print:text-xs print:mt-0">
-              {range(item.startDate, item.endDate)}
+              {dateDisplay}
             </em>
           </div>
           <div className="italic text-sm md:text-base print:text-sm">
@@ -256,11 +276,17 @@ function EducationCredentialItem({ item }: { item: Education }) {
 }
 
 function CertificateAchievementItem({ item }: { item: Certificates }) {
+  const urlHref = item.url
+    ? item.url.startsWith("http")
+      ? item.url
+      : `https://${item.url}`
+    : undefined;
+
   return (
     <span className="inline-flex items-baseline gap-1 text-sm md:text-base">
-      {item.url ? (
+      {urlHref ? (
         <a
-          href={item.url}
+          href={urlHref}
           target="_blank"
           rel="noopener noreferrer"
           className="font-semibold hover:underline"
@@ -283,7 +309,8 @@ function CertificateAchievementItem({ item }: { item: Certificates }) {
 function OpenSourceContributionItem({ item }: { item: Contribution }) {
   const extractOrgAndRepo = (url: string) => {
     try {
-      const parsedUrl = new URL(url);
+      const urlWithProtocol = url.startsWith("http") ? url : `https://${url}`;
+      const parsedUrl = new URL(urlWithProtocol);
       const pathParts = parsedUrl.pathname.split("/").filter(Boolean);
       // URL format: github.com/org/repo/pull/123
       if (pathParts.length >= 2) {
@@ -300,10 +327,12 @@ function OpenSourceContributionItem({ item }: { item: Contribution }) {
 
   const { org, orgRepo } = extractOrgAndRepo(item.url);
 
+  const href = item.url.startsWith("http") ? item.url : `https://${item.url}`;
+
   return (
     <div className="flex justify-between items-center gap-2">
       <a
-        href={item.url}
+        href={href}
         target="_blank"
         rel="noopener noreferrer"
         className="text-sm md:text-base hover:underline flex-1 leading-tight truncate"
@@ -325,11 +354,17 @@ function OpenSourceContributionItem({ item }: { item: Contribution }) {
 }
 
 function TalkPresentationItem({ item }: { item: Talks }) {
+  const href = item.link
+    ? item.link.startsWith("http")
+      ? item.link
+      : `https://${item.link}`
+    : undefined;
+
   return (
     <div className="flex justify-between items-center gap-2">
-      {item.link ? (
+      {href ? (
         <a
-          href={item.link}
+          href={href}
           target="_blank"
           rel="noopener noreferrer"
           className="text-sm md:text-base hover:underline flex-1 leading-tight truncate"
@@ -407,12 +442,6 @@ const SECTION_CONFIG: Partial<
     }
   >
 > = {
-  basics: {
-    title: "Summary",
-    render: (basics: Basics) => (
-      <p className="text-sm md:text-base">{basics.summary}</p>
-    ),
-  },
   work: {
     title: "Experience",
     render: (items: Work[]) => (
@@ -503,7 +532,7 @@ export function ResumeView({ data }: { data: Resume }) {
         );
       })}
 
-      <ResumeFooter />
+      <ResumeFooter source={data.source} />
     </article>
   );
 }

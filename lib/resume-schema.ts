@@ -6,10 +6,11 @@ const isoDate = z
   .string()
   .regex(
     /^\d{4}(-\d{2})?(-\d{2})?$/,
-    "Expected ISO-like date (YYYY or YYYY-MM or YYYY-MM-DD)"
+    "Expected ISO-like date (YYYY or YYYY-MM or YYYY-MM-DD)",
   );
 
 export const ResumeSchema = z.object({
+  source: z.string(),
   basics: z.object({
     name: z.string(),
     label: z.string().optional(),
@@ -34,7 +35,7 @@ export const ResumeSchema = z.object({
           network: z.string(),
           username: z.string().optional(),
           url: z.string().url().optional(),
-        })
+        }),
       )
       .optional(),
   }),
@@ -59,7 +60,7 @@ export const ResumeSchema = z.object({
             "Full Time / Contract",
           ])
           .optional(),
-      })
+      }),
     )
     .default([]),
   volunteer: z
@@ -72,7 +73,7 @@ export const ResumeSchema = z.object({
         endDate: isoDate.optional(),
         summary: z.string().optional(),
         highlights: z.array(z.string()).default([]),
-      })
+      }),
     )
     .default([]),
   education: z
@@ -85,7 +86,7 @@ export const ResumeSchema = z.object({
         startDate: isoDate.optional(),
         endDate: isoDate.optional(),
         score: z.string().optional(),
-      })
+      }),
     )
     .default([]),
   awards: z
@@ -95,7 +96,7 @@ export const ResumeSchema = z.object({
         date: isoDate.optional(),
         awarder: z.string().optional(),
         summary: z.string().optional(),
-      })
+      }),
     )
     .default([]),
   skills: z.array(z.string()).default([]),
@@ -104,7 +105,7 @@ export const ResumeSchema = z.object({
       z.object({
         language: z.string(),
         fluency: z.string().optional(),
-      })
+      }),
     )
     .default([]),
   projects: z
@@ -121,7 +122,7 @@ export const ResumeSchema = z.object({
         roles: z.array(z.string()).optional(),
         entity: z.string().optional(),
         type: z.string().optional(),
-      })
+      }),
     )
     .default([]),
   certificates: z
@@ -131,7 +132,7 @@ export const ResumeSchema = z.object({
         date: isoDate.optional(),
         issuer: z.string().optional(),
         url: url.optional(),
-      })
+      }),
     )
     .default([]),
   talks: z
@@ -140,7 +141,7 @@ export const ResumeSchema = z.object({
         title: z.string(),
         organiser: z.string(),
         link: url.optional(),
-      })
+      }),
     )
     .default([]),
   references: z
@@ -149,7 +150,7 @@ export const ResumeSchema = z.object({
         name: z.string(),
         title: z.string(),
         reference: z.string(),
-      })
+      }),
     )
     .default([]),
   contributions: z
@@ -157,7 +158,7 @@ export const ResumeSchema = z.object({
       z.object({
         title: z.string(),
         url: url,
-      })
+      }),
     )
     .default([]),
 });
