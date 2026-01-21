@@ -40,14 +40,14 @@ export const resume: Resume = {
     },
 
     {
-      name: "SARAL, Proof-of-Skill Protocol, Skillmates & StartupHire",
+      name: "Proof-of-Skill Protocol & StartupHire",
       location: "Bengaluru, Karnataka, India / Remote",
-      position: "Software Engineer / Founding Product Engineer",
-      workType: "Full Time / Contract",
+      position: "Founding Product Engineer",
+      workType: "Full Time",
       startDate: "2023-08-01",
       endDate: "2025-02-08",
       summary:
-        "Built 0 to 1 hiring and skill validation platforms. Owned full-stack, growth tools, and product velocity in early-stage chaos.",
+        "Built 0 to 1 hiring and skill validation platforms. Owned frontend, devops, growth tools, and product velocity in early-stage chaos.",
       highlights: [
         "Architected and shipped decentralized skill validation MVPs with voting consensus across 150+ validators, reducing hiring bias through algorithmic evaluation",
         "Built proctored assessments with real-time streaming infrastructure, reducing time-to-interview by 50%",
@@ -76,7 +76,7 @@ export const resume: Resume = {
     {
       name: "iNeuron.ai & Plusklass",
       location: "Bengaluru, Karnataka, India / Remote",
-      position: "UX, Frontend & Technical Content Intern",
+      position: "UX Designer & Technical Content Writer",
       workType: "Internship",
       startDate: "2022-01-01",
       endDate: "2022-06-30",

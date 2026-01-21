@@ -1,4 +1,9 @@
-import { formatDate, range, rangeCompact } from "@/lib/format";
+import {
+  calculateDuration,
+  formatDate,
+  range,
+  rangeCompact,
+} from "@/lib/format";
 import type {
   Basics,
   Certificates,
@@ -126,6 +131,7 @@ function ResumeHeaderItem({ basics }: { basics: Basics }) {
 }
 
 function WorkExperienceItem({ item }: { item: Work }) {
+  const duration = calculateDuration(item.startDate, item.endDate);
   return (
     <div className="space-y-3">
       <div className="space-y-1">
@@ -148,9 +154,11 @@ function WorkExperienceItem({ item }: { item: Work }) {
               <em className="text-xs md:text-sm print:text-xs whitespace-nowrap">
                 <span className="sm:hidden">
                   {rangeCompact(item.startDate, item.endDate)}
+                  {duration && ` (${duration})`}
                 </span>
                 <span className="hidden sm:inline">
                   {range(item.startDate, item.endDate)}
+                  {duration && ` (${duration})`}
                 </span>
               </em>
             </div>
@@ -527,7 +535,7 @@ export function ResumeView({ data }: { data: Resume }) {
 
         return (
           <ResumeSection key={sectionKey} title={section.title}>
-            {section.render(sectionData as any)}
+            {section.render(sectionData)}
           </ResumeSection>
         );
       })}
