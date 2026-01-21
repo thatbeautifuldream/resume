@@ -32,7 +32,6 @@ export interface PersonJsonLd {
     name: string;
     url?: string;
     degree: string;
-    studyArea: string;
     startDate: string;
     endDate: string;
   }>;
@@ -87,7 +86,6 @@ export function resumeToJsonLd(resume: Resume): PersonJsonLd {
     name: edu.institution,
     url: edu.url,
     degree: edu.studyType || "",
-    studyArea: edu.area || "",
     startDate: edu.startDate || "",
     endDate: edu.endDate || ""
   })) || [];

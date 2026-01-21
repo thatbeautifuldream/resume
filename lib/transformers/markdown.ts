@@ -54,7 +54,7 @@ export function resumeToMarkdown(resume: Resume): string {
       const endDate = edu.endDate ? formatDate(edu.endDate) : "Unknown";
       const dateRange = `${startDate} - ${endDate}`;
       sections.push(`\n**${edu.institution}** (${dateRange})`);
-      sections.push(`${edu.studyType} in ${edu.area}`);
+      sections.push(`${edu.studyType}`);
     });
   }
 
