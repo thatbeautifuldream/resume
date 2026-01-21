@@ -58,7 +58,7 @@ export const resume: Resume = {
     },
 
     {
-      name: "Locus Connect × National Yang Ming Chiao Tung University (NYCU)",
+      name: "Locus Connect & NYCU",
       location: "Hsinchu, Taiwan",
       position: "Software Engineer & Research Assistant",
       workType: "Full Time",
@@ -93,15 +93,13 @@ export const resume: Resume = {
     {
       institution: "National Yang Ming Chiao Tung University",
       url: "www.nycu.edu.tw",
-      area: "Computer Software Engineering",
-      studyType: "Short Term Research Program",
+      studyType: "Research Program, CSE",
       endDate: "2023-07",
     },
     {
       institution: "Visvesvaraya Technological University",
       url: "www.vtu.ac.in",
-      area: "Electronics and Communication",
-      studyType: "Bachelor of Engineering",
+      studyType: "Bachelor of Engineering, ECE",
       endDate: "2022-09",
     },
   ],

@@ -236,7 +236,6 @@ function ProjectPortfolioItem({ item }: { item: Project }) {
 }
 
 function EducationCredentialItem({ item }: { item: Education }) {
-  const title = [item.studyType, item.area].filter(Boolean).join(", ");
   const dateDisplay = item.endDate
     ? formatDate(item.endDate)
     : range(item.startDate, item.endDate);
@@ -247,38 +246,25 @@ function EducationCredentialItem({ item }: { item: Education }) {
     : undefined;
 
   return (
-    <div className="space-y-1">
-      <div className="flex gap-3 items-start print:gap-2 print:items-center">
-        <div className="flex-1 min-w-0 space-y-1">
-          <div className="flex justify-between items-baseline sm:flex-row flex-col sm:items-baseline print:flex-row print:items-baseline">
-            {urlHref ? (
-              <a
-                href={urlHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-semibold hover:underline text-sm md:text-base print:text-sm"
-              >
-                <strong>{item.institution}</strong>
-              </a>
-            ) : (
-              <strong className="text-sm md:text-base print:text-sm">
-                {item.institution}
-              </strong>
-            )}
-            <em className="sm:mt-0 mt-1 text-xs md:text-sm print:text-xs print:mt-0">
-              {dateDisplay}
-            </em>
-          </div>
-          <div className="italic text-sm md:text-base print:text-sm">
-            {title}
-          </div>
-          {item.score && (
-            <div className="text-sm md:text-base print:text-sm">
-              GPA: {item.score}
-            </div>
-          )}
-        </div>
+    <div className="flex justify-between items-center gap-2">
+      <div className="flex-1 min-w-0 truncate text-sm md:text-base print:text-sm leading-tight">
+        {urlHref ? (
+          <a
+            href={urlHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-semibold hover:underline"
+          >
+            {item.institution}
+          </a>
+        ) : (
+          <strong>{item.institution}</strong>
+        )}
+        {item.studyType && <span className="italic"> - {item.studyType}</span>}
       </div>
+      <em className="text-xs md:text-sm print:text-xs whitespace-nowrap flex-shrink-0">
+        {dateDisplay}
+      </em>
     </div>
   );
 }
@@ -473,7 +459,7 @@ const SECTION_CONFIG: Partial<
   education: {
     title: "Education",
     render: (items: Education[]) => (
-      <div className="space-y-5">
+      <div className="space-y-3">
         {items.map((e) => (
           <EducationCredentialItem key={e.institution} item={e} />
         ))}

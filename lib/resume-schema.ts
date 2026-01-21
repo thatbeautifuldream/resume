@@ -80,12 +80,10 @@ export const ResumeSchema = z.object({
     .array(
       z.object({
         institution: z.string(),
-        area: z.string().optional(),
-        url: url.optional(),
-        studyType: z.string().optional(),
+        url: url,
+        studyType: z.string(),
         startDate: isoDate.optional(),
         endDate: isoDate.optional(),
-        score: z.string().optional(),
       }),
     )
     .default([]),
