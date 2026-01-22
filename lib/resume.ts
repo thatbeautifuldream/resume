@@ -121,7 +121,6 @@ export const resume: Resume = {
     "React Query",
     "Vercel AI SDK",
     "OpenAI API",
-    "Canvas API",
     "D3.js",
     "Framer Motion",
     "Figma",

@@ -38,7 +38,7 @@ function ResumeSection({
 function ResumeFooter({ source }: { source: string }) {
   const sourceLink = source.startsWith("http") ? source : `https://${source}`;
   return (
-    <footer className="mt-8 pt-4 text-center text-xs md:text-sm">
+    <footer className="mt-8 pt-4 text-center text-xs md:text-sm print:hidden">
       <p className="text-muted-foreground">
         Source :{" "}
         <a href={sourceLink} target="_blank" rel="noopener noreferrer">
