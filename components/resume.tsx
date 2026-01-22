@@ -132,6 +132,7 @@ function ResumeHeaderItem({ basics }: { basics: Basics }) {
 
 function WorkExperienceItem({ item }: { item: Work }) {
   const duration = calculateDuration(item.startDate, item.endDate);
+  const isPresent = !item.endDate;
   return (
     <div className="space-y-3">
       <div className="space-y-1">
@@ -154,11 +155,19 @@ function WorkExperienceItem({ item }: { item: Work }) {
               <em className="text-xs md:text-sm print:text-xs whitespace-nowrap">
                 <span className="sm:hidden">
                   {rangeCompact(item.startDate, item.endDate)}
-                  {duration && ` (${duration})`}
+                  {duration && (
+                    <span className={isPresent ? "print:hidden" : ""}>
+                      {` (${duration})`}
+                    </span>
+                  )}
                 </span>
                 <span className="hidden sm:inline">
                   {range(item.startDate, item.endDate)}
-                  {duration && ` (${duration})`}
+                  {duration && (
+                    <span className={isPresent ? "print:hidden" : ""}>
+                      {` (${duration})`}
+                    </span>
+                  )}
                 </span>
               </em>
             </div>
@@ -199,20 +208,24 @@ function ProjectPortfolioItem({ item }: { item: Project }) {
         <div className="flex gap-3 items-start print:gap-2 print:items-center">
           <div className="flex-1 min-w-0">
             <div className="flex justify-between sm:flex-row flex-col sm:items-baseline items-start print:flex-row print:items-baseline">
-              <strong className="text-sm md:text-base print:text-sm">
-                {item.name}
-              </strong>
+              {urlHref ? (
+                <a
+                  href={urlHref}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-sm md:text-base print:text-sm font-bold hover:underline"
+                >
+                  {item.name}
+                </a>
+              ) : (
+                <strong className="text-sm md:text-base print:text-sm">
+                  {item.name}
+                </strong>
+              )}
               <em className="sm:mt-0 mt-1 text-xs md:text-sm print:text-xs print:mt-0">
                 {dateDisplay}
               </em>
             </div>
-            {urlHref && (
-              <div className="text-sm md:text-base print:text-sm">
-                <a href={urlHref} target="_blank" rel="noreferrer">
-                  {item.url}
-                </a>
-              </div>
-            )}
           </div>
         </div>
       </div>

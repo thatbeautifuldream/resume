@@ -155,14 +155,16 @@ export default function Clarity() {
               Operating Systems
             </h5>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 md:gap-4">
-              {Object.entries(audience.operatingSystems).map(([os, sessions]) => (
-                <Metric
-                  key={os}
-                  title={os}
-                  value={sessions}
-                  subtitle={`${((sessions / overview.sessions.total) * 100).toFixed(1)}%`}
-                />
-              ))}
+              {Object.entries(audience.operatingSystems).map(
+                ([os, sessions]) => (
+                  <Metric
+                    key={os}
+                    title={os}
+                    value={sessions}
+                    subtitle={`${((sessions / overview.sessions.total) * 100).toFixed(1)}%`}
+                  />
+                ),
+              )}
             </div>
           </div>
 
@@ -178,7 +180,12 @@ export default function Clarity() {
                 >
                   <span>{country.country}</span>
                   <span className="font-medium pr-3">
-                    {country.sessions} ({((country.sessions / overview.sessions.total) * 100).toFixed(1)}%)
+                    {country.sessions} (
+                    {(
+                      (country.sessions / overview.sessions.total) *
+                      100
+                    ).toFixed(1)}
+                    %)
                   </span>
                 </div>
               ))}
