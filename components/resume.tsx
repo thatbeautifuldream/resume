@@ -538,7 +538,7 @@ export function ResumeView({ data }: { data: Resume }) {
     return (
       <article className="space-y-6 py-4 md:py-8">
         <div className="text-center mb-4 print:hidden">
-          <p className="text-sm text-muted-foreground">
+          <p className="text-xs text-muted-foreground font-mono">
             Press 'j' to return to normal view
           </p>
         </div>

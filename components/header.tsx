@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { HeaderMenu } from "@/components/header-menu";
+// import { HeaderMenu } from "@/components/header-menu";
 import { TimezoneClock } from "@/components/timezone-clock";
 
 export type THeaderItem = {
@@ -36,7 +36,7 @@ export function Header({ leftItems = [] }: THeaderConfig) {
           </div>
           <div className="flex gap-x-3 items-center">
             <TimezoneClock />
-            <HeaderMenu />
+            {/* <HeaderMenu /> */}
           </div>
         </div>
       </div>

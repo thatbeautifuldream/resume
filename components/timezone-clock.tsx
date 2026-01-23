@@ -69,7 +69,7 @@ export function TimezoneClock() {
   }, []);
 
   return (
-    <div className="flex items-center gap-2 font-mono text-sm">
+    <div className="flex items-center gap-2 font-mono text-xs">
       {timezoneOffset && timezoneOffset.diff > 0 && (
         <span className="text-muted-foreground">[{timezoneOffset.label}]</span>
       )}
