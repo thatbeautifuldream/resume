@@ -4,7 +4,7 @@ export function formatDate(input?: string) {
   if (parts.length === 1) return parts[0];
   const d = new Date(input);
   if (Number.isNaN(d.getTime())) return input;
-  return d.toLocaleDateString(undefined, { month: "short", year: "numeric" });
+  return d.toLocaleDateString("en-US", { month: "short", year: "numeric" });
 }
 
 export function formatDateCompact(input?: string) {
@@ -13,8 +13,8 @@ export function formatDateCompact(input?: string) {
   if (parts.length === 1) return parts[0];
   const d = new Date(input);
   if (Number.isNaN(d.getTime())) return input;
-  const month = d.toLocaleDateString(undefined, { month: "short" });
-  const year = d.toLocaleDateString(undefined, { year: "2-digit" });
+  const month = d.toLocaleDateString("en-US", { month: "short" });
+  const year = d.toLocaleDateString("en-US", { year: "2-digit" });
   return `${month} ${year}`;
 }
 

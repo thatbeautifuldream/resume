@@ -1,3 +1,5 @@
+"use client";
+
 import {
   calculateDuration,
   formatDate,
@@ -18,7 +20,10 @@ import type {
   Work,
 } from "@/lib/resume-schema";
 import Link from "next/link";
+import { useState } from "react";
 import type * as React from "react";
+import { useHotkeys } from "react-hotkeys-hook";
+import { useTheme } from "next-themes";
 
 function ResumeSection({
   title,
@@ -520,6 +525,30 @@ const SECTION_CONFIG: Partial<
 };
 
 export function ResumeView({ data }: { data: Resume }) {
+  const [showJson, setShowJson] = useState(false);
+  const { theme, setTheme } = useTheme();
+
+  useHotkeys("p", () => window.print(), { preventDefault: true });
+  useHotkeys("j", () => setShowJson((prev) => !prev), { preventDefault: true });
+  useHotkeys("t", () => setTheme(theme === "dark" ? "light" : "dark"), {
+    preventDefault: true,
+  });
+
+  if (showJson) {
+    return (
+      <article className="space-y-6 py-4 md:py-8">
+        <div className="text-center mb-4 print:hidden">
+          <p className="text-sm text-muted-foreground">
+            Press 'j' to return to normal view
+          </p>
+        </div>
+        <pre className="whitespace-pre-wrap break-words text-xs md:text-sm bg-muted p-4 overflow-auto font-mono">
+          {JSON.stringify(data, null, 2)}
+        </pre>
+      </article>
+    );
+  }
+
   return (
     <article className="space-y-6 py-4 md:py-8">
       <ResumeHeaderItem basics={data.basics} />

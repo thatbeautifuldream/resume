@@ -38,9 +38,8 @@ export const resume: Resume = {
         "Engineered animation-heavy experiences for Thine using optimized motion design patterns, maintaining 60fps performance at scale",
       ],
     },
-
     {
-      name: "Proof-of-Skill Protocol & StartupHire",
+      name: "StartupHire & Proof-of-Skill Protocol",
       location: "Bengaluru, Karnataka, India / Remote",
       position: "Founding Product Engineer",
       workType: "Full Time",
@@ -56,7 +55,6 @@ export const resume: Resume = {
         "Shipped internal tools and ops dashboards improving campaign ROI tracking and operational efficiency by 30%",
       ],
     },
-
     {
       name: "Locus Connect & NYCU",
       location: "Hsinchu, Taiwan",
@@ -72,7 +70,6 @@ export const resume: Resume = {
         "Dockerized microservices architecture reducing deployment time by 80% while maintaining 99.9% uptime",
       ],
     },
-
     {
       name: "iNeuron.ai & Plusklass",
       location: "Bengaluru, Karnataka, India / Remote",
