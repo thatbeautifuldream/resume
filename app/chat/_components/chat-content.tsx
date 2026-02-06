@@ -104,7 +104,7 @@ function Messages() {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const prevMessageCountRef = useRef(0);
   const shouldAutoScrollRef = useRef(true);
-  const scrollTimeoutRef = useRef<NodeJS.Timeout>();
+  const scrollTimeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
 
   // Helper to check if user is near bottom
   const isNearBottom = useCallback(() => {
@@ -453,7 +453,7 @@ function ChatContentLayout() {
   const { hasMessages, isLoaded } = useChatContext();
 
   return (
-    <div className="h-full flex flex-col relative">
+    <div className="@container h-full flex flex-col relative">
       {/* Scrollable content area */}
       <div className="flex-1 overflow-y-auto">
         {!isLoaded ? (
