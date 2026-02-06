@@ -1,14 +1,17 @@
 "use client";
 
-import { AIDevtools } from "@ai-sdk-tools/devtools";
-import { Suspense } from "react";
-import { ChatContent } from "./_components/chat-content";
+import { useChatSidebar } from "@/components/providers/chat-sidebar-provider";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function Page() {
-  return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <ChatContent />
-      {process.env.NODE_ENV === "development" && <AIDevtools />}
-    </Suspense>
-  );
+  const { open } = useChatSidebar();
+  const router = useRouter();
+
+  useEffect(() => {
+    open();
+    router.replace("/");
+  }, [open, router]);
+
+  return null;
 }

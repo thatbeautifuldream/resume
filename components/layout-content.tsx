@@ -1,15 +1,11 @@
 "use client";
 
-import { Loading } from "@/components/loading";
-import { ResumeView } from "@/components/resume";
-import { resume } from "@/lib/resume";
-import { Header } from "@/components/header";
-import { Suspense } from "react";
-import { motion } from "motion/react";
 import { useChatSidebar } from "@/components/providers/chat-sidebar-provider";
+import type React from "react";
 import { useEffect, useState } from "react";
+import { motion } from "motion/react";
 
-export default function Page() {
+export function LayoutContent({ children }: { children: React.ReactNode }) {
   const { isOpen } = useChatSidebar();
   const [isDesktop, setIsDesktop] = useState(false);
 
@@ -30,13 +26,8 @@ export default function Page() {
       }}
       transition={{ duration: 0.3, ease: "easeInOut" }}
     >
-      <Suspense fallback={null}>
-        <Header />
-      </Suspense>
       <main className="container mx-auto px-4 sm:px-6 lg:px-8 pt-[60px] print:pt-0">
-        <Suspense fallback={<Loading />}>
-          <ResumeView data={resume} />
-        </Suspense>
+        {children}
       </main>
     </motion.div>
   );
