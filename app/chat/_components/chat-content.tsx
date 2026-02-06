@@ -100,15 +100,99 @@ const Message = memo(function Message({ message }: { message: any }) {
 
 function Messages() {
   const { messages, status, hasMessages } = useChatContext();
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const prevMessageCountRef = useRef(0);
+  const shouldAutoScrollRef = useRef(true);
+  const scrollTimeoutRef = useRef<NodeJS.Timeout>();
+
+  // Helper to check if user is near bottom
+  const isNearBottom = useCallback(() => {
+    const scrollContainer = scrollContainerRef.current?.parentElement;
+    if (!scrollContainer) return false;
+
+    const threshold = 100; // pixels from bottom
+    const position = scrollContainer.scrollHeight - scrollContainer.scrollTop - scrollContainer.clientHeight;
+    return position < threshold;
+  }, []);
+
+  // Helper to scroll to bottom
+  const scrollToBottom = useCallback((behavior: ScrollBehavior = "smooth") => {
+    requestAnimationFrame(() => {
+      messagesEndRef.current?.scrollIntoView({ behavior });
+    });
+  }, []);
+
+  // Auto-scroll logic
+  useEffect(() => {
+    const messageCountChanged = messages.length !== prevMessageCountRef.current;
+    const hasNewMessage = messages.length > prevMessageCountRef.current;
+
+    // Update ref for next render
+    prevMessageCountRef.current = messages.length;
+
+    // Always scroll when:
+    // 1. New message added (user sent message or assistant started replying)
+    // 2. Status changed to submitted (loading state appeared)
+    // 3. User is already near bottom and content is streaming
+    if (hasNewMessage || status === "submitted" || (shouldAutoScrollRef.current && isNearBottom())) {
+      scrollToBottom();
+    }
+  }, [messages, status, isNearBottom, scrollToBottom]);
+
+  // Track user scroll behavior
+  useEffect(() => {
+    const scrollContainer = scrollContainerRef.current?.parentElement;
+    if (!scrollContainer) return;
+
+    const handleScroll = () => {
+      // Update auto-scroll preference based on user position
+      shouldAutoScrollRef.current = isNearBottom();
+
+      // Clear existing timeout
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current);
+      }
+
+      // If user scrolls away from bottom, temporarily disable auto-scroll
+      // Re-enable after they stop scrolling for 200ms
+      if (!shouldAutoScrollRef.current) {
+        scrollTimeoutRef.current = setTimeout(() => {
+          if (isNearBottom()) {
+            shouldAutoScrollRef.current = true;
+          }
+        }, 200);
+      }
+    };
+
+    scrollContainer.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+      scrollContainer.removeEventListener('scroll', handleScroll);
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current);
+      }
+    };
+  }, [isNearBottom]);
+
+  // Initial scroll to bottom when messages first load
+  const hasScrolledInitiallyRef = useRef(false);
+  useEffect(() => {
+    if (hasMessages && messages.length > 0 && !hasScrolledInitiallyRef.current) {
+      scrollToBottom("instant");
+      hasScrolledInitiallyRef.current = true;
+    }
+  }, [hasMessages, messages.length, scrollToBottom]);
 
   if (!hasMessages) return null;
 
   return (
-    <div className="p-4 pb-20 space-y-4 w-full">
+    <div ref={scrollContainerRef} className="p-4 pb-20 space-y-4 w-full">
       {messages.map((message) => (
         <Message key={message.id} message={message} />
       ))}
       {status === "submitted" && <Loading />}
+      {/* Invisible anchor element for auto-scroll */}
+      <div ref={messagesEndRef} />
     </div>
   );
 }
