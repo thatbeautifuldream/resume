@@ -17,6 +17,13 @@ import { ArrowUp, Square } from "lucide-react";
 import { motion } from "motion/react";
 import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { useQueryState } from "nuqs";
+import {
+  PromptInput,
+  PromptInputTextarea,
+  PromptInputActions,
+  PromptInputAction,
+} from "@/components/prompt-area";
+import { Button } from "@/components/ui/button";
 
 const CHAT_STORE_ID = "persistent-chat";
 const CHAT_HISTORY_KEY = "resume-chat-history";
@@ -88,7 +95,7 @@ function Messages() {
 
   return (
     <div
-      className="flex-1 overflow-y-auto p-4 space-y-4 max-w-full lg:max-w-[896px] lg:mx-auto lg:w-full"
+      className="flex-1 overflow-y-auto p-4 pb-32 space-y-4 max-w-full lg:max-w-[896px] lg:mx-auto lg:w-full"
       style={{
         scrollbarWidth: "none",
         msOverflowStyle: "none",
@@ -145,76 +152,69 @@ function Input() {
   const { sendMessage, status, stop, input, setInput, inputRef } =
     useChatContext();
 
-  return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        if (input.trim() && status === "ready") {
-          sendMessage({ text: input });
-          setInput("");
-        }
-      }}
-      className="w-full"
-    >
-      <div className="relative flex items-end border border-input bg-background focus-within:ring-2 focus-within:ring-ring focus-within:border-transparent transition-all duration-200">
-        <textarea
-          ref={inputRef}
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" && !e.shiftKey) {
-              e.preventDefault();
-              if (input.trim() && status === "ready") {
-                sendMessage({ text: input });
-                setInput("");
-              }
-            }
-          }}
-          disabled={status !== "ready"}
-          placeholder="Ask something about Milind's work..."
-          rows={1}
-          className="flex-1 min-w-0 px-4 py-3 text-base border-none outline-none resize-none disabled:opacity-50 disabled:cursor-not-allowed placeholder:text-muted-foreground min-h-[48px] max-h-[200px] overflow-y-scroll"
-          style={{
-            height: "auto",
-            scrollbarWidth: "none",
-            msOverflowStyle: "none",
-          }}
-          onInput={(e) => {
-            const target = e.target as HTMLTextAreaElement;
-            target.style.height = "auto";
-            target.style.height = Math.min(target.scrollHeight, 200) + "px";
-          }}
-        />
+  const handleSubmit = () => {
+    if (input.trim() && status === "ready") {
+      sendMessage({ text: input });
+      setInput("");
+    }
+  };
 
-        <button
-          type={status === "ready" ? "submit" : "button"}
-          onClick={() => {
-            if (status === "submitted") {
-              stop();
-            }
-          }}
-          disabled={status === "ready" && !input.trim()}
-          aria-label={
-            status === "submitted" ? "Stop generating response" : "Send message"
-          }
-          title={
-            status === "submitted" ? "Stop generating response" : "Send message"
-          }
-          className={`mr-2 mb-2 p-2 rounded-full transition-all duration-200 flex items-center justify-center ${status === "ready" && input.trim()
-              ? "bg-primary text-primary-foreground hover:bg-primary/90 cursor-pointer"
-              : status === "submitted"
-                ? "bg-muted text-muted-foreground hover:bg-muted/80 cursor-pointer"
-                : "bg-muted text-muted-foreground cursor-not-allowed opacity-50"
-            }`}
-        >
-          {status === "submitted" ? (
-            <Square className="size-4" fill="currentColor" />
-          ) : (
-            <ArrowUp className="size-5" />
-          )}
-        </button>
+  return (
+    <div className="fixed bottom-0 left-0 right-0 z-40 pointer-events-none">
+      {/* Smooth gradient fade from transparent to bg */}
+      <div className="h-16 bg-gradient-to-t from-background via-background/60 to-transparent" />
+
+      <div className="bg-background px-4 pb-4 pointer-events-auto">
+        <div className="container mx-auto max-w-4xl relative">
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleSubmit();
+            }}
+            className="w-full"
+          >
+            <PromptInput
+              value={input}
+              onValueChange={setInput}
+              onSubmit={handleSubmit}
+              disabled={status !== "ready"}
+              isLoading={status === "submitted"}
+              maxHeight={200}
+              className="py-1.5 pl-2 pr-2"
+            >
+              <div className="flex items-end gap-1.5">
+                <div className="flex-1 min-w-0">
+                  <PromptInputTextarea
+                    placeholder="Ask something about Milind's work..."
+                    className="min-h-[32px] py-1 pl-2 pr-0"
+                  />
+                </div>
+                <PromptInputActions>
+                  <Button
+                    type={status === "ready" ? "submit" : "button"}
+                    size="icon"
+                    onClick={(e) => {
+                      if (status === "submitted") {
+                        e.preventDefault();
+                        stop();
+                      }
+                    }}
+                    disabled={status === "ready" && !input.trim()}
+                    className="rounded-full size-8 shrink-0 shadow cursor-pointer disabled:cursor-not-allowed"
+                  >
+                    {status === "submitted" ? (
+                      <Square className="size-4" fill="currentColor" />
+                    ) : (
+                      <ArrowUp className="size-4" />
+                    )}
+                  </Button>
+                </PromptInputActions>
+              </div>
+            </PromptInput>
+          </form>
+        </div>
       </div>
-    </form>
+    </div>
   );
 }
 
@@ -344,21 +344,23 @@ function ChatContentLayout() {
       <Chat.Messages />
       <div
         className={`${!hasMessages
-            ? "flex-1 flex flex-col items-center justify-center p-4"
+            ? "flex-1 flex flex-col items-center justify-center p-4 pb-32"
             : ""
           }`}
         style={!hasMessages ? { transform: "translateY(-10vh)" } : {}}
       >
         <Chat.Welcome />
-        <motion.div
-          layout
-          className={`w-full max-w-full lg:max-w-[896px] lg:mx-auto p-4 print:hidden ${hasMessages ? "flex-shrink-0" : ""
-            }`}
-        >
-          <Chat.ClearButton />
-          <Chat.Input />
-        </motion.div>
+        {hasMessages && (
+          <motion.div
+            layout
+            className="w-full max-w-full lg:max-w-[896px] lg:mx-auto p-4 print:hidden"
+          >
+            <Chat.ClearButton />
+          </motion.div>
+        )}
       </div>
+      {/* Input is now fixed at the bottom */}
+      <Chat.Input />
     </>
   );
 }

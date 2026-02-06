@@ -1,6 +1,6 @@
-import { STIX_Two_Text } from "next/font/google";
+import { Familjen_Grotesk } from "next/font/google";
 
-export const sans = STIX_Two_Text({
+export const sans = Familjen_Grotesk({
   weight: ["400", "500", "600", "700"],
   style: ["normal", "italic"],
   subsets: ["latin"],
