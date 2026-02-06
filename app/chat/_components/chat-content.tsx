@@ -15,7 +15,16 @@ import {
 import { DefaultChatTransport } from "ai";
 import { ArrowUp, Square } from "lucide-react";
 import { motion } from "motion/react";
-import { createContext, useContext, useEffect, useRef, useState } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+  useMemo,
+  useCallback,
+  memo,
+} from "react";
 import { useQueryState } from "nuqs";
 import {
   PromptInput,
@@ -24,6 +33,7 @@ import {
   PromptInputAction,
 } from "@/components/prompt-area";
 import { Button } from "@/components/ui/button";
+import { useHotkeys } from "react-hotkeys-hook";
 
 const CHAT_STORE_ID = "persistent-chat";
 const CHAT_HISTORY_KEY = "resume-chat-history";
@@ -50,7 +60,7 @@ function useChatContext() {
   return context;
 }
 
-function Message({ message }: { message: any }) {
+const Message = memo(function Message({ message }: { message: any }) {
   return (
     <div
       className={`w-full ${message.role === "user" ? "text-right" : "text-left"
@@ -86,7 +96,7 @@ function Message({ message }: { message: any }) {
       })}
     </div>
   );
-}
+});
 
 function Messages() {
   const { messages, status, hasMessages } = useChatContext();
@@ -94,13 +104,7 @@ function Messages() {
   if (!hasMessages) return null;
 
   return (
-    <div
-      className="flex-1 overflow-y-auto p-4 pb-32 space-y-4 max-w-full lg:max-w-[896px] lg:mx-auto lg:w-full"
-      style={{
-        scrollbarWidth: "none",
-        msOverflowStyle: "none",
-      }}
-    >
+    <div className="p-4 pb-20 space-y-4 w-full">
       {messages.map((message) => (
         <Message key={message.id} message={message} />
       ))}
@@ -152,68 +156,61 @@ function Input() {
   const { sendMessage, status, stop, input, setInput, inputRef } =
     useChatContext();
 
-  const handleSubmit = () => {
+  const handleSubmit = useCallback(() => {
     if (input.trim() && status === "ready") {
       sendMessage({ text: input });
       setInput("");
     }
-  };
+  }, [input, status, sendMessage, setInput]);
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-40 pointer-events-none">
-      {/* Smooth gradient fade from transparent to bg */}
-      <div className="h-16 bg-gradient-to-t from-background via-background/60 to-transparent" />
-
-      <div className="bg-background px-4 pb-4 pointer-events-auto">
-        <div className="container mx-auto max-w-4xl relative">
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              handleSubmit();
-            }}
-            className="w-full"
-          >
-            <PromptInput
-              value={input}
-              onValueChange={setInput}
-              onSubmit={handleSubmit}
-              disabled={status !== "ready"}
-              isLoading={status === "submitted"}
-              maxHeight={200}
-              className="py-1.5 pl-2 pr-2"
-            >
-              <div className="flex items-end gap-1.5">
-                <div className="flex-1 min-w-0">
-                  <PromptInputTextarea
-                    placeholder="Ask something about Milind's work..."
-                    className="min-h-[32px] py-1 pl-2 pr-0"
-                  />
-                </div>
-                <PromptInputActions>
-                  <Button
-                    type={status === "ready" ? "submit" : "button"}
-                    size="icon"
-                    onClick={(e) => {
-                      if (status === "submitted") {
-                        e.preventDefault();
-                        stop();
-                      }
-                    }}
-                    disabled={status === "ready" && !input.trim()}
-                    className="rounded-full size-8 shrink-0 shadow cursor-pointer disabled:cursor-not-allowed"
-                  >
-                    {status === "submitted" ? (
-                      <Square className="size-4" fill="currentColor" />
-                    ) : (
-                      <ArrowUp className="size-4" />
-                    )}
-                  </Button>
-                </PromptInputActions>
-              </div>
-            </PromptInput>
-          </form>
-        </div>
-      </div>
+    <div className="p-4">
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleSubmit();
+        }}
+        className="w-full"
+      >
+        <PromptInput
+          value={input}
+          onValueChange={setInput}
+          onSubmit={handleSubmit}
+          disabled={status !== "ready"}
+          isLoading={status === "submitted"}
+          maxHeight={200}
+          className="py-1.5 pl-2 pr-2"
+        >
+          <div className="flex items-end gap-1.5">
+            <div className="flex-1 min-w-0">
+              <PromptInputTextarea
+                placeholder="Ask something about Milind's work..."
+                className="min-h-[32px] py-1 pl-2 pr-0"
+              />
+            </div>
+            <PromptInputActions>
+              <Button
+                type={status === "ready" ? "submit" : "button"}
+                size="icon"
+                onClick={(e) => {
+                  if (status === "submitted") {
+                    e.preventDefault();
+                    stop();
+                  }
+                }}
+                disabled={status === "ready" && !input.trim()}
+                className="rounded-full size-8 shrink-0 shadow cursor-pointer disabled:cursor-not-allowed"
+              >
+                {status === "submitted" ? (
+                  <Square className="size-4" fill="currentColor" />
+                ) : (
+                  <ArrowUp className="size-4" />
+                )}
+              </Button>
+            </PromptInputActions>
+          </div>
+        </PromptInput>
+      </form>
     </div>
   );
 }
@@ -242,14 +239,14 @@ function Chat({ children }: { children: React.ReactNode }) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [queryParam, setQueryParam] = useQueryState("q");
 
-  const clearChat = async () => {
+  const clearChat = useCallback(async () => {
     try {
       await clearFromIndexedDB(CHAT_HISTORY_KEY);
       setMessages([]);
     } catch (error) {
       console.warn("Failed to clear chat:", error);
     }
-  };
+  }, [setMessages]);
 
   useEffect(() => {
     const loadPersistedMessages = async () => {
@@ -278,20 +275,32 @@ function Chat({ children }: { children: React.ReactNode }) {
     }
   }, [messages, chatState.id, isLoaded]);
 
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "/" && e.target !== inputRef.current) {
+  // Focus input on "/" key press (only when not already focused)
+  useHotkeys(
+    "/",
+    (e) => {
+      if (document.activeElement !== inputRef.current) {
         e.preventDefault();
         inputRef.current?.focus();
       }
-      if (e.key === "Escape" && e.target === inputRef.current) {
+    },
+    {
+      enableOnFormTags: false, // Don't trigger when typing in forms
+    }
+  );
+
+  // Blur input on Escape key press (only when input is focused)
+  useHotkeys(
+    "escape",
+    () => {
+      if (document.activeElement === inputRef.current) {
         inputRef.current?.blur();
       }
-    };
-
-    document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
-  }, []);
+    },
+    {
+      enableOnFormTags: true, // Allow escape in form inputs
+    }
+  );
 
   useEffect(() => {
     if (isLoaded && queryParam && status === "ready") {
@@ -300,32 +309,52 @@ function Chat({ children }: { children: React.ReactNode }) {
     }
   }, [isLoaded, queryParam, status, sendMessage, setQueryParam]);
 
-  const contextValue = {
-    sendMessage,
-    status,
-    stop,
-    setMessages,
-    regenerate,
-    resumeStream,
-    addToolResult,
-    clearError,
-    messages,
-    chatState,
-    input,
-    setInput,
-    inputRef,
-    hasMessages,
-    isLoaded,
-    clearChat,
-    id: chatState.id,
-    error: undefined,
-  };
+  const contextValue = useMemo(
+    () => ({
+      sendMessage,
+      status,
+      stop,
+      setMessages,
+      regenerate,
+      resumeStream,
+      addToolResult,
+      clearError,
+      messages,
+      chatState,
+      input,
+      setInput,
+      inputRef,
+      hasMessages,
+      isLoaded,
+      clearChat,
+      id: chatState.id,
+      error: undefined,
+    }),
+    [
+      sendMessage,
+      status,
+      stop,
+      setMessages,
+      regenerate,
+      resumeStream,
+      addToolResult,
+      clearError,
+      messages,
+      chatState,
+      input,
+      setInput,
+      inputRef,
+      hasMessages,
+      isLoaded,
+      clearChat,
+    ]
+  );
 
   return (
     <ChatContext.Provider value={contextValue}>
-      <main className="fixed inset-0 flex flex-col pt-12 print:static print:pt-0">
+      <div className="h-full flex flex-col">
         {children}
-      </main>
+      </div>
     </ChatContext.Provider>
   );
 }
@@ -337,31 +366,38 @@ Chat.Input = Input;
 Chat.Message = Message;
 
 function ChatContentLayout() {
-  const { hasMessages } = useChatContext();
+  const { hasMessages, isLoaded } = useChatContext();
 
   return (
-    <>
-      <Chat.Messages />
-      <div
-        className={`${!hasMessages
-            ? "flex-1 flex flex-col items-center justify-center p-4 pb-32"
-            : ""
-          }`}
-        style={!hasMessages ? { transform: "translateY(-10vh)" } : {}}
-      >
-        <Chat.Welcome />
-        {hasMessages && (
-          <motion.div
-            layout
-            className="w-full max-w-full lg:max-w-[896px] lg:mx-auto p-4 print:hidden"
-          >
-            <Chat.ClearButton />
-          </motion.div>
+    <div className="h-full flex flex-col relative">
+      {/* Scrollable content area */}
+      <div className="flex-1 overflow-y-auto">
+        {!isLoaded ? (
+          // Loading state - prevents flash of empty state
+          <div className="flex items-center justify-center p-4 min-h-[60vh]">
+            <Loading />
+          </div>
+        ) : (
+          <>
+            <Chat.Messages />
+            {!hasMessages && (
+              <div className="flex flex-col items-center justify-center p-4 min-h-[60vh]">
+                <Chat.Welcome />
+              </div>
+            )}
+          </>
         )}
       </div>
-      {/* Input is now fixed at the bottom */}
-      <Chat.Input />
-    </>
+      {/* Gradient overlay - positioned above scroll area */}
+      <div className="absolute bottom-0 left-0 right-0 pointer-events-none">
+        {/* Smooth gradient fade from transparent to bg */}
+        <div className="h-16 bg-gradient-to-t from-background via-background/60 to-transparent" />
+      </div>
+      {/* Input at bottom */}
+      <div className="bg-background relative z-10">
+        <Chat.Input />
+      </div>
+    </div>
   );
 }
 

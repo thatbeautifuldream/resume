@@ -8,6 +8,9 @@ import { NuqsAdapter } from "nuqs/adapters/next/app";
 import type React from "react";
 import { Suspense } from "react";
 import { ThemeProvider } from "@/components/providers/theme-provider";
+import { ChatSidebarProvider } from "@/components/providers/chat-sidebar-provider";
+import { ChatSidebar } from "@/components/chat-sidebar";
+import { LayoutWrapper } from "@/components/layout-wrapper";
 import { sans } from "@/lib/fonts";
 
 import "./globals.css";
@@ -34,18 +37,16 @@ export default function RootLayout({
       </head>
       <body className="min-h-screen bg-background text-foreground antialiased">
         <ThemeProvider attribute="class" defaultTheme="light">
-          <NuqsAdapter>
-            <Suspense fallback={null}>
-              <Header
-                leftItems={[{ key: "chat", label: "Chat", href: "/chat" }]}
-              />
-            </Suspense>
-            <main className="container mx-auto px-4 sm:px-6 lg:px-8 pt-[60px] print:pt-0">
-              {children}
-            </main>
-          </NuqsAdapter>
-          <GoogleAnalytics gaId="G-G7VF0PLE22" />
-          <ClarityProvider />
+          <ChatSidebarProvider>
+            <LayoutWrapper>
+              <NuqsAdapter>
+                {children}
+                <ChatSidebar />
+              </NuqsAdapter>
+              <GoogleAnalytics gaId="G-G7VF0PLE22" />
+              <ClarityProvider />
+            </LayoutWrapper>
+          </ChatSidebarProvider>
         </ThemeProvider>
       </body>
     </html>
