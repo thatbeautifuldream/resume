@@ -3,6 +3,13 @@
 import { Response } from "@/components/ai-elements/response";
 import { Loading } from "@/components/loading";
 import {
+  PromptInput,
+  PromptInputActions,
+  PromptInputTextarea,
+} from "@/components/prompt-area";
+import { useSidebarActions } from "@/components/providers/chat-sidebar-store";
+import { Button } from "@/components/ui/button";
+import {
   clearFromIndexedDB,
   loadFromIndexedDB,
   saveToIndexedDB,
@@ -17,22 +24,14 @@ import { ArrowUp, Square } from "lucide-react";
 import { motion } from "motion/react";
 import {
   createContext,
+  memo,
+  useCallback,
   useContext,
   useEffect,
+  useMemo,
   useRef,
   useState,
-  useMemo,
-  useCallback,
-  memo,
 } from "react";
-import { useQueryState } from "nuqs";
-import {
-  PromptInput,
-  PromptInputTextarea,
-  PromptInputActions,
-  PromptInputAction,
-} from "@/components/prompt-area";
-import { Button } from "@/components/ui/button";
 import { useHotkeys } from "react-hotkeys-hook";
 
 const CHAT_STORE_ID = "persistent-chat";
@@ -40,15 +39,15 @@ const CHAT_HISTORY_KEY = "resume-chat-history";
 
 const ChatContext = createContext<
   | (ReturnType<typeof useChat> & {
-    messages: ReturnType<typeof useChatMessages>;
-    chatState: ReturnType<typeof useChatStoreState>;
-    input: string;
-    setInput: (value: string) => void;
-    inputRef: React.RefObject<HTMLTextAreaElement | null>;
-    hasMessages: boolean;
-    isLoaded: boolean;
-    clearChat: () => Promise<void>;
-  })
+      messages: ReturnType<typeof useChatMessages>;
+      chatState: ReturnType<typeof useChatStoreState>;
+      input: string;
+      setInput: (value: string) => void;
+      inputRef: React.RefObject<HTMLTextAreaElement | null>;
+      hasMessages: boolean;
+      isLoaded: boolean;
+      clearChat: () => Promise<void>;
+    })
   | null
 >(null);
 
@@ -63,8 +62,9 @@ function useChatContext() {
 const Message = memo(function Message({ message }: { message: any }) {
   return (
     <div
-      className={`w-full ${message.role === "user" ? "text-right" : "text-left"
-        }`}
+      className={`w-full ${
+        message.role === "user" ? "text-right" : "text-left"
+      }`}
     >
       {message.parts.map((part: any, index: number) => {
         if (part.type === "text" && message.role === "user") {
@@ -106,56 +106,48 @@ function Messages() {
   const shouldAutoScrollRef = useRef(true);
   const scrollTimeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
 
-  // Helper to check if user is near bottom
   const isNearBottom = useCallback(() => {
     const scrollContainer = scrollContainerRef.current?.parentElement;
     if (!scrollContainer) return false;
 
-    const threshold = 100; // pixels from bottom
-    const position = scrollContainer.scrollHeight - scrollContainer.scrollTop - scrollContainer.clientHeight;
+    const threshold = 100;
+    const position =
+      scrollContainer.scrollHeight -
+      scrollContainer.scrollTop -
+      scrollContainer.clientHeight;
     return position < threshold;
   }, []);
 
-  // Helper to scroll to bottom
   const scrollToBottom = useCallback((behavior: ScrollBehavior = "smooth") => {
     requestAnimationFrame(() => {
       messagesEndRef.current?.scrollIntoView({ behavior });
     });
   }, []);
 
-  // Auto-scroll logic
   useEffect(() => {
-    const messageCountChanged = messages.length !== prevMessageCountRef.current;
     const hasNewMessage = messages.length > prevMessageCountRef.current;
-
-    // Update ref for next render
     prevMessageCountRef.current = messages.length;
 
-    // Always scroll when:
-    // 1. New message added (user sent message or assistant started replying)
-    // 2. Status changed to submitted (loading state appeared)
-    // 3. User is already near bottom and content is streaming
-    if (hasNewMessage || status === "submitted" || (shouldAutoScrollRef.current && isNearBottom())) {
+    if (
+      hasNewMessage ||
+      status === "submitted" ||
+      (shouldAutoScrollRef.current && isNearBottom())
+    ) {
       scrollToBottom();
     }
   }, [messages, status, isNearBottom, scrollToBottom]);
 
-  // Track user scroll behavior
   useEffect(() => {
     const scrollContainer = scrollContainerRef.current?.parentElement;
     if (!scrollContainer) return;
 
     const handleScroll = () => {
-      // Update auto-scroll preference based on user position
       shouldAutoScrollRef.current = isNearBottom();
 
-      // Clear existing timeout
       if (scrollTimeoutRef.current) {
         clearTimeout(scrollTimeoutRef.current);
       }
 
-      // If user scrolls away from bottom, temporarily disable auto-scroll
-      // Re-enable after they stop scrolling for 200ms
       if (!shouldAutoScrollRef.current) {
         scrollTimeoutRef.current = setTimeout(() => {
           if (isNearBottom()) {
@@ -165,19 +157,22 @@ function Messages() {
       }
     };
 
-    scrollContainer.addEventListener('scroll', handleScroll, { passive: true });
+    scrollContainer.addEventListener("scroll", handleScroll, { passive: true });
     return () => {
-      scrollContainer.removeEventListener('scroll', handleScroll);
+      scrollContainer.removeEventListener("scroll", handleScroll);
       if (scrollTimeoutRef.current) {
         clearTimeout(scrollTimeoutRef.current);
       }
     };
   }, [isNearBottom]);
 
-  // Initial scroll to bottom when messages first load
   const hasScrolledInitiallyRef = useRef(false);
   useEffect(() => {
-    if (hasMessages && messages.length > 0 && !hasScrolledInitiallyRef.current) {
+    if (
+      hasMessages &&
+      messages.length > 0 &&
+      !hasScrolledInitiallyRef.current
+    ) {
       scrollToBottom("instant");
       hasScrolledInitiallyRef.current = true;
     }
@@ -227,6 +222,7 @@ function ClearButton() {
     <motion.div layout="position" className="mb-2 flex justify-end">
       <button
         onClick={clearChat}
+        aria-label="Clear chat history"
         className="text-sm cursor-pointer hover:underline opacity-60 hover:opacity-100 transition-opacity"
         title="Clear chat history"
       >
@@ -237,8 +233,7 @@ function ClearButton() {
 }
 
 function Input() {
-  const { sendMessage, status, stop, input, setInput, inputRef } =
-    useChatContext();
+  const { sendMessage, status, stop, input, setInput } = useChatContext();
 
   const handleSubmit = useCallback(() => {
     if (input.trim() && status === "ready") {
@@ -321,7 +316,7 @@ function Chat({ children }: { children: React.ReactNode }) {
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const hasMessages = messages.length > 0;
   const [isLoaded, setIsLoaded] = useState(false);
-  const [queryParam, setQueryParam] = useQueryState("q");
+  const { registerChatHandler, unregisterChatHandler } = useSidebarActions();
 
   const clearChat = useCallback(async () => {
     try {
@@ -365,7 +360,6 @@ function Chat({ children }: { children: React.ReactNode }) {
     }
   }, [messages, chatState.id, isLoaded]);
 
-  // Focus input on "/" key press (only when not already focused)
   useHotkeys(
     "/",
     (e) => {
@@ -375,11 +369,10 @@ function Chat({ children }: { children: React.ReactNode }) {
       }
     },
     {
-      enableOnFormTags: false, // Don't trigger when typing in forms
-    }
+      enableOnFormTags: false,
+    },
   );
 
-  // Blur input on Escape key press (only when input is focused)
   useHotkeys(
     "escape",
     () => {
@@ -388,16 +381,28 @@ function Chat({ children }: { children: React.ReactNode }) {
       }
     },
     {
-      enableOnFormTags: true, // Allow escape in form inputs
-    }
+      enableOnFormTags: true,
+    },
+  );
+
+  const handleInjectPrompt = useCallback(
+    (prompt: string) => {
+      if (isLoaded && status === "ready") {
+        sendMessage({ text: prompt });
+      } else {
+        setInput(prompt);
+        inputRef.current?.focus();
+      }
+    },
+    [isLoaded, status, sendMessage, setInput],
   );
 
   useEffect(() => {
-    if (isLoaded && queryParam && status === "ready") {
-      sendMessage({ text: queryParam });
-      setQueryParam(null);
-    }
-  }, [isLoaded, queryParam, status, sendMessage, setQueryParam]);
+    registerChatHandler(handleInjectPrompt);
+    return () => {
+      unregisterChatHandler();
+    };
+  }, [registerChatHandler, unregisterChatHandler, handleInjectPrompt]);
 
   const contextValue = useMemo(
     () => ({
@@ -437,14 +442,12 @@ function Chat({ children }: { children: React.ReactNode }) {
       hasMessages,
       isLoaded,
       clearChat,
-    ]
+    ],
   );
 
   return (
     <ChatContext.Provider value={contextValue}>
-      <div className="h-full flex flex-col">
-        {children}
-      </div>
+      <div className="h-full flex flex-col">{children}</div>
     </ChatContext.Provider>
   );
 }
@@ -460,10 +463,8 @@ function ChatContentLayout() {
 
   return (
     <div className="@container h-full flex flex-col relative">
-      {/* Scrollable content area */}
       <div className="flex-1 overflow-y-auto">
         {!isLoaded ? (
-          // Loading state - prevents flash of empty state
           <div className="flex items-center justify-center p-4 min-h-[60vh]">
             <Loading />
           </div>
@@ -478,12 +479,9 @@ function ChatContentLayout() {
           </>
         )}
       </div>
-      {/* Gradient overlay - positioned above scroll area */}
       <div className="absolute bottom-0 left-0 right-0 pointer-events-none">
-        {/* Smooth gradient fade from transparent to bg */}
         <div className="h-16 bg-gradient-to-t from-background via-background/60 to-transparent" />
       </div>
-      {/* Input at bottom */}
       <div className="bg-background relative z-10">
         <Chat.Input />
       </div>

@@ -22,9 +22,15 @@ import type {
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import type * as React from "react";
-import { useHotkeys } from "react-hotkeys-hook";
-import { useTheme } from "next-themes";
-import { useChatSidebar } from "@/components/providers/chat-sidebar-provider";
+import {
+  useSidebarOpen,
+  useSidebarActions,
+} from "@/components/providers/chat-sidebar-store";
+import {
+  registerJsonToggleHandler,
+  unregisterJsonToggleHandler,
+} from "@/components/providers/keyboard-shortcuts";
+import { Streamdown } from "streamdown";
 
 function ResumeSection({
   title,
@@ -399,17 +405,23 @@ function TalkPresentationItem({ item }: { item: Talks }) {
 }
 
 function SkillsProficiency({ skills }: { skills: Skill[] }) {
+  const { sendPromptToChat } = useSidebarActions();
+
   if (!skills?.length) return null;
+
   return (
     <div className="flex flex-wrap gap-x-3 text-sm md:text-base font-semibold">
       {skills.map((skill) => (
-        <a
+        <button
           key={skill}
-          href={`/chat?q=${encodeURIComponent(`Tell me about ${skill} - what is it, and how has Milind used this skill in his work? How proficient is he with ${skill}?`)}`}
-          className="hover:underline"
+          onClick={() => {
+            const prompt = `Tell me about ${skill} - what is it, and how has Milind used this skill in his work? How proficient is he with ${skill}?`;
+            sendPromptToChat(prompt);
+          }}
+          className="hover:underline cursor-pointer"
         >
           {skill}
-        </a>
+        </button>
       ))}
     </div>
   );
@@ -527,8 +539,14 @@ const SECTION_CONFIG: Partial<
 
 export function ResumeView({ data }: { data: Resume }) {
   const [showJson, setShowJson] = useState(false);
-  const { theme, setTheme } = useTheme();
-  const { isOpen, close } = useChatSidebar();
+  const isOpen = useSidebarOpen();
+  const { close } = useSidebarActions();
+
+  // Register JSON toggle handler for centralized keyboard shortcuts
+  useEffect(() => {
+    registerJsonToggleHandler(() => setShowJson((prev) => !prev));
+    return () => unregisterJsonToggleHandler();
+  }, []);
 
   // Handle print from any source (browser menu, Ctrl+P, etc.)
   useEffect(() => {
@@ -542,25 +560,11 @@ export function ResumeView({ data }: { data: Resume }) {
     return () => window.removeEventListener("beforeprint", handleBeforePrint);
   }, [isOpen, close]);
 
-  useHotkeys(
-    "p",
-    () => {
-      if (isOpen) {
-        close();
-        // Wait for sidebar animation to complete before printing
-        setTimeout(() => window.print(), 350);
-      } else {
-        window.print();
-      }
-    },
-    { preventDefault: true }
-  );
-  useHotkeys("j", () => setShowJson((prev) => !prev), { preventDefault: true });
-  useHotkeys("t", () => setTheme(theme === "dark" ? "light" : "dark"), {
-    preventDefault: true,
-  });
-
   if (showJson) {
+    const jsonMarkdown = `\`\`\`json
+${JSON.stringify(data, null, 2)}
+\`\`\``;
+
     return (
       <article className="space-y-6 py-4 md:py-8">
         <div className="text-center mb-4 print:hidden">
@@ -568,9 +572,9 @@ export function ResumeView({ data }: { data: Resume }) {
             Press 'j' to return to normal view
           </p>
         </div>
-        <pre className="whitespace-pre-wrap break-words text-xs md:text-sm bg-muted p-4 overflow-auto font-mono">
-          {JSON.stringify(data, null, 2)}
-        </pre>
+        <Streamdown className="font-mono [&>pre]:max-h-[80vh] [&>pre]:overflow-auto">
+          {jsonMarkdown}
+        </Streamdown>
       </article>
     );
   }

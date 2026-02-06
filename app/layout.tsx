@@ -4,14 +4,12 @@ import { StructuredData } from "@/components/structured-data";
 import { createMetadata } from "@/lib/metadata";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import type { Metadata } from "next";
-import { NuqsAdapter } from "nuqs/adapters/next/app";
 import type React from "react";
-import { Suspense } from "react";
 import { ThemeProvider } from "@/components/providers/theme-provider";
-import { ChatSidebarProvider } from "@/components/providers/chat-sidebar-provider";
+import { KeyboardShortcuts } from "@/components/providers/keyboard-shortcuts";
 import { ChatSidebar } from "@/components/chat-sidebar";
 import { LayoutWrapper } from "@/components/layout-wrapper";
-import { sans } from "@/lib/fonts";
+import { sans, mono } from "@/lib/fonts";
 
 import "./globals.css";
 
@@ -26,7 +24,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className={sans.variable}>
+    <html lang="en" suppressHydrationWarning className={`${sans.variable} ${mono.variable}`}>
       <head>
         <meta
           name="viewport"
@@ -37,16 +35,13 @@ export default function RootLayout({
       </head>
       <body className="min-h-screen bg-background text-foreground antialiased">
         <ThemeProvider attribute="class" defaultTheme="light">
-          <ChatSidebarProvider>
-            <LayoutWrapper>
-              <NuqsAdapter>
-                {children}
-                <ChatSidebar />
-              </NuqsAdapter>
-              <GoogleAnalytics gaId="G-G7VF0PLE22" />
-              <ClarityProvider />
-            </LayoutWrapper>
-          </ChatSidebarProvider>
+          <KeyboardShortcuts />
+          <LayoutWrapper>
+            {children}
+            <ChatSidebar />
+            <GoogleAnalytics gaId="G-G7VF0PLE22" />
+            <ClarityProvider />
+          </LayoutWrapper>
         </ThemeProvider>
       </body>
     </html>

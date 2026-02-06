@@ -79,6 +79,9 @@
   --sidebar-ring: oklch(0.708 0 0);
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
+  --sidebar-width: 480px;
+  --container-padding: clamp(1rem, 4vw, 2rem);
+  --container-max-width: min(72rem, 100vw - (2 * var(--container-padding)));
 }
 
 .dark {
@@ -204,7 +207,7 @@
 
   code,
   pre {
-    font-family: var(--font-sans), Menlo, Monaco, Consolas,
+    font-family: var(--font-mono), Menlo, Monaco, Consolas,
       "Liberation Mono", "Courier New", monospace;
     font-size: 85%;
     hyphens: none;
@@ -259,13 +262,10 @@
 
 @layer utilities {
   .container {
-    max-width: 80ch;
-  }
-
-  @media (min-width: 1024px) {
-    .container {
-      max-width: 896px;
-    }
+    width: 100%;
+    max-width: var(--container-max-width);
+    margin-inline: auto;
+    padding-inline: var(--container-padding);
   }
 
   .text-justify {
