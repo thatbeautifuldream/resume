@@ -20,10 +20,11 @@ import type {
   Work,
 } from "@/lib/resume-schema";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type * as React from "react";
 import { useHotkeys } from "react-hotkeys-hook";
 import { useTheme } from "next-themes";
+import { useChatSidebar } from "@/components/providers/chat-sidebar-provider";
 
 function ResumeSection({
   title,
@@ -527,8 +528,33 @@ const SECTION_CONFIG: Partial<
 export function ResumeView({ data }: { data: Resume }) {
   const [showJson, setShowJson] = useState(false);
   const { theme, setTheme } = useTheme();
+  const { isOpen, close } = useChatSidebar();
 
-  useHotkeys("p", () => window.print(), { preventDefault: true });
+  // Handle print from any source (browser menu, Ctrl+P, etc.)
+  useEffect(() => {
+    const handleBeforePrint = () => {
+      if (isOpen) {
+        close();
+      }
+    };
+
+    window.addEventListener("beforeprint", handleBeforePrint);
+    return () => window.removeEventListener("beforeprint", handleBeforePrint);
+  }, [isOpen, close]);
+
+  useHotkeys(
+    "p",
+    () => {
+      if (isOpen) {
+        close();
+        // Wait for sidebar animation to complete before printing
+        setTimeout(() => window.print(), 350);
+      } else {
+        window.print();
+      }
+    },
+    { preventDefault: true }
+  );
   useHotkeys("j", () => setShowJson((prev) => !prev), { preventDefault: true });
   useHotkeys("t", () => setTheme(theme === "dark" ? "light" : "dark"), {
     preventDefault: true,

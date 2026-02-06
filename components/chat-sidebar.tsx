@@ -39,21 +39,25 @@ export function ChatSidebar() {
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="@container fixed top-0 right-0 bottom-0 w-full md:w-[400px] lg:w-[480px] bg-background border-l z-50 overflow-y-auto"
+            className="@container fixed top-0 right-0 bottom-0 w-full md:w-[400px] lg:w-[480px] bg-background border-l z-50 flex flex-col print:hidden"
           >
             {/* Back to Resume button - only visible on mobile (when sidebar is full-width) */}
-            <div className="md:hidden sticky top-0 z-10 bg-background/95 backdrop-blur-sm border-b">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={handleBackToResume}
-                className="m-2"
-              >
-                <ArrowLeft className="size-4 mr-2" />
-                Back to Resume
-              </Button>
+            <div className="md:hidden shrink-0 bg-background border-b">
+              <div className="px-4 sm:px-6 lg:px-8 py-1.5">
+                <div className="flex items-center">
+                  <button
+                    onClick={handleBackToResume}
+                    className="flex items-center gap-2 font-medium hover:underline text-sm md:text-md"
+                  >
+                    <ArrowLeft className="size-4" />
+                    Back to Resume
+                  </button>
+                </div>
+              </div>
             </div>
-            <ChatContent />
+            <div className="flex-1 overflow-y-auto">
+              <ChatContent />
+            </div>
           </motion.aside>
         )}
       </AnimatePresence>

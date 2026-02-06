@@ -328,7 +328,9 @@ function Chat({ children }: { children: React.ReactNode }) {
       await clearFromIndexedDB(CHAT_HISTORY_KEY);
       setMessages([]);
     } catch (error) {
-      console.warn("Failed to clear chat:", error);
+      if (process.env.NODE_ENV !== "production") {
+        console.warn("Failed to clear chat:", error);
+      }
     }
   }, [setMessages]);
 
@@ -340,7 +342,9 @@ function Chat({ children }: { children: React.ReactNode }) {
           setMessages(persistedData.messages);
         }
       } catch (error) {
-        console.warn("Failed to load persisted messages:", error);
+        if (process.env.NODE_ENV !== "production") {
+          console.warn("Failed to load persisted messages:", error);
+        }
       } finally {
         setIsLoaded(true);
       }
@@ -354,7 +358,9 @@ function Chat({ children }: { children: React.ReactNode }) {
         messages,
         id: chatState.id,
       }).catch((error) => {
-        console.warn("Failed to save messages:", error);
+        if (process.env.NODE_ENV !== "production") {
+          console.warn("Failed to save messages:", error);
+        }
       });
     }
   }, [messages, chatState.id, isLoaded]);
