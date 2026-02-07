@@ -60,40 +60,59 @@ function useChatContext() {
 }
 
 const Message = memo(function Message({ message }: { message: any }) {
+  const isUser = message.role === "user";
+
   return (
     <div
-      className={`w-full ${
-        message.role === "user" ? "text-right" : "text-left"
+      className={`flex w-full min-w-0 ${
+        isUser ? "justify-end" : "justify-start"
       }`}
     >
-      {message.parts.map((part: any, index: number) => {
-        if (part.type === "text" && message.role === "user") {
-          return (
-            <div key={index} className="p-2">
-              {part.text}
-            </div>
-          );
-        }
+      <div
+        className={`flex flex-col max-w-[80%] min-w-0 ${
+          isUser ? "items-end" : "items-start"
+        }`}
+      >
+        <div
+          className={`relative px-3 py-2 overflow-hidden ${
+            isUser
+              ? "rounded-2xl rounded-br-none bg-secondary border text-secondary-foreground"
+              : "rounded-2xl rounded-bl-none bg-background border text-foreground"
+          }`}
+        >
+          <div className="break-words">
+            {message.parts.map((part: any, index: number) => {
+              if (part.type === "text") {
+                return isUser ? (
+                  <p
+                    key={index}
+                    className="text-sm leading-relaxed whitespace-pre-wrap"
+                  >
+                    {part.text}
+                  </p>
+                ) : (
+                  <Response key={index}>{part.text}</Response>
+                );
+              }
 
-        if (part.type === "text" && message.role === "assistant") {
-          return <Response key={index}>{part.text}</Response>;
-        }
+              if (part.type === "reasoning" && message.role === "assistant") {
+                return (
+                  <details key={index} className="mb-2">
+                    <summary className="text-xs cursor-pointer hover:opacity-80 transition-opacity italic">
+                      Thinking...
+                    </summary>
+                    <div className="text-xs mt-2 pl-2 italic whitespace-pre-wrap opacity-80">
+                      {part.text}
+                    </div>
+                  </details>
+                );
+              }
 
-        if (part.type === "reasoning" && message.role === "assistant") {
-          return (
-            <details key={index} className="mb-2 p-2">
-              <summary className="text-sm cursor-pointer transition-opacity italic">
-                Thinking...
-              </summary>
-              <div className="text-sm mt-2 pl-4 italic whitespace-pre-wrap">
-                {part.text}
-              </div>
-            </details>
-          );
-        }
-
-        return null;
-      })}
+              return null;
+            })}
+          </div>
+        </div>
+      </div>
     </div>
   );
 });
@@ -193,22 +212,46 @@ function Messages() {
 }
 
 function Welcome() {
-  const { hasMessages } = useChatContext();
+  const { hasMessages, sendMessage } = useChatContext();
 
   if (hasMessages) return null;
 
+  const starterPrompts = [
+    "Summarize this resume",
+    "What's the background?",
+    "Tell me about recent projects",
+    "What are the key skills?",
+    "What's the work experience?",
+  ];
+
+  const handlePromptClick = (prompt: string) => {
+    sendMessage({ text: prompt });
+  };
+
   return (
     <motion.div
-      className="text-center mb-8"
+      className="text-center mb-4"
       animate={{ opacity: hasMessages ? 0 : 1 }}
       transition={{ duration: 0.3 }}
     >
-      <h1 className="text-2xl sm:text-3xl md:text-4xl font-medium mb-4">
+      <h1 className="text-lg @md:text-xl font-medium mb-2">
         Chat with Milind's Resume
       </h1>
-      <p className="text-base sm:text-lg md:text-xl opacity-60">
+      <p className="text-xs @md:text-sm opacity-60 mb-4">
         Ask anything about my work, projects, or experience
       </p>
+
+      <div className="flex flex-wrap gap-2 justify-center max-w-md mx-auto">
+        {starterPrompts.map((prompt) => (
+          <button
+            key={prompt}
+            onClick={() => handlePromptClick(prompt)}
+            className="text-xs @md:text-sm px-3 py-1.5 rounded-full border border-border hover:bg-accent hover:border-accent-foreground/20 transition-colors cursor-pointer"
+          >
+            {prompt}
+          </button>
+        ))}
+      </div>
     </motion.div>
   );
 }
@@ -463,27 +506,34 @@ function ChatContentLayout() {
 
   return (
     <div className="@container h-full flex flex-col relative">
-      <div className="flex-1 overflow-y-auto">
-        {!isLoaded ? (
-          <div className="flex items-center justify-center p-4 min-h-[60vh]">
-            <Loading />
-          </div>
-        ) : (
-          <>
-            <Chat.Messages />
-            {!hasMessages && (
-              <div className="flex flex-col items-center justify-center p-4 min-h-[60vh]">
-                <Chat.Welcome />
-              </div>
-            )}
-          </>
-        )}
+      {/* Messages - Scrollable area with padding for input + gradient */}
+      <div className="flex-1 overflow-y-auto pt-4 pb-32">
+        <div className="px-4">
+          {!isLoaded ? (
+            <div className="flex items-center justify-center p-4 min-h-[60vh]">
+              <Loading />
+            </div>
+          ) : (
+            <>
+              <Chat.Messages />
+              {!hasMessages && (
+                <div className="flex flex-col items-center justify-center p-4 min-h-[60vh]">
+                  <Chat.Welcome />
+                </div>
+              )}
+            </>
+          )}
+        </div>
       </div>
-      <div className="absolute bottom-0 left-0 right-0 pointer-events-none">
+
+      {/* Input - Fixed at bottom with gradient fade */}
+      <div className="absolute bottom-0 left-0 right-0 z-40 pointer-events-none">
+        {/* Smooth gradient fade from transparent to bg */}
         <div className="h-16 bg-gradient-to-t from-background via-background/60 to-transparent" />
-      </div>
-      <div className="bg-background relative z-10">
-        <Chat.Input />
+
+        <div className="bg-background px-4 pb-4 pointer-events-auto">
+          <Chat.Input />
+        </div>
       </div>
     </div>
   );
