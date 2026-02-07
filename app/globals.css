@@ -84,6 +84,10 @@
   --container-max-width: min(72rem, 100vw - (2 * var(--container-padding)));
 }
 
+.chat-sidebar-scroll {
+  overscroll-behavior-y: contain;
+}
+
 @media (max-width: 640px) {
   :root {
     --container-padding: clamp(0.5rem, 2.5vw, 1rem);

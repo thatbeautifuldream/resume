@@ -44,7 +44,10 @@ export function ChatSidebar() {
   // Initialize CSS variable from store on mount
   useEffect(() => {
     if (isDesktop) {
-      document.documentElement.style.setProperty("--sidebar-width", `${width}px`);
+      document.documentElement.style.setProperty(
+        "--sidebar-width",
+        `${width}px`,
+      );
     } else {
       document.documentElement.style.setProperty("--sidebar-width", "0px");
     }
@@ -69,15 +72,19 @@ export function ChatSidebar() {
       const clampedWidth = Math.max(minWidth, Math.min(newWidth, maxWidth));
 
       // Update CSS variable directly - instant update, no re-render!
-      document.documentElement.style.setProperty("--sidebar-width", `${clampedWidth}px`);
+      document.documentElement.style.setProperty(
+        "--sidebar-width",
+        `${clampedWidth}px`,
+      );
     };
 
     const handleMouseUp = () => {
       setIsResizing(false);
 
       // Only persist to store after drag ends
-      const finalWidth = getComputedStyle(document.documentElement)
-        .getPropertyValue("--sidebar-width");
+      const finalWidth = getComputedStyle(
+        document.documentElement,
+      ).getPropertyValue("--sidebar-width");
       const widthValue = parseInt(finalWidth);
       if (!isNaN(widthValue)) {
         setWidth(widthValue);
@@ -126,8 +133,8 @@ export function ChatSidebar() {
                   backgroundColor: isResizing
                     ? "hsl(var(--primary))"
                     : isHoveringHandle
-                    ? "hsl(var(--primary) / 0.7)"
-                    : "transparent",
+                      ? "hsl(var(--primary) / 0.7)"
+                      : "transparent",
                 }}
               />
             )}
@@ -145,7 +152,7 @@ export function ChatSidebar() {
                 </div>
               </div>
             </div>
-            <div className="flex-1 overflow-y-auto">
+            <div className="chat-sidebar-scroll flex-1 overflow-y-auto">
               <ChatContent />
             </div>
           </motion.aside>
