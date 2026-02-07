@@ -545,19 +545,6 @@ function ChatInner({ children }: { children: React.ReactNode }) {
   }, [messages, messageCount, isLoaded]);
 
   useHotkeys(
-    "/",
-    (e) => {
-      if (document.activeElement !== inputRef.current) {
-        e.preventDefault();
-        inputRef.current?.focus();
-      }
-    },
-    {
-      enableOnFormTags: false,
-    },
-  );
-
-  useHotkeys(
     "escape",
     () => {
       if (document.activeElement === inputRef.current) {
