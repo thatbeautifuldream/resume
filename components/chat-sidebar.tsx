@@ -133,7 +133,7 @@ export function ChatSidebar() {
             )}
             {/* Back to Resume button - only visible on mobile/tablet (when sidebar is full-width) */}
             <div className="lg:hidden shrink-0 bg-background border-b">
-              <div className="px-4 sm:px-6 lg:px-8 py-1.5">
+              <div className="px-3 sm:px-4 md:px-6 lg:px-8 py-1.5">
                 <div className="flex items-center">
                   <button
                     onClick={handleBackToResume}

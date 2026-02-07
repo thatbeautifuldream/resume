@@ -43,8 +43,8 @@ function ResumeSection({
   children: React.ReactNode;
 }) {
   return (
-    <section className="space-y-2">
-      <h4 className="uppercase font-semibold border-b">{title}</h4>
+    <section className="space-y-1.5 sm:space-y-2">
+      <h4 className="uppercase font-semibold border-b text-sm sm:text-base">{title}</h4>
       <div>{children}</div>
     </section>
   );
@@ -53,7 +53,7 @@ function ResumeSection({
 function ResumeFooter({ source }: { source: string }) {
   const sourceLink = source.startsWith("http") ? source : `https://${source}`;
   return (
-    <footer className="mt-8 pt-4 text-center text-xs md:text-sm print:hidden">
+    <footer className="mt-6 sm:mt-8 pt-3 sm:pt-4 text-center text-xs md:text-sm print:hidden">
       <p className="text-muted-foreground">
         Source :{" "}
         <a href={sourceLink} target="_blank" rel="noopener noreferrer">
@@ -131,12 +131,12 @@ function ResumeHeaderItem({ basics }: { basics: Basics }) {
   }
 
   return (
-    <header className="text-center space-y-2">
-      <h1 className="font-semibold text-2xl md:text-3xl uppercase">
+    <header className="text-center space-y-1.5 sm:space-y-2">
+      <h1 className="font-semibold text-xl sm:text-2xl md:text-3xl uppercase">
         {basics.name}
       </h1>
 
-      <div className="text-sm md:text-base flex flex-wrap justify-center items-center gap-x-3 md:gap-x-4">
+      <div className="text-sm md:text-base flex flex-wrap justify-center items-center gap-x-2 sm:gap-x-3 md:gap-x-4 gap-y-1">
         {contactItems.map((item) => (
           <div key={item.key}>{item.element}</div>
         ))}
@@ -149,9 +149,9 @@ function WorkExperienceItem({ item }: { item: Work }) {
   const duration = calculateDuration(item.startDate, item.endDate);
   const isPresent = !item.endDate;
   return (
-    <div className="space-y-3">
-      <div className="space-y-1">
-        <div className="flex gap-3 items-start print:gap-2 print:items-center">
+    <div className="space-y-2 sm:space-y-3">
+      <div className="space-y-0.5 sm:space-y-1">
+        <div className="flex gap-2 sm:gap-3 items-start print:gap-2 print:items-center">
           <div className="flex-1 min-w-0">
             <div className="flex justify-between items-baseline gap-2">
               <strong className="text-sm md:text-base print:text-sm">
@@ -190,10 +190,10 @@ function WorkExperienceItem({ item }: { item: Work }) {
         </div>
       </div>
 
-      <div className="space-y-2">
+      <div className="space-y-1.5 sm:space-y-2">
         {item.summary && <p className="text-sm md:text-base">{item.summary}</p>}
         {!!item.highlights?.length && (
-          <ul className="list-disc pl-5 space-y-1 text-sm md:text-base">
+          <ul className="list-disc pl-4 sm:pl-5 space-y-0.5 sm:space-y-1 text-sm md:text-base">
             {item.highlights.map((h) => (
               <li key={h} className="text-justify">
                 {h}
@@ -218,9 +218,9 @@ function ProjectPortfolioItem({ item }: { item: Project }) {
     : undefined;
 
   return (
-    <div className="space-y-3">
-      <div className="space-y-1">
-        <div className="flex gap-3 items-start print:gap-2 print:items-center">
+    <div className="space-y-2 sm:space-y-3">
+      <div className="space-y-0.5 sm:space-y-1">
+        <div className="flex gap-2 sm:gap-3 items-start print:gap-2 print:items-center">
           <div className="flex-1 min-w-0">
             <div className="flex justify-between sm:flex-row flex-col sm:items-baseline items-start print:flex-row print:items-baseline">
               {urlHref ? (
@@ -237,7 +237,7 @@ function ProjectPortfolioItem({ item }: { item: Project }) {
                   {item.name}
                 </strong>
               )}
-              <em className="sm:mt-0 mt-1 text-xs md:text-sm print:text-xs print:mt-0">
+              <em className="sm:mt-0 mt-0.5 text-xs md:text-sm print:text-xs print:mt-0">
                 {dateDisplay}
               </em>
             </div>
@@ -245,12 +245,12 @@ function ProjectPortfolioItem({ item }: { item: Project }) {
         </div>
       </div>
 
-      <div className="space-y-2">
+      <div className="space-y-1.5 sm:space-y-2">
         {item.description && (
           <p className="text-sm md:text-base">{item.description}</p>
         )}
         {!!item.highlights?.length && (
-          <ul className="list-disc pl-5 space-y-1 text-sm md:text-base">
+          <ul className="list-disc pl-4 sm:pl-5 space-y-0.5 sm:space-y-1 text-sm md:text-base">
             {item.highlights.map((h) => (
               <li key={h} className="text-justify">
                 {h}
@@ -433,11 +433,11 @@ function SkillsProficiency({ skills }: { skills: Skill[] }) {
 function ReferenceTestimonial({ items }: { items: Reference[] }) {
   if (!items?.length) return null;
   return (
-    <div className="space-y-4">
+    <div className="space-y-3 sm:space-y-4">
       {items.map((r) => (
         <blockquote
           key={r.name}
-          className="italic border-l-4 border-border pl-4 space-y-2 text-sm md:text-base"
+          className="italic border-l-4 border-border pl-3 sm:pl-4 space-y-1.5 sm:space-y-2 text-sm md:text-base"
         >
           <div>{r.reference}</div>
           <footer className="text-xs md:text-sm font-semibold">
@@ -473,7 +473,7 @@ const SECTION_CONFIG: Partial<
   work: {
     title: "Experience",
     render: (items: Work[]) => (
-      <div className="space-y-8">
+      <div className="space-y-5 sm:space-y-8">
         {items.map((w) => (
           <WorkExperienceItem key={w.name} item={w} />
         ))}
@@ -483,7 +483,7 @@ const SECTION_CONFIG: Partial<
   projects: {
     title: "Projects",
     render: (items: Project[]) => (
-      <div className="space-y-8">
+      <div className="space-y-5 sm:space-y-8">
         {items.map((p) => (
           <ProjectPortfolioItem key={p.name} item={p} />
         ))}
@@ -493,7 +493,7 @@ const SECTION_CONFIG: Partial<
   education: {
     title: "Education",
     render: (items: Education[]) => (
-      <div className="space-y-3">
+      <div className="space-y-2 sm:space-y-3">
         {items.map((e) => (
           <EducationCredentialItem key={e.institution} item={e} />
         ))}
@@ -503,7 +503,7 @@ const SECTION_CONFIG: Partial<
   talks: {
     title: "Talks",
     render: (items: Talks[]) => (
-      <div className="space-y-2">
+      <div className="space-y-1.5 sm:space-y-2">
         {items.map((t) => (
           <TalkPresentationItem key={t.title} item={t} />
         ))}
@@ -513,7 +513,7 @@ const SECTION_CONFIG: Partial<
   contributions: {
     title: "Open Source Contributions",
     render: (items: Contribution[]) => (
-      <div className="space-y-2">
+      <div className="space-y-1.5 sm:space-y-2">
         {items.map((c) => (
           <OpenSourceContributionItem key={c.url} item={c} />
         ))}
@@ -523,7 +523,7 @@ const SECTION_CONFIG: Partial<
   certificates: {
     title: "Certificates",
     render: (items: Certificates[]) => (
-      <div className="flex flex-wrap gap-x-4 gap-y-2 items-baseline">
+      <div className="flex flex-wrap gap-x-3 sm:gap-x-4 gap-y-1.5 sm:gap-y-2 items-baseline">
         {items.map((c) => (
           <CertificateAchievementItem key={c.name} item={c} />
         ))}
@@ -570,7 +570,7 @@ export function ResumeView({ data }: { data: Resume }) {
     const syntaxTheme = isDark ? vscDarkPlus : vs;
 
     return (
-      <article className="py-4 md:py-8">
+      <article className="py-3 sm:py-4 md:py-8">
         <SyntaxHighlighter
           language="json"
           style={syntaxTheme}
@@ -581,7 +581,7 @@ export function ResumeView({ data }: { data: Resume }) {
             fontSize: "0.75rem",
             fontFamily: "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace",
             lineHeight: "1.6",
-            padding: "1.5rem",
+            padding: "0.75rem",
           }}
           codeTagProps={{
             style: {
@@ -590,7 +590,7 @@ export function ResumeView({ data }: { data: Resume }) {
               lineHeight: "inherit",
             },
           }}
-          className="md:text-sm border border-border shadow-sm"
+          className="md:text-sm border border-border shadow-sm md:!p-6"
         >
           {jsonString}
         </SyntaxHighlighter>
@@ -599,7 +599,7 @@ export function ResumeView({ data }: { data: Resume }) {
   }
 
   return (
-    <article className="space-y-6 py-4 md:py-8">
+    <article className="space-y-4 sm:space-y-6 py-3 sm:py-4 md:py-8">
       <ResumeHeaderItem basics={data.basics} />
 
       {RESUME_SECTION_ORDER.map((sectionKey) => {

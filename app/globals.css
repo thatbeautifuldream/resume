@@ -80,8 +80,14 @@
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --sidebar-width: 480px;
-  --container-padding: clamp(1rem, 4vw, 2rem);
+  --container-padding: clamp(0.75rem, 3vw, 2rem);
   --container-max-width: min(72rem, 100vw - (2 * var(--container-padding)));
+}
+
+@media (max-width: 640px) {
+  :root {
+    --container-padding: clamp(0.5rem, 2.5vw, 1rem);
+  }
 }
 
 .dark {

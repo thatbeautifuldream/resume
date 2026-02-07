@@ -69,12 +69,12 @@ const Message = memo(function Message({ message }: { message: any }) {
       }`}
     >
       <div
-        className={`flex flex-col max-w-[80%] min-w-0 ${
+        className={`flex flex-col max-w-[85%] @sm:max-w-[80%] min-w-0 ${
           isUser ? "items-end" : "items-start"
         }`}
       >
         <div
-          className={`relative px-3 py-2 overflow-hidden ${
+          className={`relative px-2.5 sm:px-3 py-1.5 sm:py-2 overflow-hidden ${
             isUser
               ? "rounded-2xl rounded-br-none bg-secondary border text-secondary-foreground"
               : "rounded-2xl rounded-bl-none bg-background border text-foreground"
@@ -200,7 +200,7 @@ function Messages() {
   if (!hasMessages) return null;
 
   return (
-    <div ref={scrollContainerRef} className="p-4 pb-20 space-y-4 w-full">
+    <div ref={scrollContainerRef} className="p-3 sm:p-4 pb-20 space-y-3 sm:space-y-4 w-full">
       {messages.map((message) => (
         <Message key={message.id} message={message} />
       ))}
@@ -230,23 +230,23 @@ function Welcome() {
 
   return (
     <motion.div
-      className="text-center mb-4"
+      className="text-center mb-3 sm:mb-4"
       animate={{ opacity: hasMessages ? 0 : 1 }}
       transition={{ duration: 0.3 }}
     >
-      <h1 className="text-lg @md:text-xl font-medium mb-2">
+      <h1 className="text-base @md:text-lg @lg:text-xl font-medium mb-1.5 sm:mb-2">
         Chat with Milind's Resume
       </h1>
-      <p className="text-xs @md:text-sm opacity-60 mb-4">
+      <p className="text-xs @md:text-sm opacity-60 mb-3 sm:mb-4">
         Ask anything about my work, projects, or experience
       </p>
 
-      <div className="flex flex-wrap gap-2 justify-center max-w-md mx-auto">
+      <div className="flex flex-wrap gap-1.5 sm:gap-2 justify-center max-w-md mx-auto">
         {starterPrompts.map((prompt) => (
           <button
             key={prompt}
             onClick={() => handlePromptClick(prompt)}
-            className="text-xs @md:text-sm px-3 py-1.5 rounded-full border border-border hover:bg-accent hover:border-accent-foreground/20 transition-colors cursor-pointer"
+            className="text-xs @md:text-sm px-2.5 sm:px-3 py-1.5 rounded-full border border-border hover:bg-accent hover:border-accent-foreground/20 transition-colors cursor-pointer"
           >
             {prompt}
           </button>
@@ -262,11 +262,11 @@ function ClearButton() {
   if (!hasMessages) return null;
 
   return (
-    <motion.div layout="position" className="mb-2 flex justify-end">
+    <motion.div layout="position" className="mb-1.5 sm:mb-2 flex justify-end">
       <button
         onClick={clearChat}
         aria-label="Clear chat history"
-        className="text-sm cursor-pointer hover:underline opacity-60 hover:opacity-100 transition-opacity"
+        className="text-xs sm:text-sm cursor-pointer hover:underline opacity-60 hover:opacity-100 transition-opacity"
         title="Clear chat history"
       >
         start new ?
@@ -286,7 +286,7 @@ function Input() {
   }, [input, status, sendMessage, setInput]);
 
   return (
-    <div className="p-4">
+    <div className="p-3 sm:p-4">
       <form
         onSubmit={(e) => {
           e.preventDefault();
@@ -507,17 +507,17 @@ function ChatContentLayout() {
   return (
     <div className="@container h-full flex flex-col relative">
       {/* Messages - Scrollable area with padding for input + gradient */}
-      <div className="flex-1 overflow-y-auto pt-4 pb-32">
-        <div className="px-4">
+      <div className="flex-1 overflow-y-auto pt-3 sm:pt-4 pb-32">
+        <div className="px-3 sm:px-4">
           {!isLoaded ? (
-            <div className="flex items-center justify-center p-4 min-h-[60vh]">
+            <div className="flex items-center justify-center p-3 sm:p-4 min-h-[60vh]">
               <Loading />
             </div>
           ) : (
             <>
               <Chat.Messages />
               {!hasMessages && (
-                <div className="flex flex-col items-center justify-center p-4 min-h-[60vh]">
+                <div className="flex flex-col items-center justify-center p-3 sm:p-4 min-h-[60vh]">
                   <Chat.Welcome />
                 </div>
               )}
@@ -531,7 +531,7 @@ function ChatContentLayout() {
         {/* Smooth gradient fade from transparent to bg */}
         <div className="h-16 bg-gradient-to-t from-background via-background/60 to-transparent" />
 
-        <div className="bg-background px-4 pb-4 pointer-events-auto">
+        <div className="bg-background px-3 sm:px-4 pb-3 sm:pb-4 pointer-events-auto">
           <Chat.Input />
         </div>
       </div>

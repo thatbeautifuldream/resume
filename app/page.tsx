@@ -8,7 +8,7 @@ export default function Page() {
   return (
     <>
       <Header />
-      <main className="container pt-16 print:pt-0">
+      <main className="container pt-12 sm:pt-16 print:pt-0">
         <ResumeView data={resume} />
       </main>
     </>
