@@ -30,7 +30,10 @@ import {
   registerJsonToggleHandler,
   unregisterJsonToggleHandler,
 } from "@/components/providers/keyboard-shortcuts";
-import { Streamdown } from "streamdown";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
+import { vs } from "react-syntax-highlighter/dist/esm/styles/prism";
+import { useTheme } from "next-themes";
 
 function ResumeSection({
   title,
@@ -541,6 +544,7 @@ export function ResumeView({ data }: { data: Resume }) {
   const [showJson, setShowJson] = useState(false);
   const isOpen = useSidebarOpen();
   const { close } = useSidebarActions();
+  const { resolvedTheme } = useTheme();
 
   // Register JSON toggle handler for centralized keyboard shortcuts
   useEffect(() => {
@@ -561,20 +565,35 @@ export function ResumeView({ data }: { data: Resume }) {
   }, [isOpen, close]);
 
   if (showJson) {
-    const jsonMarkdown = `\`\`\`json
-${JSON.stringify(data, null, 2)}
-\`\`\``;
+    const jsonString = JSON.stringify(data, null, 2);
+    const isDark = resolvedTheme === "dark";
+    const syntaxTheme = isDark ? vscDarkPlus : vs;
 
     return (
-      <article className="space-y-6 py-4 md:py-8">
-        <div className="text-center mb-4 print:hidden">
-          <p className="text-xs text-muted-foreground font-mono">
-            Press 'j' to return to normal view
-          </p>
-        </div>
-        <Streamdown className="font-mono [&>pre]:max-h-[80vh] [&>pre]:overflow-auto">
-          {jsonMarkdown}
-        </Streamdown>
+      <article className="py-4 md:py-8">
+        <SyntaxHighlighter
+          language="json"
+          style={syntaxTheme}
+          customStyle={{
+            margin: 0,
+            borderRadius: "0.5rem",
+            maxHeight: "calc(100vh - 8rem)",
+            fontSize: "0.75rem",
+            fontFamily: "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace",
+            lineHeight: "1.6",
+            padding: "1.5rem",
+          }}
+          codeTagProps={{
+            style: {
+              fontFamily: "inherit",
+              fontSize: "inherit",
+              lineHeight: "inherit",
+            },
+          }}
+          className="md:text-sm border border-border shadow-sm"
+        >
+          {jsonString}
+        </SyntaxHighlighter>
       </article>
     );
   }
