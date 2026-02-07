@@ -13,7 +13,8 @@ import { AnimatePresence, motion } from "motion/react";
 import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useIsDesktop } from "@/hooks/use-media-query";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { cn } from "@/lib/utils";
 
 export function ChatSidebar() {
   const isOpen = useSidebarOpen();
@@ -22,7 +23,6 @@ export function ChatSidebar() {
   const { close, setWidth, setIsResizing } = useSidebarActions();
   const isDesktop = useIsDesktop();
   const router = useRouter();
-  const [isHoveringHandle, setIsHoveringHandle] = useState(false);
 
   // Close on Escape key - only active when sidebar is open
   useHotkeys(
@@ -125,18 +125,15 @@ export function ChatSidebar() {
             {isDesktop && (
               <div
                 onMouseDown={handleMouseDown}
-                onMouseEnter={() => setIsHoveringHandle(true)}
-                onMouseLeave={() => setIsHoveringHandle(false)}
-                className="absolute left-0 top-0 bottom-0 cursor-ew-resize z-[60] transition-all duration-200"
-                style={{
-                  width: isResizing || isHoveringHandle ? "4px" : "1px",
-                  backgroundColor: isResizing
-                    ? "hsl(var(--primary))"
-                    : isHoveringHandle
-                      ? "hsl(var(--primary) / 0.7)"
-                      : "transparent",
-                }}
-              />
+                className="absolute left-[-8.5px] top-0 bottom-0 w-[17px] cursor-ew-resize z-[60] transition-all duration-200 hover:bg-muted-foreground/20"
+              >
+                <div
+                  className={cn(
+                    "absolute left-1/2 top-0 bottom-0 -translate-x-1/2 transition-all duration-200",
+                    isResizing ? "w-1 bg-foreground" : "w-[0.5px] bg-border",
+                  )}
+                />
+              </div>
             )}
             {/* Back to Resume button - only visible on mobile/tablet (when sidebar is full-width) */}
             <div className="lg:hidden shrink-0 bg-background border-b">
