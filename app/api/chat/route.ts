@@ -27,10 +27,12 @@ Instructions:
 
 Your goal is to represent the candidate accurately and professionally, helping potential employers understand the candidate's strengths and fit for a role.`;
 
+  const modelMessages = await convertToModelMessages(messages);
+
   const result = streamText({
     model: groq("openai/gpt-oss-20b"),
     system,
-    messages: convertToModelMessages(messages),
+    messages: modelMessages,
     tools: {
       browser_search: groq.tools.browserSearch({}),
     },

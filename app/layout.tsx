@@ -9,6 +9,7 @@ import { ThemeProvider } from "@/components/providers/theme-provider";
 import { KeyboardShortcuts } from "@/components/providers/keyboard-shortcuts";
 import { ChatSidebar } from "@/components/chat-sidebar";
 import { LayoutWrapper } from "@/components/layout-wrapper";
+import { QueryProvider } from "@/components/providers/query-provider";
 import { sans, mono } from "@/lib/fonts";
 
 import "./globals.css";
@@ -34,15 +35,17 @@ export default function RootLayout({
         <StructuredData />
       </head>
       <body className="min-h-screen bg-background text-foreground antialiased">
-        <ThemeProvider attribute="class" defaultTheme="light">
-          <KeyboardShortcuts />
-          <LayoutWrapper>
-            {children}
-            <ChatSidebar />
-            <GoogleAnalytics gaId="G-G7VF0PLE22" />
-            <ClarityProvider />
-          </LayoutWrapper>
-        </ThemeProvider>
+        <QueryProvider>
+          <ThemeProvider attribute="class" defaultTheme="light">
+            <KeyboardShortcuts />
+            <LayoutWrapper>
+              {children}
+              <ChatSidebar />
+              <GoogleAnalytics gaId="G-G7VF0PLE22" />
+              <ClarityProvider />
+            </LayoutWrapper>
+          </ThemeProvider>
+        </QueryProvider>
       </body>
     </html>
   );

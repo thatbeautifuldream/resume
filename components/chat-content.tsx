@@ -8,16 +8,18 @@ import {
   PromptInputTextarea,
 } from "@/components/prompt-area";
 import { useSidebarActions } from "@/components/providers/chat-sidebar-store";
+import { TTSClientButton } from "@/components/tts-client-button";
 import { Button } from "@/components/ui/button";
+import { clearMessages, loadMessages, saveMessages } from "@/lib/chat-storage";
+import { cn } from "@/lib/utils";
+import type { ExtendedUIMessage, ChatItem } from "@/types/chat";
 import {
-  clearFromIndexedDB,
-  loadFromIndexedDB,
-  saveToIndexedDB,
-} from "@/lib/chat-storage";
-import {
+  Provider as ChatStoreProvider,
+  createChatStore,
   useChat,
+  useChatId,
   useChatMessages,
-  useChatStoreState,
+  useMessageCount,
 } from "@ai-sdk-tools/store";
 import { DefaultChatTransport } from "ai";
 import { ArrowUp, Square } from "lucide-react";
@@ -34,13 +36,75 @@ import {
 } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
 
-const CHAT_STORE_ID = "persistent-chat";
-const CHAT_HISTORY_KEY = "resume-chat-history";
+// Helper function to check if two timestamps are on the same day
+function isSameDay(timestamp1: number, timestamp2: number): boolean {
+  const date1 = new Date(timestamp1);
+  const date2 = new Date(timestamp2);
+  return (
+    date1.getFullYear() === date2.getFullYear() &&
+    date1.getMonth() === date2.getMonth() &&
+    date1.getDate() === date2.getDate()
+  );
+}
+
+// Helper function to format date separators
+function formatDateSeparator(timestamp: number): string {
+  const date = new Date(timestamp);
+  const today = new Date();
+  const yesterday = new Date(today);
+  yesterday.setDate(yesterday.getDate() - 1);
+
+  // Today
+  if (
+    date.getFullYear() === today.getFullYear() &&
+    date.getMonth() === today.getMonth() &&
+    date.getDate() === today.getDate()
+  ) {
+    return "Today";
+  }
+
+  // Yesterday
+  if (
+    date.getFullYear() === yesterday.getFullYear() &&
+    date.getMonth() === yesterday.getMonth() &&
+    date.getDate() === yesterday.getDate()
+  ) {
+    return "Yesterday";
+  }
+
+  // This year - show "Month Day"
+  if (date.getFullYear() === today.getFullYear()) {
+    return date.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+    });
+  }
+
+  // Other years - show "Month Day, Year"
+  return date.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+}
+
+// Helper function to format timestamp like WhatsApp
+function formatTimestamp(timestamp?: number): string {
+  if (!timestamp) return "";
+  const date = new Date(timestamp);
+  return date.toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+  });
+}
+
+// Removed hardcoded session ID - now using dynamic sessions from SessionContext
 
 const ChatContext = createContext<
   | (ReturnType<typeof useChat> & {
-      messages: ReturnType<typeof useChatMessages>;
-      chatState: ReturnType<typeof useChatStoreState>;
+      messages: ExtendedUIMessage[];
+      chatId: string | undefined;
       input: string;
       setInput: (value: string) => void;
       inputRef: React.RefObject<HTMLTextAreaElement | null>;
@@ -59,8 +123,18 @@ function useChatContext() {
   return context;
 }
 
-const Message = memo(function Message({ message }: { message: any }) {
+const Message = memo(function Message({
+  message,
+}: {
+  message: ExtendedUIMessage;
+}) {
   const isUser = message.role === "user";
+
+  // Extract all text content from the message for TTS
+  const messageText = message.parts
+    .filter((part: any) => part.type === "text")
+    .map((part: any) => part.text)
+    .join(" ");
 
   return (
     <div
@@ -110,8 +184,29 @@ const Message = memo(function Message({ message }: { message: any }) {
 
               return null;
             })}
+
+            {/* WhatsApp-style timestamp */}
+            {message.createdAt && (
+              <div className="flex justify-end mt-1">
+                <span
+                  className={cn(
+                    "text-[10px] leading-none",
+                    isUser
+                      ? "text-secondary-foreground/70"
+                      : "text-muted-foreground/70",
+                  )}
+                >
+                  {formatTimestamp(message.createdAt)}
+                </span>
+              </div>
+            )}
           </div>
         </div>
+        {!isUser && messageText && (
+          <div className="mt-1 ml-1">
+            <TTSClientButton text={messageText} />
+          </div>
+        )}
       </div>
     </div>
   );
@@ -119,11 +214,41 @@ const Message = memo(function Message({ message }: { message: any }) {
 
 function Messages() {
   const { messages, status, hasMessages } = useChatContext();
+  const messageCount = useMessageCount();
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const prevMessageCountRef = useRef(0);
   const shouldAutoScrollRef = useRef(true);
   const scrollTimeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
+
+  // Compute chat items with date separators
+  const chatItems = useMemo((): ChatItem[] => {
+    const items: ChatItem[] = [];
+    let lastDate: number | null = null;
+
+    (messages as ExtendedUIMessage[]).forEach((msg, index) => {
+      const msgTimestamp = msg.createdAt || Date.now();
+
+      // Add date separator if day changed
+      if (lastDate === null || !isSameDay(lastDate, msgTimestamp)) {
+        items.push({
+          type: "date-separator",
+          date: formatDateSeparator(msgTimestamp),
+          timestamp: msgTimestamp,
+        });
+        lastDate = msgTimestamp;
+      }
+
+      // Add message
+      items.push({
+        type: "message",
+        data: msg,
+        originalIndex: index,
+      });
+    });
+
+    return items;
+  }, [messages]);
 
   const isNearBottom = useCallback(() => {
     const scrollContainer = scrollContainerRef.current?.parentElement;
@@ -144,8 +269,8 @@ function Messages() {
   }, []);
 
   useEffect(() => {
-    const hasNewMessage = messages.length > prevMessageCountRef.current;
-    prevMessageCountRef.current = messages.length;
+    const hasNewMessage = messageCount > prevMessageCountRef.current;
+    prevMessageCountRef.current = messageCount;
 
     if (
       hasNewMessage ||
@@ -154,7 +279,7 @@ function Messages() {
     ) {
       scrollToBottom();
     }
-  }, [messages, status, isNearBottom, scrollToBottom]);
+  }, [messageCount, status, isNearBottom, scrollToBottom]);
 
   useEffect(() => {
     const scrollContainer = scrollContainerRef.current?.parentElement;
@@ -187,23 +312,36 @@ function Messages() {
 
   const hasScrolledInitiallyRef = useRef(false);
   useEffect(() => {
-    if (
-      hasMessages &&
-      messages.length > 0 &&
-      !hasScrolledInitiallyRef.current
-    ) {
+    if (hasMessages && messageCount > 0 && !hasScrolledInitiallyRef.current) {
       scrollToBottom("instant");
       hasScrolledInitiallyRef.current = true;
     }
-  }, [hasMessages, messages.length, scrollToBottom]);
+  }, [hasMessages, messageCount, scrollToBottom]);
 
   if (!hasMessages) return null;
 
   return (
-    <div ref={scrollContainerRef} className="p-3 sm:p-4 pb-20 space-y-3 sm:space-y-4 w-full">
-      {messages.map((message) => (
-        <Message key={message.id} message={message} />
-      ))}
+    <div
+      ref={scrollContainerRef}
+      className="p-3 sm:p-4 pb-20 space-y-3 sm:space-y-4 w-full"
+    >
+      {chatItems.map((item, index) => {
+        if (item.type === "date-separator") {
+          return (
+            <div
+              key={`date-${item.timestamp}`}
+              className="flex justify-center py-2"
+            >
+              <div className="px-3 py-1 rounded-full bg-muted/50 text-xs text-muted-foreground font-medium">
+                {item.date}
+              </div>
+            </div>
+          );
+        }
+
+        // Regular message
+        return <Message key={item.data.id} message={item.data} />;
+      })}
       {status === "submitted" && <Loading />}
       {/* Invisible anchor element for auto-scroll */}
       <div ref={messagesEndRef} />
@@ -286,7 +424,7 @@ function Input() {
   }, [input, status, sendMessage, setInput]);
 
   return (
-    <div className="p-3 sm:p-4">
+    <div>
       <form
         onSubmit={(e) => {
           e.preventDefault();
@@ -301,7 +439,7 @@ function Input() {
           disabled={status !== "ready"}
           isLoading={status === "submitted"}
           maxHeight={200}
-          className="py-1.5 pl-2 pr-2"
+          className="py-1 pl-2 pr-2"
         >
           <div className="flex items-end gap-1.5">
             <div className="flex-1 min-w-0">
@@ -337,7 +475,23 @@ function Input() {
   );
 }
 
-function Chat({ children }: { children: React.ReactNode }) {
+function ChatInner({ children }: { children: React.ReactNode }) {
+  // Type cast needed: ai@6.x + @ai-sdk-tools/store@1.2.0 version mismatch
+  // Still get all performance benefits (O(1) lookups, batching, typed returns)
+  const chatHelpers = useChat<ExtendedUIMessage>({
+    transport: new DefaultChatTransport({
+      api: "/api/chat",
+    }) as any,
+  });
+  const messages = useChatMessages<ExtendedUIMessage>();
+  const chatId = useChatId();
+  const messageCount = useMessageCount();
+  const [input, setInput] = useState("");
+  const inputRef = useRef<HTMLTextAreaElement>(null);
+  const hasMessages = messageCount > 0;
+  const [isLoaded, setIsLoaded] = useState(false);
+  const { registerChatHandler, unregisterChatHandler } = useSidebarActions();
+
   const {
     sendMessage,
     status,
@@ -347,23 +501,11 @@ function Chat({ children }: { children: React.ReactNode }) {
     resumeStream,
     addToolResult,
     clearError,
-  } = useChat({
-    transport: new DefaultChatTransport({
-      api: "/api/chat",
-    }),
-    storeId: CHAT_STORE_ID,
-  });
-  const messages = useChatMessages(CHAT_STORE_ID);
-  const chatState = useChatStoreState(CHAT_STORE_ID);
-  const [input, setInput] = useState("");
-  const inputRef = useRef<HTMLTextAreaElement>(null);
-  const hasMessages = messages.length > 0;
-  const [isLoaded, setIsLoaded] = useState(false);
-  const { registerChatHandler, unregisterChatHandler } = useSidebarActions();
+  } = chatHelpers;
 
   const clearChat = useCallback(async () => {
     try {
-      await clearFromIndexedDB(CHAT_HISTORY_KEY);
+      await clearMessages();
       setMessages([]);
     } catch (error) {
       if (process.env.NODE_ENV !== "production") {
@@ -372,12 +514,13 @@ function Chat({ children }: { children: React.ReactNode }) {
     }
   }, [setMessages]);
 
+  // Load messages on mount
   useEffect(() => {
     const loadPersistedMessages = async () => {
       try {
-        const persistedData = await loadFromIndexedDB(CHAT_HISTORY_KEY);
-        if (persistedData?.messages && persistedData.messages.length > 0) {
-          setMessages(persistedData.messages);
+        const persistedMessages = await loadMessages();
+        if (persistedMessages && persistedMessages.length > 0) {
+          setMessages(persistedMessages);
         }
       } catch (error) {
         if (process.env.NODE_ENV !== "production") {
@@ -390,18 +533,16 @@ function Chat({ children }: { children: React.ReactNode }) {
     loadPersistedMessages();
   }, [setMessages]);
 
+  // Save messages when they change
   useEffect(() => {
-    if (isLoaded && messages.length > 0) {
-      saveToIndexedDB(CHAT_HISTORY_KEY, {
-        messages,
-        id: chatState.id,
-      }).catch((error) => {
+    if (isLoaded && messageCount > 0) {
+      saveMessages(messages).catch((error) => {
         if (process.env.NODE_ENV !== "production") {
           console.warn("Failed to save messages:", error);
         }
       });
     }
-  }, [messages, chatState.id, isLoaded]);
+  }, [messages, messageCount, isLoaded]);
 
   useHotkeys(
     "/",
@@ -449,36 +590,20 @@ function Chat({ children }: { children: React.ReactNode }) {
 
   const contextValue = useMemo(
     () => ({
-      sendMessage,
-      status,
-      stop,
-      setMessages,
-      regenerate,
-      resumeStream,
-      addToolResult,
-      clearError,
+      ...chatHelpers,
       messages,
-      chatState,
+      chatId,
       input,
       setInput,
       inputRef,
       hasMessages,
       isLoaded,
       clearChat,
-      id: chatState.id,
-      error: undefined,
     }),
     [
-      sendMessage,
-      status,
-      stop,
-      setMessages,
-      regenerate,
-      resumeStream,
-      addToolResult,
-      clearError,
+      chatHelpers,
       messages,
-      chatState,
+      chatId,
       input,
       setInput,
       inputRef,
@@ -492,6 +617,16 @@ function Chat({ children }: { children: React.ReactNode }) {
     <ChatContext.Provider value={contextValue}>
       <div className="h-full flex flex-col">{children}</div>
     </ChatContext.Provider>
+  );
+}
+
+function Chat({ children }: { children: React.ReactNode }) {
+  const store = useMemo(() => createChatStore([]), []);
+
+  return (
+    <ChatStoreProvider store={store}>
+      <ChatInner>{children}</ChatInner>
+    </ChatStoreProvider>
   );
 }
 
@@ -529,9 +664,9 @@ function ChatContentLayout() {
       {/* Input - Fixed at bottom with gradient fade */}
       <div className="absolute bottom-0 left-0 right-0 z-40 pointer-events-none">
         {/* Smooth gradient fade from transparent to bg */}
-        <div className="h-16 bg-gradient-to-t from-background via-background/60 to-transparent" />
+        <div className="h-12 bg-gradient-to-t from-background via-background/60 to-transparent" />
 
-        <div className="bg-background px-3 sm:px-4 pb-3 sm:pb-4 pointer-events-auto">
+        <div className="bg-background px-3 sm:px-4 pb-2 sm:pb-3 pointer-events-auto">
           <Chat.Input />
         </div>
       </div>

@@ -1,87 +1,176 @@
-export async function saveToIndexedDB(key: string, data: any): Promise<void> {
-  try {
-    const request = indexedDB.open('chat-storage', 1);
+/**
+ * Simple Chat Storage with Dexie.js
+ *
+ * One persistent chat session with clean IndexedDB storage.
+ * Messages are stored individually for easy inspection in DevTools.
+ */
 
-    await new Promise<void>((resolve, reject) => {
-      request.onerror = () => reject(request.error);
-      request.onsuccess = () => {
-        const db = request.result;
-        const transaction = db.transaction(['chat-data'], 'readwrite');
-        const store = transaction.objectStore('chat-data');
-        const putRequest = store.put({ key, value: JSON.stringify(data) });
+import Dexie, { Table } from 'dexie';
 
-        putRequest.onsuccess = () => resolve();
-        putRequest.onerror = () => reject(putRequest.error);
-      };
+// ============================================================================
+// TypeScript Interfaces
+// ============================================================================
 
-      request.onupgradeneeded = () => {
-        const db = request.result;
-        if (!db.objectStoreNames.contains('chat-data')) {
-          db.createObjectStore('chat-data', { keyPath: 'key' });
-        }
-      };
+export interface ChatMessage {
+  id: string;
+  role: 'user' | 'assistant' | 'system';
+  content: string; // Plain text extracted from parts
+  parts: Array<{
+    type: string;
+    text?: string;
+    reasoning?: string;
+    state?: string;
+    [key: string]: any;
+  }>;
+  sequenceNumber: number;
+  createdAt: number;
+  metadata?: Record<string, any>;
+}
+
+// ============================================================================
+// Database Definition
+// ============================================================================
+
+class ChatDatabase extends Dexie {
+  messages!: Table<ChatMessage, string>;
+
+  constructor() {
+    super('resume-chat-storage');
+
+    this.version(4).stores({
+      messages: 'id, sequenceNumber, createdAt, role'
     });
-  } catch (error) {
-    localStorage.setItem(key, JSON.stringify(data));
   }
 }
 
-export async function loadFromIndexedDB(key: string): Promise<any> {
+// Create database instance
+const db = new ChatDatabase();
+
+// Delete legacy databases on initialization
+if (typeof window !== 'undefined') {
+  (async () => {
+    try {
+      await Dexie.delete('chat-storage'); // V1
+    } catch (error) {
+      // Ignore if doesn't exist
+    }
+  })();
+}
+
+// Persistent chat ID
+const CHAT_ID = 'persistent-chat';
+
+// ============================================================================
+// Helper Functions
+// ============================================================================
+
+/**
+ * Extract plain text content from message parts for search
+ */
+function extractTextContent(parts: Array<any>): string {
+  if (!parts || !Array.isArray(parts)) return '';
+
+  return parts
+    .filter(part => part.type === 'text' && part.text)
+    .map(part => part.text)
+    .join(' ')
+    .trim();
+}
+
+// ============================================================================
+// Message Operations
+// ============================================================================
+
+/**
+ * Save messages to IndexedDB
+ */
+export async function saveMessages(messages: any[]): Promise<void> {
   try {
-    const request = indexedDB.open('chat-storage', 1);
+    const now = Date.now();
 
-    return await new Promise((resolve, reject) => {
-      request.onerror = () => reject(request.error);
-      request.onsuccess = () => {
-        const db = request.result;
-        const transaction = db.transaction(['chat-data'], 'readonly');
-        const store = transaction.objectStore('chat-data');
-        const getRequest = store.get(key);
+    const messagesData: ChatMessage[] = messages.map((message, i) => ({
+      id: message.id,
+      role: message.role,
+      content: extractTextContent(message.parts),
+      parts: message.parts || [],
+      sequenceNumber: i,
+      createdAt: message.createdAt || now,
+      metadata: message.metadata,
+    }));
 
-        getRequest.onsuccess = () => {
-          const result = getRequest.result?.value;
-          resolve(result ? JSON.parse(result) : null);
-        };
-        getRequest.onerror = () => reject(getRequest.error);
-      };
-
-      request.onupgradeneeded = () => {
-        const db = request.result;
-        if (!db.objectStoreNames.contains('chat-data')) {
-          db.createObjectStore('chat-data', { keyPath: 'key' });
-        }
-      };
+    // Clear existing messages and save new ones
+    await db.transaction('rw', db.messages, async () => {
+      await db.messages.clear();
+      await db.messages.bulkAdd(messagesData);
     });
   } catch (error) {
-    const data = localStorage.getItem(key);
-    return data ? JSON.parse(data) : null;
+    if (process.env.NODE_ENV !== 'production') {
+      console.error('[Storage] Failed to save messages:', error);
+    }
+    // Fallback to localStorage
+    try {
+      localStorage.setItem(CHAT_ID, JSON.stringify({
+        messages,
+        updatedAt: Date.now()
+      }));
+    } catch (lsError) {
+      if (process.env.NODE_ENV !== 'production') {
+        console.error('[Storage] LocalStorage fallback also failed:', lsError);
+      }
+    }
   }
 }
 
-export async function clearFromIndexedDB(key: string): Promise<void> {
+/**
+ * Load messages from IndexedDB
+ */
+export async function loadMessages(): Promise<any[]> {
   try {
-    const request = indexedDB.open('chat-storage', 1);
+    const messages = await db.messages
+      .orderBy('sequenceNumber')
+      .toArray();
 
-    await new Promise<void>((resolve, reject) => {
-      request.onerror = () => reject(request.error);
-      request.onsuccess = () => {
-        const db = request.result;
-        const transaction = db.transaction(['chat-data'], 'readwrite');
-        const store = transaction.objectStore('chat-data');
-        const deleteRequest = store.delete(key);
-
-        deleteRequest.onsuccess = () => resolve();
-        deleteRequest.onerror = () => reject(deleteRequest.error);
-      };
-
-      request.onupgradeneeded = () => {
-        const db = request.result;
-        if (!db.objectStoreNames.contains('chat-data')) {
-          db.createObjectStore('chat-data', { keyPath: 'key' });
-        }
-      };
-    });
+    // Convert stored format back to message format
+    return messages.map((msg) => ({
+      id: msg.id,
+      role: msg.role,
+      parts: msg.parts,
+      createdAt: msg.createdAt,
+      metadata: msg.metadata,
+    }));
   } catch (error) {
-    localStorage.removeItem(key);
+    if (process.env.NODE_ENV !== 'production') {
+      console.error('[Storage] Failed to load messages:', error);
+    }
+    // Fallback to localStorage
+    try {
+      const data = localStorage.getItem(CHAT_ID);
+      if (data) {
+        const parsed = JSON.parse(data);
+        return parsed.messages || [];
+      }
+    } catch (lsError) {
+      if (process.env.NODE_ENV !== 'production') {
+        console.error('[Storage] LocalStorage fallback also failed:', lsError);
+      }
+    }
+    return [];
   }
 }
+
+/**
+ * Clear all messages (start fresh)
+ */
+export async function clearMessages(): Promise<void> {
+  try {
+    await db.messages.clear();
+  } catch (error) {
+    if (process.env.NODE_ENV !== 'production') {
+      console.error('[Storage] Failed to clear messages:', error);
+    }
+    localStorage.removeItem(CHAT_ID);
+  }
+}
+
+// Export database instance for advanced usage
+export { db };
