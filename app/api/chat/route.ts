@@ -3,6 +3,7 @@ import * as ai from "ai";
 import { convertToModelMessages, UIMessage, stepCountIs } from "ai";
 import { wrapAISDK } from "langsmith/experimental/vercel";
 import { getResumeAsMarkdown } from "@/lib/transformers";
+import { withSupermemory } from "@supermemory/tools/ai-sdk";
 
 const { streamText } = wrapAISDK(ai);
 
@@ -29,15 +30,19 @@ Your goal is to represent the candidate accurately and professionally, helping p
 
   const modelMessages = await convertToModelMessages(messages);
 
+  const modelWithMemory = withSupermemory(
+    groq("openai/gpt-oss-20b"),
+    "milind_resume_assistant_memory",
+  );
+
   const result = streamText({
-    model: groq("openai/gpt-oss-20b"),
+    model: modelWithMemory,
     system,
     messages: modelMessages,
     tools: {
       browser_search: groq.tools.browserSearch({}),
     },
     toolChoice: "auto",
-    stopWhen: stepCountIs(1),
   });
 
   return result.toUIMessageStreamResponse();
