@@ -7,12 +7,15 @@ import {
   useSidebarActions,
   useSidebarResizing,
 } from "@/components/providers/chat-sidebar-store";
+import { useKeyboardShortcutsActions } from "@/components/providers/keyboard-shortcuts-store";
 import { useIsDesktop } from "@/hooks/use-media-query";
+import { Kbd } from "@/components/ui/kbd";
 
 export function Header() {
   const isOpen = useSidebarOpen();
   const isResizing = useSidebarResizing();
   const { toggle } = useSidebarActions();
+  const { openDialog } = useKeyboardShortcutsActions();
   const isDesktop = useIsDesktop();
 
   return (
@@ -43,6 +46,20 @@ export function Header() {
               </button>
             </div>
             <div className="flex gap-x-3 items-center">
+              <button
+                onClick={openDialog}
+                aria-label="Show keyboard shortcuts"
+                className="hidden md:flex items-center gap-1.5 hover:opacity-70 transition-opacity group cursor-pointer font-mono text-xs"
+                title="Keyboard shortcuts"
+              >
+                <span className="text-muted-foreground hidden lg:inline">
+                  Press
+                </span>
+                <Kbd className="group-hover:bg-muted/80 transition-colors">/</Kbd>
+                <span className="text-muted-foreground hidden lg:inline">
+                  for shortcuts
+                </span>
+              </button>
               <TimezoneClock />
             </div>
           </div>

@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
 import { useTheme } from "next-themes";
 import {
@@ -8,6 +7,10 @@ import {
   useSidebarOpen,
   useSidebarKeyboardShortcuts,
 } from "@/components/providers/chat-sidebar-store";
+import {
+  useKeyboardShortcutsDialogOpen,
+  useKeyboardShortcutsActions,
+} from "@/components/providers/keyboard-shortcuts-store";
 import { KeyboardShortcutsDialog } from "@/components/keyboard-shortcuts-dialog";
 
 // Registry for callbacks
@@ -25,7 +28,7 @@ export function useGlobalKeyboardShortcuts() {
   const { close: closeSidebar } = useSidebarActions();
   const isOpen = useSidebarOpen();
   const { theme, setTheme } = useTheme();
-  const [shortcutsDialogOpen, setShortcutsDialogOpen] = useState(false);
+  const { openDialog } = useKeyboardShortcutsActions();
 
   // Sidebar toggle (Cmd/Ctrl + K) - handled by useSidebarKeyboardShortcuts
   useSidebarKeyboardShortcuts();
@@ -35,7 +38,7 @@ export function useGlobalKeyboardShortcuts() {
     ["slash", "shift+slash"],
     (e) => {
       e.preventDefault();
-      setShortcutsDialogOpen(true);
+      openDialog();
     },
     {
       preventDefault: true,
@@ -75,18 +78,14 @@ export function useGlobalKeyboardShortcuts() {
     },
     { preventDefault: true }
   );
-
-  return { shortcutsDialogOpen, setShortcutsDialogOpen };
 }
 
 export function KeyboardShortcuts() {
-  const { shortcutsDialogOpen, setShortcutsDialogOpen } =
-    useGlobalKeyboardShortcuts();
+  useGlobalKeyboardShortcuts();
+  const isDialogOpen = useKeyboardShortcutsDialogOpen();
+  const { closeDialog } = useKeyboardShortcutsActions();
 
   return (
-    <KeyboardShortcutsDialog
-      open={shortcutsDialogOpen}
-      onOpenChange={setShortcutsDialogOpen}
-    />
+    <KeyboardShortcutsDialog open={isDialogOpen} onOpenChange={closeDialog} />
   );
 }
