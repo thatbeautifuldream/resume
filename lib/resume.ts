@@ -29,7 +29,7 @@ export const resume: Resume = {
       workType: "Full Time",
       startDate: "2025-02-21",
       summary:
-        "Building AI products for 2M+ users. Ownership across growth, revenue, platform stability, and expressive UI.",
+        "Building AI products for 2M+ users. Ownership across platform stability and Expressive UI.",
       highlights: [
         "Revamped Model Selector UX with discovery grid interface, increasing model adoption by 40%",
         "Shipped ChatGPT history import feature enabling 3,500+ users to migrate from ChatGPT to Merlin",
@@ -151,6 +151,11 @@ export const resume: Resume = {
     },
   ],
   talks: [
+    {
+      title: "Building a Component Distribution System with shadcn Registry",
+      organiser: "React Bangalore",
+      link: "meetup.com/reactjs-bangalore/events/312620988",
+    },
     {
       title: "Mastering ViewTransition in React for Stunning UI Updates",
       organiser: "React Play Bengaluru",
