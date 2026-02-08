@@ -439,7 +439,7 @@ function Input() {
           disabled={status !== "ready"}
           isLoading={status === "submitted"}
           maxHeight={200}
-          className="py-1 pl-2 pr-2"
+          className="py-1.5 pl-2 pr-2"
         >
           <div className="flex items-end gap-1.5">
             <div className="flex-1 min-w-0">
