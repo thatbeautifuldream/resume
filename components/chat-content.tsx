@@ -544,6 +544,28 @@ function ChatInner({ children }: { children: React.ReactNode }) {
     }
   }, [messages, messageCount, isLoaded]);
 
+  // Ensure all messages have createdAt timestamps for immediate display (fixes missing timestamps on first render)
+  useEffect(() => {
+    if (!isLoaded || messageCount === 0) return;
+
+    const needsNormalization = messages.some((msg) => !msg.createdAt);
+
+    if (needsNormalization) {
+      const baseTime = Date.now();
+      const normalizedMessages = messages.map((msg, index) => {
+        if (!msg.createdAt) {
+          return {
+            ...msg,
+            createdAt: baseTime + index,
+          };
+        }
+        return msg;
+      });
+
+      setMessages(normalizedMessages);
+    }
+  }, [messages, messageCount, isLoaded, setMessages]);
+
   useHotkeys(
     "escape",
     () => {
