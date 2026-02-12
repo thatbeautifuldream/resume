@@ -34,7 +34,7 @@ const PromptInputContext = createContext<PromptInputContextType>({
   textareaRef: React.createRef<HTMLTextAreaElement>(),
 });
 
-function usePromptInput() {
+export function usePromptInput() {
   return useContext(PromptInputContext);
 }
 

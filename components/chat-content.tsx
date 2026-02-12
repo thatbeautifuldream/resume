@@ -7,6 +7,7 @@ import {
 	PromptInputActions,
 	PromptInputTextarea,
 } from "@/components/prompt-area";
+import { SpeechToTextButton } from "@/components/speech-to-text-button";
 import { useSidebarActions } from "@/components/providers/chat-sidebar-store";
 import { TTSClientButton } from "@/components/tts-client-button";
 import { Button } from "@/components/ui/button";
@@ -473,6 +474,7 @@ function Input() {
 							/>
 						</div>
 						<PromptInputActions>
+							<SpeechToTextButton />
 							<Button
 								type={status === "ready" ? "submit" : "button"}
 								size="icon"
