@@ -11,7 +11,7 @@ import { useSidebarActions } from "@/components/providers/chat-sidebar-store";
 import { TTSClientButton } from "@/components/tts-client-button";
 import { Button } from "@/components/ui/button";
 import { clearMessages, loadMessages, saveMessages } from "@/lib/chat-storage";
-import { cn } from "@/lib/utils";
+import { cn, toSentenceCase } from "@/lib/utils";
 import type { ChatItem, ExtendedUIMessage } from "@/types/chat";
 import {
 	Provider as ChatStoreProvider,
@@ -123,7 +123,7 @@ function useChatContext() {
 	return context;
 }
 
-const ASSISTANT_NAME = "Milo, Your Resume Guide";
+const ASSISTANT_NAME = "Milo (Milind's Resume Butler)";
 
 const Message = memo(function Message({
 	message,
@@ -132,6 +132,10 @@ const Message = memo(function Message({
 }) {
 	const isUser = message.role === "user";
 	const isAssistant = message.role === "assistant";
+
+	const getToolName = (toolName: string): string => {
+		return toolName === "query_resume" ? "Query Resume" : toolName;
+	};
 
 	// Extract all text content from the message for TTS
 	const messageText = message.parts
@@ -170,33 +174,77 @@ const Message = memo(function Message({
 						</span>
 					)}
 					<div className="break-words">
-						{message.parts.map((part, index) => {
+						{message.parts.map((part) => {
+							// biome-ignore lint/suspicious/noExplicitAny: toolCallId is not typed
+							const p = part as any;
+
 							if (part.type === "text") {
 								return isUser ? (
 									<p
-										key={String(part.providerMetadata?.id ?? index)}
+										key={part.text}
 										className="text-sm leading-relaxed whitespace-pre-wrap"
 									>
 										{part.text}
 									</p>
 								) : (
-									<Response key={String(part.providerMetadata?.id ?? index)}>
-										{part.text}
-									</Response>
+									<Response key={part.text}>{part.text}</Response>
 								);
 							}
 
 							if (part.type === "reasoning" && message.role === "assistant") {
 								return (
-									<details
-										key={String(part.providerMetadata?.id ?? index)}
-										className="mb-2"
-									>
+									<details key={part.text} className="mb-2">
 										<summary className="text-xs cursor-pointer hover:opacity-80 transition-opacity italic">
-											Thinking...
+											{part.type.toSentenceCase()}
 										</summary>
 										<div className="text-xs mt-2 pl-2 italic whitespace-pre-wrap opacity-80">
 											{part.text}
+										</div>
+									</details>
+								);
+							}
+
+							// Tool parts - combined tool execution (has both input and output)
+							if (
+								typeof p.type === "string" &&
+								p.type.startsWith("tool-") &&
+								p.toolCallId
+							) {
+								const toolNameFromType = p.type.replace("tool-", "") || "Tool";
+								const isError = p.state === "output-error";
+
+								return (
+									<details key={p.toolCallId} className="mb-2">
+										<summary className="text-xs cursor-pointer hover:opacity-80 transition-opacity italic">
+											<span>{getToolName(toolNameFromType)}</span>
+											{isError && "[Errored]"}
+										</summary>
+										<div className="text-xs mt-2 pl-2 flex flex-col space-y-2 whitespace-pre-wrap opacity-80">
+											{p.input && (
+												<div className=" flex flex-col space-y-2">
+													<strong className="font-mono font-medium tracking-widest uppercase">
+														Parameters
+													</strong>
+													<pre className="bg-muted/50 p-2 rounded-md border">
+														<code>{JSON.stringify(p.input, null, 2)}</code>
+													</pre>
+												</div>
+											)}
+											{p.output && (
+												<div className=" flex flex-col space-y-2">
+													<strong className="font-mono font-medium tracking-widest uppercase">
+														{isError ? "Error" : "Result"}
+													</strong>
+													<pre className="bg-muted/50 p-2 rounded-md border">
+														<code>
+															{typeof p.output === "object"
+																? JSON.stringify(p.output, null, 2)
+																: String(p.output)}
+														</code>
+													</pre>
+													{p.errorText && <p>{p.errorText}</p>}
+												</div>
+											)}
 										</div>
 									</details>
 								);
