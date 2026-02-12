@@ -123,10 +123,7 @@ function useChatContext() {
 	return context;
 }
 
-const USERNAME = {
-	user: "You",
-	assistant: "Milind's Resume Assistant",
-} as const;
+const ASSISTANT_NAME = "Milo, Your Resume Guide";
 
 const Message = memo(function Message({
 	message,
@@ -134,8 +131,7 @@ const Message = memo(function Message({
 	message: ExtendedUIMessage;
 }) {
 	const isUser = message.role === "user";
-	const username =
-		USERNAME[message.role as keyof typeof USERNAME] ?? message.role;
+	const isAssistant = message.role === "assistant";
 
 	// Extract all text content from the message for TTS
 	const messageText = message.parts
@@ -164,14 +160,15 @@ const Message = memo(function Message({
 							: "rounded-2xl rounded-bl-none bg-background border text-foreground",
 					)}
 				>
-					<span
-						className={cn(
-							"text-xs font-semibold block mb-1 px-1 text-muted-foreground",
-							isUser ? "text-right" : "text-left",
-						)}
-					>
-						{username}
-					</span>
+					{isAssistant && (
+						<span
+							className={cn(
+								"text-xs font-semibold block mb-1 px-1 text-muted-foreground text-left",
+							)}
+						>
+							{ASSISTANT_NAME}
+						</span>
+					)}
 					<div className="break-words">
 						{message.parts.map((part, index) => {
 							if (part.type === "text") {
