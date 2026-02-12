@@ -225,7 +225,7 @@ const Message = memo(function Message({
 													<strong className="font-mono font-medium tracking-widest uppercase">
 														Parameters
 													</strong>
-													<pre className="bg-muted/50 p-2 rounded-md border">
+													<pre className="bg-muted/50 p-2 rounded-md border whitespace-pre-wrap">
 														<code>{JSON.stringify(p.input, null, 2)}</code>
 													</pre>
 												</div>
@@ -235,7 +235,7 @@ const Message = memo(function Message({
 													<strong className="font-mono font-medium tracking-widest uppercase">
 														{isError ? "Error" : "Result"}
 													</strong>
-													<pre className="bg-muted/50 p-2 rounded-md border">
+													<pre className="bg-muted/50 p-2 rounded-md border whitespace-pre-wrap">
 														<code>
 															{typeof p.output === "object"
 																? JSON.stringify(p.output, null, 2)
