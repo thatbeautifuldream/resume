@@ -1,6 +1,10 @@
-import { validateResume, withResumeDefaults } from "./resume-schema";
+import {
+  type Resume,
+  validateResume,
+  withResumeDefaults,
+} from "./resume-schema";
 
-const resumeData = {
+const resumeData: Resume = {
   source: "github.com/thatbeautifuldream/resume",
   basics: {
     name: "Milind Kumar Mishra",

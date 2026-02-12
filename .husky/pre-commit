@@ -1,6 +1,1 @@
-# pnpm run print
-
-# if git diff --name-only | grep -q "public/pdf/milind-mishra-resume-2025.pdf"; then
-#     git add public/pdf/milind-mishra-resume-2025.pdf
-#     echo "Updated PDF resume added to commit"
-# fi
+pnpm run build

@@ -8,7 +8,6 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "print": "tsx scripts/resume-to-pdf.ts",
     "prepare": "husky"
   },
   "dependencies": {

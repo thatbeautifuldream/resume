@@ -1,6 +1,4 @@
-import { Header } from "@/components/header";
 import { ClarityProvider } from "@/components/providers/clarity-provider";
-import { StructuredData } from "@/components/structured-data";
 import { createMetadata } from "@/lib/metadata";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import type { Metadata } from "next";
@@ -15,38 +13,41 @@ import { sans, mono } from "@/lib/fonts";
 import "./globals.css";
 
 export const metadata: Metadata = createMetadata({
-  title: "Milind Mishra",
-  description: "Product Engineer based in India.",
+	title: "Milind Mishra",
+	description: "Product Engineer based in India.",
 });
 
 export default function RootLayout({
-  children,
+	children,
 }: Readonly<{
-  children: React.ReactNode;
+	children: React.ReactNode;
 }>) {
-  return (
-    <html lang="en" suppressHydrationWarning className={`${sans.variable} ${mono.variable}`}>
-      <head>
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1, maximum-scale=1"
-        />
-        <link rel="manifest" href="/manifest.json" />
-        <StructuredData />
-      </head>
-      <body className="min-h-screen bg-background text-foreground antialiased">
-        <QueryProvider>
-          <ThemeProvider attribute="class" defaultTheme="light">
-            <KeyboardShortcuts />
-            <LayoutWrapper>
-              {children}
-              <ChatSidebar />
-              <GoogleAnalytics gaId="G-G7VF0PLE22" />
-              <ClarityProvider />
-            </LayoutWrapper>
-          </ThemeProvider>
-        </QueryProvider>
-      </body>
-    </html>
-  );
+	return (
+		<html
+			lang="en"
+			suppressHydrationWarning
+			className={`${sans.variable} ${mono.variable}`}
+		>
+			<head>
+				<meta
+					name="viewport"
+					content="width=device-width, initial-scale=1, maximum-scale=1"
+				/>
+				<link rel="manifest" href="/manifest.json" />
+			</head>
+			<body className="min-h-screen bg-background text-foreground antialiased">
+				<QueryProvider>
+					<ThemeProvider attribute="class" defaultTheme="light">
+						<KeyboardShortcuts />
+						<LayoutWrapper>
+							{children}
+							<ChatSidebar />
+							<GoogleAnalytics gaId="G-G7VF0PLE22" />
+							<ClarityProvider />
+						</LayoutWrapper>
+					</ThemeProvider>
+				</QueryProvider>
+			</body>
+		</html>
+	);
 }

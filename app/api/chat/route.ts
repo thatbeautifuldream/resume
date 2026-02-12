@@ -1,9 +1,9 @@
+import { resume } from "@/lib/resume";
 import { groq } from "@ai-sdk/groq";
-import * as ai from "ai";
-import { convertToModelMessages, UIMessage, stepCountIs } from "ai";
-import { wrapAISDK } from "langsmith/experimental/vercel";
-import { getResumeAsMarkdown } from "@/lib/transformers";
 import { withSupermemory } from "@supermemory/tools/ai-sdk";
+import * as ai from "ai";
+import { convertToModelMessages, type UIMessage } from "ai";
+import { wrapAISDK } from "langsmith/experimental/vercel";
 
 const { streamText } = wrapAISDK(ai);
 
@@ -12,12 +12,10 @@ export const maxDuration = 30;
 export async function POST(req: Request) {
   const { messages }: { messages: UIMessage[] } = await req.json();
 
-  const resumeMarkdown = getResumeAsMarkdown();
-
   const system = `You are an expert assistant tasked with helping potential employers by answering questions strictly based on the candidate's resume. Use the resume information below to provide concise, clear, and relevant answers about the candidate's skills, experience, education, projects, and background.
 
 Resume Information:
-${resumeMarkdown}
+${JSON.stringify(resume, null, 2)}
 
 Instructions:
 - Answer only with information contained in the resume. Do not guess or invent details.
