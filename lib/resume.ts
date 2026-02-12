@@ -1,6 +1,6 @@
-import type { Resume } from "./resume-schema";
+import { validateResume, withResumeDefaults } from "./resume-schema";
 
-export const resume: Resume = {
+const resumeData = {
   source: "github.com/thatbeautifuldream/resume",
   basics: {
     name: "Milind Kumar Mishra",
@@ -197,3 +197,12 @@ export const resume: Resume = {
   awards: [],
   languages: [],
 };
+
+const result = validateResume(resumeData);
+if (!result.valid) {
+  throw new Error(
+    `Resume validation failed: ${JSON.stringify(result.error, null, 2)}`,
+  );
+}
+
+export const resume = withResumeDefaults(result.value);
