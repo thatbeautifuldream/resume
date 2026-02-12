@@ -35,7 +35,7 @@ export default function RootLayout({
 				/>
 				<link rel="manifest" href="/manifest.json" />
 			</head>
-			<body className="min-h-screen bg-background text-foreground antialiased">
+			<body className="@container min-h-screen bg-background text-foreground antialiased">
 				<QueryProvider>
 					<ThemeProvider attribute="class" defaultTheme="light">
 						<KeyboardShortcuts />

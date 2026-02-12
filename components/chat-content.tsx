@@ -11,7 +11,7 @@ import { useSidebarActions } from "@/components/providers/chat-sidebar-store";
 import { TTSClientButton } from "@/components/tts-client-button";
 import { Button } from "@/components/ui/button";
 import { clearMessages, loadMessages, saveMessages } from "@/lib/chat-storage";
-import { cn, toSentenceCase } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import type { ChatItem, ExtendedUIMessage } from "@/types/chat";
 import {
 	Provider as ChatStoreProvider,
@@ -19,10 +19,11 @@ import {
 	useChat,
 	useChatId,
 	useChatMessages,
+	useChatReset,
 	useMessageCount,
 } from "@ai-sdk-tools/store";
 import { DefaultChatTransport } from "ai";
-import { ArrowUp, Square } from "lucide-react";
+import { ArrowUp, Plus, Square, X } from "lucide-react";
 import { motion } from "motion/react";
 import {
 	createContext,
@@ -34,6 +35,7 @@ import {
 	useRef,
 	useState,
 } from "react";
+
 import { useHotkeys } from "react-hotkeys-hook";
 
 // Helper function to check if two timestamps are on the same day
@@ -225,7 +227,7 @@ const Message = memo(function Message({
 													<strong className="font-mono font-medium tracking-widest uppercase">
 														Parameters
 													</strong>
-													<pre className="bg-muted/50 p-2 rounded-md border">
+													<pre className="bg-muted/50 p-2 rounded-md border whitespace-pre-wrap">
 														<code>{JSON.stringify(p.input, null, 2)}</code>
 													</pre>
 												</div>
@@ -235,7 +237,7 @@ const Message = memo(function Message({
 													<strong className="font-mono font-medium tracking-widest uppercase">
 														{isError ? "Error" : "Result"}
 													</strong>
-													<pre className="bg-muted/50 p-2 rounded-md border">
+													<pre className="bg-muted/50 p-2 rounded-md border whitespace-pre-wrap">
 														<code>
 															{typeof p.output === "object"
 																? JSON.stringify(p.output, null, 2)
@@ -450,6 +452,7 @@ function Welcome() {
 			<div className="flex flex-wrap gap-1.5 sm:gap-2 justify-center max-w-md mx-auto">
 				{starterPrompts.map((prompt) => (
 					<button
+						type="button"
 						key={prompt}
 						onClick={() => handlePromptClick(prompt)}
 						className="text-xs @md:text-sm px-2.5 sm:px-3 py-1.5 rounded-full border border-border hover:bg-accent hover:border-accent-foreground/20 transition-colors cursor-pointer"
@@ -479,6 +482,45 @@ function ClearButton() {
 				start new ?
 			</button>
 		</motion.div>
+	);
+}
+
+function ChatSidebarHeader() {
+	const { hasMessages, clearChat } = useChatContext();
+	const { close } = useSidebarActions();
+
+	return (
+		<header className="shrink-0 bg-background border-b">
+			<div className="px-3 sm:px-4 py-3">
+				<div className="flex justify-between items-center">
+					<div className="flex items-center gap-2 min-w-0">
+						<span className="font-medium text-sm md:text-md">Chat</span>
+					</div>
+					<div className="flex gap-x-3 items-center">
+						{hasMessages && (
+							<button
+								type="button"
+								onClick={clearChat}
+								aria-label="Start new chat"
+								title="Start new chat"
+								className="font-medium hover:opacity-70 transition-opacity cursor-pointer p-1 -m-1"
+							>
+								<Plus className="size-4" />
+							</button>
+						)}
+						<button
+							type="button"
+							onClick={close}
+							aria-label="Close chat sidebar"
+							title="Close chat sidebar"
+							className="flex shrink-0 p-1 -m-1 hover:opacity-70 transition-opacity cursor-pointer"
+						>
+							<X className="size-4" />
+						</button>
+					</div>
+				</div>
+			</div>
+		</header>
 	);
 }
 
@@ -571,17 +613,24 @@ function ChatInner({ children }: { children: React.ReactNode }) {
 		addToolResult,
 		clearError,
 	} = chatHelpers;
+	const reset = useChatReset();
 
 	const clearChat = useCallback(async () => {
 		try {
+			// Stop any in-flight stream first
+			stop();
+			// Clear persisted storage
 			await clearMessages();
-			setMessages([]);
+			// Full store reset: messages, status, error, throttled state, etc.
+			reset();
+			// Clear local input state
+			setInput("");
 		} catch (error) {
 			if (process.env.NODE_ENV !== "production") {
 				console.warn("Failed to clear chat:", error);
 			}
 		}
-	}, [setMessages]);
+	}, [stop, reset]);
 
 	// Load messages on mount
 	useEffect(() => {
@@ -755,7 +804,12 @@ function ChatContentLayout() {
 export function ChatContent() {
 	return (
 		<Chat>
-			<ChatContentLayout />
+			<div className="flex flex-col h-full min-h-0">
+				<ChatSidebarHeader />
+				<div className="chat-sidebar-scroll flex-1 min-h-0 overflow-y-auto">
+					<ChatContentLayout />
+				</div>
+			</div>
 		</Chat>
 	);
 }
