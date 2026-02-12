@@ -10,8 +10,6 @@ import { ChatContent } from "@/components/chat-content";
 // import { AIDevtools } from "@ai-sdk-tools/devtools";
 import { useHotkeys } from "react-hotkeys-hook";
 import { AnimatePresence, motion } from "motion/react";
-import { ArrowLeft } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { useIsDesktop } from "@/hooks/use-media-query";
 import { useEffect } from "react";
 import { cn } from "@/lib/utils";
@@ -22,7 +20,6 @@ export function ChatSidebar() {
 	const isResizing = useSidebarResizing();
 	const { close, setWidth, setIsResizing } = useSidebarActions();
 	const isDesktop = useIsDesktop();
-	const router = useRouter();
 
 	// Close on Escape key - only active when sidebar is open
 	useHotkeys(
@@ -35,11 +32,6 @@ export function ChatSidebar() {
 			enableOnFormTags: true,
 		},
 	);
-
-	const handleBackToResume = () => {
-		close();
-		router.push("/");
-	};
 
 	// Initialize CSS variable from store on mount
 	useEffect(() => {
@@ -123,9 +115,11 @@ export function ChatSidebar() {
 					>
 						{/* Resize handle - shows highlight on hover, overlays the border */}
 						{isDesktop && (
-							<div
+							<button
+								type="button"
+								aria-label="Resize chat sidebar"
 								onMouseDown={handleMouseDown}
-								className="absolute left-[-8.5px] top-0 bottom-0 w-[17px] cursor-ew-resize z-[60] transition-all duration-200 hover:bg-muted-foreground/20"
+								className="absolute left-[-8.5px] top-0 bottom-0 w-[17px] cursor-ew-resize z-[60] transition-all duration-200 hover:bg-muted-foreground/20 border-0 bg-transparent p-0"
 							>
 								<div
 									className={cn(
@@ -133,23 +127,9 @@ export function ChatSidebar() {
 										isResizing ? "w-1 bg-foreground" : "w-[0.5px] bg-border",
 									)}
 								/>
-							</div>
+							</button>
 						)}
-						{/* Back to Resume button - only visible on mobile/tablet (when sidebar is full-width) */}
-						<div className="lg:hidden shrink-0 bg-background border-b">
-							<div className="px-3 sm:px-4 md:px-6 lg:px-8 py-1.5">
-								<div className="flex items-center">
-									<button
-										onClick={handleBackToResume}
-										className="flex items-center gap-2 font-medium hover:underline text-sm md:text-md"
-									>
-										<ArrowLeft className="size-4" />
-										Back to Resume
-									</button>
-								</div>
-							</div>
-						</div>
-						<div className="chat-sidebar-scroll flex-1 overflow-y-auto">
+						<div className="flex-1 min-h-0 flex flex-col">
 							<ChatContent />
 						</div>
 					</motion.aside>
