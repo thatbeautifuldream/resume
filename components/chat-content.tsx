@@ -23,7 +23,7 @@ import {
 	useMessageCount,
 } from "@ai-sdk-tools/store";
 import { DefaultChatTransport } from "ai";
-import { ArrowLeft, ArrowUp, Plus, Square, X } from "lucide-react";
+import { ArrowUp, Plus, Square, X } from "lucide-react";
 import { motion } from "motion/react";
 import {
 	createContext,
@@ -35,7 +35,7 @@ import {
 	useRef,
 	useState,
 } from "react";
-import { useRouter } from "next/navigation";
+
 import { useHotkeys } from "react-hotkeys-hook";
 
 // Helper function to check if two timestamps are on the same day
@@ -488,28 +488,12 @@ function ClearButton() {
 function ChatSidebarHeader() {
 	const { hasMessages, clearChat } = useChatContext();
 	const { close } = useSidebarActions();
-	const router = useRouter();
-
-	const handleBackToResume = () => {
-		close();
-		router.push("/");
-	};
 
 	return (
 		<header className="shrink-0 bg-background border-b">
 			<div className="px-3 sm:px-4 py-3">
 				<div className="flex justify-between items-center">
 					<div className="flex items-center gap-2 min-w-0">
-						{/* Back to Resume - icon only, container query: show on mobile (container < 1024px) */}
-						<button
-							type="button"
-							onClick={handleBackToResume}
-							aria-label="Back to Resume"
-							title="Back to Resume"
-							className="hidden @max-lg:flex shrink-0 p-1 -m-1 hover:opacity-70 transition-opacity cursor-pointer"
-						>
-							<ArrowLeft className="size-4" />
-						</button>
 						<span className="font-medium text-sm md:text-md">Chat</span>
 					</div>
 					<div className="flex gap-x-3 items-center">
@@ -524,13 +508,12 @@ function ChatSidebarHeader() {
 								<Plus className="size-4" />
 							</button>
 						)}
-						{/* Close - icon only, container query: show on desktop only (container >= 1024px), hidden when Back is shown */}
 						<button
 							type="button"
 							onClick={close}
 							aria-label="Close chat sidebar"
 							title="Close chat sidebar"
-							className="hidden @lg:flex shrink-0 p-1 -m-1 hover:opacity-70 transition-opacity cursor-pointer"
+							className="flex shrink-0 p-1 -m-1 hover:opacity-70 transition-opacity cursor-pointer"
 						>
 							<X className="size-4" />
 						</button>
