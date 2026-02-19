@@ -30,7 +30,8 @@ import type {
 import { useTheme } from "next-themes";
 import Link from "next/link";
 import type * as React from "react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { TextMorph } from "torph/react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import {
 	vs,
@@ -97,17 +98,43 @@ function ProfileLinkWithNetwork({ profile }: { profile: Profile }) {
 	);
 }
 
+const COPIED_DISPLAY_DURATION_MS = 1800;
+
+function EmailWithCopy({ email }: { email: string }) {
+	const [displayText, setDisplayText] = useState(email);
+
+	const handleClick = useCallback(() => {
+		void navigator.clipboard.writeText(email);
+		setDisplayText("Copied to clipboard!");
+	}, [email]);
+
+	useEffect(() => {
+		if (displayText !== "Copied to clipboard!") return;
+		const t = setTimeout(() => setDisplayText(email), COPIED_DISPLAY_DURATION_MS);
+		return () => clearTimeout(t);
+	}, [displayText, email]);
+
+	return (
+		<button
+			type="button"
+			onClick={handleClick}
+			className="bg-transparent border-none p-0 font-inherit text-inherit cursor-pointer hover:underline"
+			title={`Copy ${email}`}
+		>
+			<TextMorph duration={300} as="span" className="inline">
+				{displayText}
+			</TextMorph>
+		</button>
+	);
+}
+
 function ResumeHeaderItem({ basics }: { basics: Basics }) {
 	const contactItems: { key: string; element: React.ReactNode }[] = [];
 
 	if (basics.email) {
 		contactItems.push({
 			key: "email",
-			element: (
-				<a href={`mailto:${basics.email}`} className="hover:underline">
-					{basics.email}
-				</a>
-			),
+			element: <EmailWithCopy email={basics.email} />,
 		});
 	}
 
