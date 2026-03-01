@@ -632,12 +632,15 @@ function ChatInner({ children }: { children: React.ReactNode }) {
 		}
 	}, [stop, reset]);
 
-	// Load messages on mount
+	// Load messages on mount (non-blocking)
 	useEffect(() => {
+		let mounted = true;
+		let timeoutId: NodeJS.Timeout;
+
 		const loadPersistedMessages = async () => {
 			try {
 				const persistedMessages = await loadMessages();
-				if (persistedMessages && persistedMessages.length > 0) {
+				if (mounted && persistedMessages && persistedMessages.length > 0) {
 					setMessages(persistedMessages);
 				}
 			} catch (error) {
@@ -645,11 +648,19 @@ function ChatInner({ children }: { children: React.ReactNode }) {
 					console.warn("Failed to load persisted messages:", error);
 				}
 			} finally {
-				setIsLoaded(true);
+				if (mounted) {
+					setIsLoaded(true);
+				}
 			}
 		};
-		loadPersistedMessages();
-	}, [setMessages]);
+
+		timeoutId = setTimeout(loadPersistedMessages, 0);
+
+		return () => {
+			mounted = false;
+			if (timeoutId) clearTimeout(timeoutId);
+		};
+	}, []);
 
 	// Save messages when they change
 	useEffect(() => {
@@ -663,26 +674,19 @@ function ChatInner({ children }: { children: React.ReactNode }) {
 	}, [messages, messageCount, isLoaded]);
 
 	// Ensure all messages have createdAt timestamps for immediate display (fixes missing timestamps on first render)
+	const needsNormalization = messages.some((msg) => !msg.createdAt);
+
 	useEffect(() => {
-		if (!isLoaded || messageCount === 0) return;
+		if (!isLoaded || messageCount === 0 || !needsNormalization) return;
 
-		const needsNormalization = messages.some((msg) => !msg.createdAt);
-
-		if (needsNormalization) {
-			const baseTime = Date.now();
-			const normalizedMessages = messages.map((msg, index) => {
-				if (!msg.createdAt) {
-					return {
-						...msg,
-						createdAt: baseTime + index,
-					};
-				}
-				return msg;
-			});
-
-			setMessages(normalizedMessages);
-		}
-	}, [messages, messageCount, isLoaded, setMessages]);
+		const baseTime = Date.now();
+		setMessages((prev) =>
+			prev.map((msg, index) => ({
+				...msg,
+				createdAt: msg.createdAt ?? baseTime + index,
+			})),
+		);
+	}, [isLoaded, messageCount, needsNormalization]);
 
 	useHotkeys(
 		"escape",

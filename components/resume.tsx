@@ -32,11 +32,30 @@ import Link from "next/link";
 import type * as React from "react";
 import { useCallback, useEffect, useState } from "react";
 import { TextMorph } from "torph/react";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import {
-	vs,
-	vscDarkPlus,
-} from "react-syntax-highlighter/dist/esm/styles/prism";
+import dynamic from "next/dynamic";
+
+const SyntaxHighlighter = dynamic(
+	() => import("react-syntax-highlighter").then((mod) => ({ default: mod.Prism })),
+	{ 
+		ssr: false,
+		loading: () => (
+			<div className="flex items-center justify-center py-12 text-sm text-muted-foreground">
+				Loading code viewer...
+			</div>
+		)
+	}
+);
+
+let vsTheme: typeof import("react-syntax-highlighter/dist/esm/styles/prism").vs;
+let vscDarkPlusTheme: typeof import("react-syntax-highlighter/dist/esm/styles/prism").vscDarkPlus;
+
+const loadThemes = async () => {
+	if (!vsTheme || !vscDarkPlusTheme) {
+		const themes = await import("react-syntax-highlighter/dist/esm/styles/prism");
+		vsTheme = themes.vs;
+		vscDarkPlusTheme = themes.vscDarkPlus;
+	}
+};
 
 function ResumeSection({
 	title,
@@ -575,9 +594,17 @@ const SECTION_CONFIG: Partial<
 
 export function ResumeView({ data }: { data: Resume }) {
 	const [showJson, setShowJson] = useState(false);
+	const [themesLoaded, setThemesLoaded] = useState(false);
 	const isOpen = useSidebarOpen();
 	const { close } = useSidebarActions();
 	const { resolvedTheme } = useTheme();
+
+	// Load themes on mount
+	useEffect(() => {
+		if (!themesLoaded) {
+			loadThemes().then(() => setThemesLoaded(true));
+		}
+	}, [themesLoaded]);
 
 	// Register JSON toggle handler for centralized keyboard shortcuts
 	useEffect(() => {
@@ -598,9 +625,19 @@ export function ResumeView({ data }: { data: Resume }) {
 	}, [isOpen, close]);
 
 	if (showJson) {
+		if (!themesLoaded) {
+			return (
+				<article className="py-3 sm:py-4 md:py-8">
+					<div className="flex items-center justify-center py-12 text-sm text-muted-foreground">
+						Loading themes...
+					</div>
+				</article>
+			);
+		}
+
 		const jsonString = JSON.stringify(data, null, 2);
 		const isDark = resolvedTheme === "dark";
-		const syntaxTheme = isDark ? vscDarkPlus : vs;
+		const syntaxTheme = isDark ? vscDarkPlusTheme! : vsTheme!;
 
 		return (
 			<article className="py-3 sm:py-4 md:py-8">

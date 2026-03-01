@@ -7,6 +7,7 @@ import {
 } from "@/components/providers/chat-sidebar-store";
 import { useIsDesktop } from "@/hooks/use-media-query";
 import Link from "next/link";
+import { useMemo } from "react";
 
 export function Header() {
 	const isOpen = useSidebarOpen();
@@ -14,15 +15,17 @@ export function Header() {
 	const { toggle } = useSidebarActions();
 	const isDesktop = useIsDesktop();
 
+	const headerStyle = useMemo(
+		() => ({
+			marginRight: isOpen && isDesktop ? "var(--sidebar-width)" : "0",
+			transition: isResizing ? "none" : "margin-right 0.3s ease-in-out",
+		}),
+		[isOpen, isDesktop, isResizing],
+	);
+
 	return (
 		<header className="fixed top-0 left-0 right-0 z-50 print:hidden bg-background border-b">
-			<div
-				style={{
-					marginRight: isOpen && isDesktop ? "var(--sidebar-width)" : "0",
-					transition: isResizing ? "none" : "margin-right 0.3s ease-in-out",
-				}}
-				className="print:!mr-0"
-			>
+			<div style={headerStyle} className="print:!mr-0">
 				<div className="container py-3">
 					<div className="flex justify-between items-center">
 						<div className="flex gap-x-4 items-center">
