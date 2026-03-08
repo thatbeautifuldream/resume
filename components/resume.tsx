@@ -30,7 +30,7 @@ import type {
 import { useTheme } from "next-themes";
 import Link from "next/link";
 import type * as React from "react";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { TextMorph } from "torph/react";
 import dynamic from "next/dynamic";
 
@@ -251,6 +251,26 @@ function WorkExperienceItem({ item }: { item: Work }) {
 						))}
 					</ul>
 				)}
+				{!!item.proofLinks?.length && (
+					<div className="flex flex-wrap gap-x-3 gap-y-1 text-xs md:text-sm font-medium">
+						{item.proofLinks.map((link) => {
+							const href = link.url.startsWith("http")
+								? link.url
+								: `https://${link.url}`;
+							return (
+								<a
+									key={`${item.name}-${link.label}`}
+									href={href}
+									target="_blank"
+									rel="noopener noreferrer"
+									className="underline underline-offset-2"
+								>
+									{link.label}
+								</a>
+							);
+						})}
+					</div>
+				)}
 			</div>
 		</div>
 	);
@@ -299,6 +319,25 @@ function ProjectPortfolioItem({ item }: { item: Project }) {
 				{item.description && (
 					<p className="text-sm md:text-base">{item.description}</p>
 				)}
+				<div className="flex flex-wrap gap-x-2 gap-y-1 text-xs md:text-sm text-muted-foreground">
+					{item.role && <span>Role: {item.role}</span>}
+					{item.teamSize && <span>Team: {item.teamSize}</span>}
+					{item.duration && <span>Duration: {item.duration}</span>}
+					{item.status && <span>Status: {item.status}</span>}
+				</div>
+				{!!item.impactMetrics?.length && (
+					<div className="flex flex-wrap gap-2">
+						{item.impactMetrics.map((metric) => (
+							<span
+								key={`${item.name}-${metric.label}`}
+								className="rounded-full border px-2 py-0.5 text-xs md:text-sm"
+								title={metric.window}
+							>
+								{metric.label}: {metric.value}
+							</span>
+						))}
+					</div>
+				)}
 				{!!item.highlights?.length && (
 					<ul className="list-disc pl-4 sm:pl-5 space-y-0.5 sm:space-y-1 text-sm md:text-base">
 						{item.highlights.map((h) => (
@@ -307,6 +346,26 @@ function ProjectPortfolioItem({ item }: { item: Project }) {
 							</li>
 						))}
 					</ul>
+				)}
+				{!!item.proofLinks?.length && (
+					<div className="flex flex-wrap gap-x-3 gap-y-1 text-xs md:text-sm font-medium">
+						{item.proofLinks.map((link) => {
+							const href = link.url.startsWith("http")
+								? link.url
+								: `https://${link.url}`;
+							return (
+								<a
+									key={`${item.name}-${link.label}`}
+									href={href}
+									target="_blank"
+									rel="noopener noreferrer"
+									className="underline underline-offset-2"
+								>
+									{link.label}
+								</a>
+							);
+						})}
+					</div>
 				)}
 			</div>
 		</div>
@@ -500,7 +559,7 @@ function ReferenceTestimonial({ items }: { items: Reference[] }) {
 	);
 }
 
-const RESUME_SECTION_ORDER: (keyof Resume)[] = [
+const DEFAULT_SECTION_ORDER: (keyof Resume)[] = [
 	"basics",
 	"work",
 	"projects",
@@ -512,31 +571,29 @@ const RESUME_SECTION_ORDER: (keyof Resume)[] = [
 	"references",
 ];
 
+type ResumeSectionConfig = {
+	title: string;
+	render: (items: unknown) => React.ReactNode;
+};
+
 const SECTION_CONFIG: Partial<
-	Record<
-		keyof Resume,
-		{
-			title: string;
-			// biome-ignore lint/suspicious/noExplicitAny: issok
-			render: (items: any) => React.ReactNode;
-		}
-	>
+	Record<keyof Resume, ResumeSectionConfig>
 > = {
 	work: {
 		title: "Experience",
-		render: (items: Work[]) => (
+		render: (items) => (
 			<div className="space-y-5 sm:space-y-8">
-				{items.map((w) => (
+				{(items as Work[]).map((w) => (
 					<WorkExperienceItem key={w.name} item={w} />
 				))}
 			</div>
 		),
 	},
 	projects: {
-		title: "Projects",
-		render: (items: Project[]) => (
+		title: "Selected Projects",
+		render: (items) => (
 			<div className="space-y-5 sm:space-y-8">
-				{items.map((p) => (
+				{(items as Project[]).map((p) => (
 					<ProjectPortfolioItem key={p.name} item={p} />
 				))}
 			</div>
@@ -544,9 +601,9 @@ const SECTION_CONFIG: Partial<
 	},
 	education: {
 		title: "Education",
-		render: (items: Education[]) => (
+		render: (items) => (
 			<div className="space-y-2 sm:space-y-3">
-				{items.map((e) => (
+				{(items as Education[]).map((e) => (
 					<EducationCredentialItem key={e.institution} item={e} />
 				))}
 			</div>
@@ -554,9 +611,9 @@ const SECTION_CONFIG: Partial<
 	},
 	talks: {
 		title: "Talks",
-		render: (items: Talks[]) => (
+		render: (items) => (
 			<div className="space-y-1.5 sm:space-y-2">
-				{items.map((t) => (
+				{(items as Talks[]).map((t) => (
 					<TalkPresentationItem key={t.title} item={t} />
 				))}
 			</div>
@@ -564,9 +621,9 @@ const SECTION_CONFIG: Partial<
 	},
 	contributions: {
 		title: "Open Source Contributions",
-		render: (items: Contribution[]) => (
+		render: (items) => (
 			<div className="space-y-1.5 sm:space-y-2">
-				{items.map((c) => (
+				{(items as Contribution[]).map((c) => (
 					<OpenSourceContributionItem key={c.url} item={c} />
 				))}
 			</div>
@@ -574,9 +631,9 @@ const SECTION_CONFIG: Partial<
 	},
 	certificates: {
 		title: "Certificates",
-		render: (items: Certificates[]) => (
+		render: (items) => (
 			<div className="flex flex-wrap gap-x-3 sm:gap-x-4 gap-y-1.5 sm:gap-y-2 items-baseline">
-				{items.map((c) => (
+				{(items as Certificates[]).map((c) => (
 					<CertificateAchievementItem key={c.name} item={c} />
 				))}
 			</div>
@@ -584,11 +641,11 @@ const SECTION_CONFIG: Partial<
 	},
 	skills: {
 		title: "Skills",
-		render: (items: Skill[]) => <SkillsProficiency skills={items} />,
+		render: (items) => <SkillsProficiency skills={items as Skill[]} />,
 	},
 	references: {
 		title: "References",
-		render: (items: Reference[]) => <ReferenceTestimonial items={items} />,
+		render: (items) => <ReferenceTestimonial items={items as Reference[]} />,
 	},
 };
 
@@ -598,6 +655,7 @@ export function ResumeView({ data }: { data: Resume }) {
 	const isOpen = useSidebarOpen();
 	const { close } = useSidebarActions();
 	const { resolvedTheme } = useTheme();
+	const sectionOrder = useMemo(() => DEFAULT_SECTION_ORDER, []);
 
 	// Load themes on mount
 	useEffect(() => {
@@ -673,7 +731,7 @@ export function ResumeView({ data }: { data: Resume }) {
 		<article className="space-y-4 sm:space-y-6 py-3 sm:py-4 md:py-8">
 			<ResumeHeaderItem basics={data.basics} />
 
-			{RESUME_SECTION_ORDER.map((sectionKey) => {
+			{sectionOrder.map((sectionKey) => {
 				const section = SECTION_CONFIG[sectionKey];
 				const sectionData = data[sectionKey];
 

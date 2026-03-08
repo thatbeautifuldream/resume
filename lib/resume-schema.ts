@@ -1,225 +1,209 @@
-import { schema } from "tjs";
+import { z } from "zod";
 
-const isoDate = {
-  type: "string" as const,
-  pattern: "^\\d{4}(-\\d{2})?(-\\d{2})?$",
-  description: "ISO-like date (YYYY or YYYY-MM or YYYY-MM-DD)",
-};
+const isoDateRegex = /^\d{4}(-\d{2})?(-\d{2})?$/;
+const isoDate = z.string().regex(isoDateRegex).describe("ISO-like date");
+const url = z.string();
 
-/** URL/URI - use type string; format "uri" would reject URLs without protocol (e.g. "milindmishra.com"). */
-const url = { type: "string" as const };
-
-const workTypeEnum = [
+const workTypeEnum = z.enum([
   "Full Time",
   "Part Time",
   "Contract",
   "Internship",
   "Freelance",
   "Full Time / Contract",
-] as const;
+]);
 
-export const ResumeSchema = schema({
-  $schema: "http://json-schema.org/draft-07/schema#",
-  type: "object",
-  properties: {
-    source: { type: "string" },
-    basics: {
-      type: "object",
-      properties: {
-        name: { type: "string" },
-        label: { type: "string" },
-        image: url,
-        email: { type: "string", format: "email" },
-        phone: { type: "string" },
-        url,
-        summary: { type: "string" },
-        location: {
-          type: "object",
-          properties: {
-            address: { type: "string" },
-            postalCode: { type: "string" },
-            city: { type: "string" },
-            countryCode: { type: "string" },
-            region: { type: "string" },
-          },
-        },
-        timezone: { type: "string" },
-        profiles: {
-          type: "array",
-          items: {
-            type: "object",
-            properties: {
-              network: { type: "string" },
-              username: { type: "string" },
-              url,
-            },
-            required: ["network"],
-          },
-        },
-      },
-      required: ["name", "timezone"],
-    },
-    work: {
-      type: "array",
-      items: {
-        type: "object",
-        properties: {
-          name: { type: "string" },
-          position: { type: "string" },
-          location: { type: "string" },
-          url,
-          startDate: isoDate,
-          endDate: isoDate,
-          summary: { type: "string" },
-          highlights: {
-            type: "array",
-            items: { type: "string" },
-          },
-          workType: { enum: [...workTypeEnum] },
-        },
-        required: [],
-      },
-    },
-    volunteer: {
-      type: "array",
-      items: {
-        type: "object",
-        properties: {
-          organization: { type: "string" },
-          position: { type: "string" },
-          url,
-          startDate: isoDate,
-          endDate: isoDate,
-          summary: { type: "string" },
-          highlights: {
-            type: "array",
-            items: { type: "string" },
-          },
-        },
-        required: ["organization"],
-      },
-    },
-    education: {
-      type: "array",
-      items: {
-        type: "object",
-        properties: {
-          institution: { type: "string" },
-          url,
-          studyType: { type: "string" },
-          startDate: isoDate,
-          endDate: isoDate,
-        },
-        required: ["institution", "url", "studyType"],
-      },
-    },
-    awards: {
-      type: "array",
-      items: {
-        type: "object",
-        properties: {
-          title: { type: "string" },
-          date: isoDate,
-          awarder: { type: "string" },
-          summary: { type: "string" },
-        },
-        required: ["title"],
-      },
-    },
-    skills: {
-      type: "array",
-      items: { type: "string" },
-    },
-    languages: {
-      type: "array",
-      items: {
-        type: "object",
-        properties: {
-          language: { type: "string" },
-          fluency: { type: "string" },
-        },
-        required: ["language"],
-      },
-    },
-    projects: {
-      type: "array",
-      items: {
-        type: "object",
-        properties: {
-          name: { type: "string" },
-          description: { type: "string" },
-          highlights: {
-            type: "array",
-            items: { type: "string" },
-          },
-          keywords: {
-            type: "array",
-            items: { type: "string" },
-          },
-          date: isoDate,
-          startDate: isoDate,
-          endDate: isoDate,
-          url,
-          roles: { type: "array", items: { type: "string" } },
-          entity: { type: "string" },
-          type: { type: "string" },
-        },
-        required: ["name"],
-      },
-    },
-    certificates: {
-      type: "array",
-      items: {
-        type: "object",
-        properties: {
-          name: { type: "string" },
-          date: isoDate,
-          issuer: { type: "string" },
-          url,
-        },
-        required: ["name"],
-      },
-    },
-    talks: {
-      type: "array",
-      items: {
-        type: "object",
-        properties: {
-          title: { type: "string" },
-          organiser: { type: "string" },
-          link: url,
-        },
-        required: ["title", "organiser"],
-      },
-    },
-    references: {
-      type: "array",
-      items: {
-        type: "object",
-        properties: {
-          name: { type: "string" },
-          title: { type: "string" },
-          reference: { type: "string" },
-        },
-        required: ["name", "title", "reference"],
-      },
-    },
-    contributions: {
-      type: "array",
-      items: {
-        type: "object",
-        properties: {
-          title: { type: "string" },
-          url,
-        },
-        required: ["title", "url"],
-      },
-    },
-  },
-  required: ["source", "basics"],
-});
+const BasicsSchema = z
+  .object({
+    name: z.string(),
+    timezone: z.string(),
+    label: z.string().optional(),
+    image: url.optional(),
+    email: z.string().email().optional(),
+    phone: z.string().optional(),
+    url: url.optional(),
+    summary: z.string().optional(),
+    location: z
+      .object({
+        address: z.string().optional(),
+        postalCode: z.string().optional(),
+        city: z.string().optional(),
+        countryCode: z.string().optional(),
+        region: z.string().optional(),
+      })
+      .loose()
+      .optional(),
+    profiles: z
+      .array(
+        z
+          .object({
+            network: z.string(),
+            username: z.string().optional(),
+            url: url.optional(),
+          })
+          .loose(),
+      )
+      .optional(),
+  })
+  .loose();
 
-export type Resume = (typeof ResumeSchema)["type"];
+const WorkProofLinkSchema = z
+  .object({
+    label: z.string(),
+    url,
+    type: z
+      .enum(["live", "source", "case-study", "metrics", "demo", "other"])
+      .optional(),
+  })
+  .loose();
+
+const WorkSchema = z
+  .object({
+    name: z.string().optional(),
+    position: z.string().optional(),
+    location: z.string().optional(),
+    url: url.optional(),
+    startDate: isoDate.optional(),
+    endDate: isoDate.optional(),
+    summary: z.string().optional(),
+    highlights: z.array(z.string()).optional(),
+    proofLinks: z.array(WorkProofLinkSchema).optional(),
+    workType: workTypeEnum.optional(),
+  })
+  .loose();
+
+const VolunteerSchema = z
+  .object({
+    organization: z.string(),
+    position: z.string().optional(),
+    url: url.optional(),
+    startDate: isoDate.optional(),
+    endDate: isoDate.optional(),
+    summary: z.string().optional(),
+    highlights: z.array(z.string()).optional(),
+  })
+  .loose();
+
+const EducationSchema = z
+  .object({
+    institution: z.string(),
+    url: url,
+    studyType: z.string(),
+    startDate: isoDate.optional(),
+    endDate: isoDate.optional(),
+  })
+  .loose();
+
+const AwardSchema = z
+  .object({
+    title: z.string(),
+    date: isoDate.optional(),
+    awarder: z.string().optional(),
+    summary: z.string().optional(),
+  })
+  .loose();
+
+const LanguageSchema = z
+  .object({
+    language: z.string(),
+    fluency: z.string().optional(),
+  })
+  .loose();
+
+const ProjectImpactMetricSchema = z
+  .object({
+    label: z.string(),
+    value: z.string(),
+    window: z.string().optional(),
+  })
+  .loose();
+
+const ProjectProofLinkSchema = z
+  .object({
+    label: z.string(),
+    url,
+    type: z
+      .enum(["live", "source", "case-study", "metrics", "demo", "other"])
+      .optional(),
+  })
+  .loose();
+
+const ProjectSchema = z
+  .object({
+    name: z.string(),
+    description: z.string().optional(),
+    highlights: z.array(z.string()).optional(),
+    keywords: z.array(z.string()).optional(),
+    date: isoDate.optional(),
+    startDate: isoDate.optional(),
+    endDate: isoDate.optional(),
+    url: url.optional(),
+    roles: z.array(z.string()).optional(),
+    entity: z.string().optional(),
+    type: z.string().optional(),
+    role: z.string().optional(),
+    teamSize: z.string().optional(),
+    duration: z.string().optional(),
+    status: z
+      .enum(["Live", "Active", "Archived", "Paused", "Sunset", "Private"])
+      .optional(),
+    challenges: z.array(z.string()).optional(),
+    impactMetrics: z.array(ProjectImpactMetricSchema).optional(),
+    proofLinks: z.array(ProjectProofLinkSchema).optional(),
+  })
+  .loose();
+
+const CertificateSchema = z
+  .object({
+    name: z.string(),
+    date: isoDate.optional(),
+    issuer: z.string().optional(),
+    url: url.optional(),
+  })
+  .loose();
+
+const TalkSchema = z
+  .object({
+    title: z.string(),
+    organiser: z.string(),
+    link: url.optional(),
+  })
+  .loose();
+
+const ReferenceSchema = z
+  .object({
+    name: z.string(),
+    title: z.string(),
+    reference: z.string(),
+  })
+  .loose();
+
+const ContributionSchema = z
+  .object({
+    title: z.string(),
+    url: url,
+  })
+  .loose();
+
+export const ResumeSchema = z
+  .object({
+    source: z.string(),
+    basics: BasicsSchema,
+    work: z.array(WorkSchema).optional(),
+    volunteer: z.array(VolunteerSchema).optional(),
+    education: z.array(EducationSchema).optional(),
+    awards: z.array(AwardSchema).optional(),
+    skills: z.array(z.string()).optional(),
+    languages: z.array(LanguageSchema).optional(),
+    projects: z.array(ProjectSchema).optional(),
+    certificates: z.array(CertificateSchema).optional(),
+    talks: z.array(TalkSchema).optional(),
+    references: z.array(ReferenceSchema).optional(),
+    contributions: z.array(ContributionSchema).optional(),
+  })
+  .loose();
+
+export type Resume = z.infer<typeof ResumeSchema>;
 export type Basics = Resume["basics"];
 export type Location = NonNullable<Resume["basics"]["location"]>;
 export type Profile = NonNullable<Resume["basics"]["profiles"]>[number];
@@ -236,9 +220,7 @@ export type Reference = NonNullable<Resume["references"]>[number];
 export type Contribution = NonNullable<Resume["contributions"]>[number];
 
 /** Apply defaults for optional array fields. Use after validation when loading external data. */
-export function withResumeDefaults(
-  data: Resume,
-): Resume & {
+export function withResumeDefaults(data: Resume): Resume & {
   work: NonNullable<Resume["work"]>;
   volunteer: NonNullable<Resume["volunteer"]>;
   education: NonNullable<Resume["education"]>;
@@ -266,5 +248,3 @@ export function withResumeDefaults(
     contributions: data.contributions ?? [],
   };
 }
-
-export const validateResume = (data: unknown) => ResumeSchema.validate(data);

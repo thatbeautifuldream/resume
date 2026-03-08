@@ -127,6 +127,33 @@ function useChatContext() {
 
 const ASSISTANT_NAME = "Milo (Milind's Resume Butler)";
 
+type ToolPart = {
+	type: string;
+	toolCallId?: string;
+	state?: string;
+	input?: unknown;
+	output?: unknown;
+	errorText?: string;
+};
+
+function toToolPart(part: unknown): ToolPart | null {
+	if (!part || typeof part !== "object") return null;
+	const candidate = part as Record<string, unknown>;
+	if (typeof candidate.type !== "string" || !candidate.type.startsWith("tool-")) {
+		return null;
+	}
+	return {
+		type: candidate.type,
+		toolCallId:
+			typeof candidate.toolCallId === "string" ? candidate.toolCallId : undefined,
+		state: typeof candidate.state === "string" ? candidate.state : undefined,
+		input: candidate.input,
+		output: candidate.output,
+		errorText:
+			typeof candidate.errorText === "string" ? candidate.errorText : undefined,
+	};
+}
+
 const Message = memo(function Message({
 	message,
 }: {
@@ -141,7 +168,14 @@ const Message = memo(function Message({
 
 	// Extract all text content from the message for TTS
 	const messageText = message.parts
-		.filter((part) => part.type === "text")
+		.filter(
+			(
+				part,
+			): part is typeof part & {
+				type: "text";
+				text: string;
+			} => part.type === "text" && typeof part.text === "string",
+		)
 		.map((part) => part.text)
 		.join(" ");
 
@@ -176,31 +210,34 @@ const Message = memo(function Message({
 						</span>
 					)}
 					<div className="break-words">
-						{message.parts.map((part) => {
-							// biome-ignore lint/suspicious/noExplicitAny: toolCallId is not typed
-							const p = part as any;
+						{message.parts.map((part, index) => {
+							const toolPart = toToolPart(part);
+							const partText =
+								"text" in part && typeof part.text === "string"
+									? part.text
+									: undefined;
 
 							if (part.type === "text") {
 								return isUser ? (
 									<p
-										key={part.text}
+										key={`text-${index}`}
 										className="text-sm leading-relaxed whitespace-pre-wrap"
 									>
-										{part.text}
+										{partText}
 									</p>
 								) : (
-									<Response key={part.text}>{part.text}</Response>
+									<Response key={`text-${index}`}>{partText}</Response>
 								);
 							}
 
 							if (part.type === "reasoning" && message.role === "assistant") {
 								return (
-									<details key={part.text} className="mb-2">
+									<details key={`reasoning-${index}`} className="mb-2">
 										<summary className="text-xs cursor-pointer hover:opacity-80 transition-opacity italic">
 											{part.type.toSentenceCase()}
 										</summary>
 										<div className="text-xs mt-2 pl-2 italic whitespace-pre-wrap opacity-80">
-											{part.text}
+											{partText}
 										</div>
 									</details>
 								);
@@ -208,43 +245,42 @@ const Message = memo(function Message({
 
 							// Tool parts - combined tool execution (has both input and output)
 							if (
-								typeof p.type === "string" &&
-								p.type.startsWith("tool-") &&
-								p.toolCallId
+								toolPart &&
+								toolPart.toolCallId
 							) {
-								const toolNameFromType = p.type.replace("tool-", "") || "Tool";
-								const isError = p.state === "output-error";
+								const toolNameFromType = toolPart.type.replace("tool-", "") || "Tool";
+								const isError = toolPart.state === "output-error";
 
 								return (
-									<details key={p.toolCallId} className="mb-2">
+									<details key={toolPart.toolCallId} className="mb-2">
 										<summary className="text-xs cursor-pointer hover:opacity-80 transition-opacity italic">
 											<span>{getToolName(toolNameFromType)}</span>
 											{isError && "[Errored]"}
 										</summary>
 										<div className="text-xs mt-2 pl-2 flex flex-col space-y-2 whitespace-pre-wrap opacity-80">
-											{p.input && (
+												{toolPart.input !== undefined && (
 												<div className=" flex flex-col space-y-2">
 													<strong className="font-mono font-medium tracking-widest uppercase">
 														Parameters
 													</strong>
 													<pre className="bg-muted/50 p-2 rounded-md border whitespace-pre-wrap">
-														<code>{JSON.stringify(p.input, null, 2)}</code>
+														<code>{JSON.stringify(toolPart.input, null, 2)}</code>
 													</pre>
 												</div>
 											)}
-											{p.output && (
+												{toolPart.output !== undefined && (
 												<div className=" flex flex-col space-y-2">
 													<strong className="font-mono font-medium tracking-widest uppercase">
 														{isError ? "Error" : "Result"}
 													</strong>
 													<pre className="bg-muted/50 p-2 rounded-md border whitespace-pre-wrap">
 														<code>
-															{typeof p.output === "object"
-																? JSON.stringify(p.output, null, 2)
-																: String(p.output)}
+															{typeof toolPart.output === "object"
+																? JSON.stringify(toolPart.output, null, 2)
+																: String(toolPart.output)}
 														</code>
 													</pre>
-													{p.errorText && <p>{p.errorText}</p>}
+													{toolPart.errorText && <p>{toolPart.errorText}</p>}
 												</div>
 											)}
 										</div>
@@ -589,11 +625,14 @@ function Input() {
 function ChatInner({ children }: { children: React.ReactNode }) {
 	// Type cast needed: ai@6.x + @ai-sdk-tools/store@1.2.0 version mismatch
 	// Still get all performance benefits (O(1) lookups, batching, typed returns)
-	const chatHelpers = useChat<ExtendedUIMessage>({
+	const chatOptions = {
 		transport: new DefaultChatTransport({
 			api: "/api/chat",
-		}) as any,
-	});
+		}),
+	};
+	const chatHelpers = useChat<ExtendedUIMessage>(
+		chatOptions as unknown as NonNullable<Parameters<typeof useChat<ExtendedUIMessage>>[0]>,
+	);
 	const messages = useChatMessages<ExtendedUIMessage>();
 	const chatId = useChatId();
 	const messageCount = useMessageCount();

@@ -6,6 +6,7 @@
  */
 
 import Dexie, { Table } from 'dexie';
+import type { ExtendedUIMessage } from '@/types/chat';
 
 // ============================================================================
 // TypeScript Interfaces
@@ -15,16 +16,10 @@ export interface ChatMessage {
   id: string;
   role: 'user' | 'assistant' | 'system';
   content: string; // Plain text extracted from parts
-  parts: Array<{
-    type: string;
-    text?: string;
-    reasoning?: string;
-    state?: string;
-    [key: string]: any;
-  }>;
+  parts: ExtendedUIMessage["parts"];
   sequenceNumber: number;
   createdAt: number;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }
 
 // ============================================================================
@@ -67,12 +62,15 @@ const CHAT_ID = 'persistent-chat';
 /**
  * Extract plain text content from message parts for search
  */
-function extractTextContent(parts: Array<any>): string {
+function extractTextContent(parts: ExtendedUIMessage["parts"] | undefined): string {
   if (!parts || !Array.isArray(parts)) return '';
 
   return parts
-    .filter(part => part.type === 'text' && part.text)
-    .map(part => part.text)
+    .filter(
+      (part): part is ExtendedUIMessage["parts"][number] & { type: "text"; text: string } =>
+        part.type === "text" && typeof part.text === "string",
+    )
+    .map((part) => part.text)
     .join(' ')
     .trim();
 }
@@ -84,7 +82,7 @@ function extractTextContent(parts: Array<any>): string {
 /**
  * Save messages to IndexedDB
  */
-export async function saveMessages(messages: any[]): Promise<void> {
+export async function saveMessages(messages: ExtendedUIMessage[]): Promise<void> {
   try {
     const now = Date.now();
 
@@ -95,7 +93,10 @@ export async function saveMessages(messages: any[]): Promise<void> {
       parts: message.parts || [],
       sequenceNumber: i,
       createdAt: message.createdAt || now,
-      metadata: message.metadata,
+      metadata:
+        message.metadata && typeof message.metadata === "object"
+          ? (message.metadata as Record<string, unknown>)
+          : undefined,
     }));
 
     // Clear existing messages and save new ones
@@ -124,14 +125,14 @@ export async function saveMessages(messages: any[]): Promise<void> {
 /**
  * Load messages from IndexedDB
  */
-export async function loadMessages(): Promise<any[]> {
+export async function loadMessages(): Promise<ExtendedUIMessage[]> {
   try {
     const messages = await db.messages
       .orderBy('sequenceNumber')
       .toArray();
 
     // Convert stored format back to message format
-    return messages.map((msg) => ({
+    return messages.map((msg): ExtendedUIMessage => ({
       id: msg.id,
       role: msg.role,
       parts: msg.parts,
@@ -146,7 +147,7 @@ export async function loadMessages(): Promise<any[]> {
     try {
       const data = localStorage.getItem(CHAT_ID);
       if (data) {
-        const parsed = JSON.parse(data);
+        const parsed = JSON.parse(data) as { messages?: ExtendedUIMessage[] };
         return parsed.messages || [];
       }
     } catch (lsError) {

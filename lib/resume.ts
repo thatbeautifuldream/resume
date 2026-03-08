@@ -1,8 +1,4 @@
-import {
-  type Resume,
-  validateResume,
-  withResumeDefaults,
-} from "./resume-schema";
+import { ResumeSchema, type Resume, withResumeDefaults } from "./resume-schema";
 
 const resumeData: Resume = {
   source: "github.com/thatbeautifuldream/resume",
@@ -23,70 +19,221 @@ const resumeData: Resume = {
         username: "thatbeautifuldream",
         url: "github.com/thatbeautifuldream",
       },
+      {
+        network: "LinkedIn",
+        username: "milindmishra",
+        url: "linkedin.com/in/milindmishra",
+      },
+      {
+        network: "X",
+        username: "milindmishra_",
+        url: "x.com/milindmishra_",
+      },
+      {
+        network: "Cal.com",
+        username: "milind",
+        url: "cal.com/milind",
+      },
     ],
   },
   work: [
     {
-      name: "Foyer (Merlin AI & Thine)",
-      location: "Bengaluru, Karnataka, India",
+      name: "Thine",
+      location: "Bangalore Urban, Karnataka, India (On-site)",
+      position: "Design Engineer",
+      workType: "Full Time",
+      startDate: "2025-10",
+      summary:
+        "Designing and shipping expressive product experiences for Thine AI.",
+      highlights: [
+        "Built interaction-heavy interfaces using React.js and Framer Motion for AI-native product flows",
+        "Focused on motion and UI systems that improved clarity and responsiveness in core experiences",
+      ],
+      proofLinks: [
+        { type: "live", label: "Thine's Website", url: "https://thine.com" },
+      ],
+    },
+    {
+      name: "Merlin AI by Foyer",
+      location: "Bangalore Urban, Karnataka, India (On-site)",
       position: "Product Engineer",
       workType: "Full Time",
-      startDate: "2025-02-21",
+      startDate: "2025-02",
       summary:
-        "Building AI products for 2M+ users. Ownership across platform stability and Expressive UI.",
+        "Built and scaled AI chat product experiences across core Merlin workflows.",
       highlights: [
-        "Revamped Model Selector UX with discovery grid interface, increasing model adoption by 40%",
-        "Shipped ChatGPT history import feature enabling 3,500+ users to migrate from ChatGPT to Merlin",
-        "Improved payment flow reducing transaction failures by 25%, implemented churn intervention flows improving retention by 15%",
-        "Built real-time prompt enhancement with streaming architecture, reducing perceived latency to under 200ms",
-        "Engineered animation-heavy experiences for Thine using optimized motion design patterns, maintaining 60fps performance at scale",
+        "Developed and launched the UI for ChatGPT Imports to improve onboarding and migration experience",
+        "Revamped chat history flow and optimized dynamic row heights to overcome library constraints and improve usability",
+        "Implemented LLM selector with layout animations to enrich the core chat experience",
+        "Refactored the frontend codebase to improve performance and maintainability",
+      ],
+      proofLinks: [
+        {
+          type: "live",
+          label: "Merlin AI's Website",
+          url: "https://getmerlin.in/chat",
+        },
       ],
     },
     {
-      name: "StartupHire & Proof-of-Skill Protocol",
-      location: "Bengaluru, Karnataka, India / Remote",
+      name: "SARAL - The Influencer OS",
+      location: "Bengaluru, Karnataka, India (Remote)",
+      position: "Software Engineer",
+      workType: "Full Time",
+      startDate: "2024-12",
+      endDate: "2025-02",
+      summary:
+        "Improved internal product workflows for support, growth, and campaign operations.",
+      highlights: [
+        "Revamped internal dashboard to improve visibility of key metrics for support and growth teams",
+        "Implemented multi-select drag-and-drop interactions for faster bulk operations",
+        "Built a content submission UI to streamline approvals and accelerate campaign execution",
+      ],
+      proofLinks: [
+        { type: "live", label: "Saral's Website", url: "https://getsaral.com" },
+      ],
+    },
+    {
+      name: "Proof-of-Skill protocol",
+      location: "Bengaluru, Karnataka, India (On-site)",
       position: "Founding Product Engineer",
       workType: "Full Time",
-      startDate: "2023-08-01",
-      endDate: "2025-02-08",
+      startDate: "2024-06",
+      endDate: "2024-12",
       summary:
-        "Built 0 to 1 hiring and skill validation platforms. Owned frontend, devops, growth tools, and product velocity in early-stage chaos.",
+        "Led product engineering for an assessment and skill validation platform from MVP to deployment.",
       highlights: [
-        "Architected and shipped decentralized skill validation MVPs with voting consensus across 150+ validators, reducing hiring bias through algorithmic evaluation",
-        "Built proctored assessments with real-time streaming infrastructure, reducing time-to-interview by 50%",
-        "Developed recruiter dashboards with analytics, heatmaps, and search functionality, improving candidate discovery and data-driven decision making",
-        "Built AI-powered assessment generation system using Vercel AI SDK and OpenAI API, automating question creation for 20+ skill domains",
-        "Shipped internal tools and ops dashboards improving campaign ROI tracking and operational efficiency by 30%",
+        "Led frontend development for MVP flows across Skill Validators, Candidates, and Recruiters",
+        "Designed and implemented validator UI with voting and consensus-driven assessment validation",
+        "Built real-time assessment recording and proctoring integrations to improve data integrity and malpractice detection",
+        "Architected core systems and handled end-to-end deployment for platform availability",
+      ],
+      proofLinks: [
+        {
+          type: "live",
+          label: "Proof of Skill Protocol's Website",
+          url: "https://proofofskill.org",
+        },
       ],
     },
     {
-      name: "Locus Connect & NYCU",
-      location: "Hsinchu, Taiwan",
-      position: "Software Engineer & Research Assistant",
+      name: "Milind Mishra Technologies",
+      location: "India",
+      position: "Freelance Software Engineer",
+      workType: "Freelance",
+      startDate: "2024-02",
+      endDate: "2024-05",
+      summary:
+        "Delivered custom hiring and assessment tooling for clients with AI-assisted workflows.",
+      highlights: [
+        "Built a recruiter-facing frontend in Next.js and Tailwind CSS for contractor search and insights",
+        "Created an AI-powered quiz system with Vercel AI SDK and OpenAI for dynamic assessment generation and evaluation",
+        "Adopted hourly pricing model to align client value with delivery effort",
+      ],
+    },
+    {
+      name: "StartupHire",
+      location: "Irvine, California, United States (Remote)",
+      position: "Lead Frontend Engineer",
       workType: "Full Time",
-      startDate: "2022-07-01",
-      endDate: "2023-07-31",
+      startDate: "2023-08",
+      endDate: "2024-01",
       summary:
-        "Industry-academia R&D on real-time IoT positioning systems. Shipped research-grade accuracy into production.",
+        "Led frontend execution for recruiting workflow and Gen AI product prototypes.",
       highlights: [
-        "Built 3D positioning and visualization systems for industrial IoT applications, improving UWB positioning accuracy from 20cm to under 10cm research-grade precision",
-        "Developed MQTT-based dashboards for real-time IoT device monitoring and visualization across 50+ connected devices",
-        "Dockerized microservices architecture reducing deployment time by 80% while maintaining 99.9% uptime",
+        "Led a team of two developers to build a recruiting pipeline prototype",
+        "Integrated multiple job boards to centralize candidate applications and improve recruiter visibility",
+        "Managed deployments for Gen AI workflows to ensure stable operation",
       ],
     },
     {
-      name: "iNeuron.ai & Plusklass",
-      location: "Bengaluru, Karnataka, India / Remote",
-      position: "UX Designer & Technical Content Writer",
-      workType: "Internship",
-      startDate: "2022-01-01",
-      endDate: "2022-06-30",
+      name: "National Yang Ming Chiao Tung University",
+      location: "Hsinchu City, Taiwan (On-site)",
+      position: "Research Assistant",
+      workType: "Full Time",
+      startDate: "2023-02",
+      endDate: "2023-07",
       summary:
-        "UX, design systems, and technical education. First taste of shipping things people actually use.",
+        "Contributed to real-time indoor positioning research and visualization systems.",
       highlights: [
-        "Designed onboarding flows and maintained component-based design system, increasing development velocity by 35%",
-        "Authored beginner-friendly HTML, CSS, and JavaScript educational content adopted by 2,000+ learners, improving course completion rates by 25%",
-        "Created marketing collateral and landing pages contributing to 20% increase in lead generation",
+        "Maintained frontend systems for indoor positioning with integrated IoT data pipelines",
+        "Enhanced 3D visualization using React, GSAP, and Three.js",
+        "Improved HDOP calculations and z-index accuracy from around 20 cm to under 10 cm",
+        "Gained infrastructure experience deploying and maintaining services on bare metal",
+      ],
+      proofLinks: [
+        {
+          type: "live",
+          label: "University Website",
+          url: "https://www.nycu.edu.tw/",
+        },
+      ],
+    },
+    {
+      name: "Locus Connect",
+      location: "Bengaluru, Karnataka, India (Remote)",
+      position: "Frontend Engineer",
+      workType: "Full Time",
+      startDate: "2022-07",
+      endDate: "2023-07",
+      summary:
+        "Built product and marketing frontend systems for a 3D indoor positioning platform.",
+      highlights: [
+        "Developed and maintained frontend for a 3D indoor positioning product",
+        "Built and optimized the marketing website to improve visibility and engagement",
+        "Managed infrastructure tasks including switch configuration and load balancer maintenance",
+        "Deployed services with Docker to improve reliability and scalability",
+      ],
+      proofLinks: [
+        {
+          type: "live",
+          label: "Locus Connect's Website",
+          url: "https://locusconnect.com/",
+        },
+      ],
+    },
+    {
+      name: "iNeuron.ai",
+      location: "Bengaluru, Karnataka, India (On-site)",
+      position: "UX Designer",
+      workType: "Internship",
+      startDate: "2022-05",
+      endDate: "2022-06",
+      summary:
+        "Worked on UX flows, design systems, and marketing assets for hiring products.",
+      highlights: [
+        "Designed user authentication flows for candidate and recruiter journeys",
+        "Maintained and updated design system for product consistency and usability",
+        "Created marketing posters and visual assets to support brand outreach",
+      ],
+      proofLinks: [
+        {
+          type: "live",
+          label: "iNeuron.ai's Website",
+          url: "placeholder.website",
+        },
+      ],
+    },
+    {
+      name: "Plusklass",
+      location: "Remote",
+      position: "Technical Writer",
+      workType: "Internship",
+      startDate: "2022-01",
+      endDate: "2022-04",
+      summary:
+        "Created foundational web development learning content for beginner audiences.",
+      highlights: [
+        "Authored technical courses on HTML, CSS, and JavaScript for aspiring developers",
+        "Developed structured learning materials that simplified complex concepts",
+        "Collaborated with team to keep content aligned with educational and industry standards",
+      ],
+      proofLinks: [
+        {
+          type: "live",
+          label: "PlusKlass's LinkedIn Page",
+          url: "https://www.linkedin.com/company/plusklass",
+        },
       ],
     },
   ],
@@ -131,11 +278,43 @@ const resumeData: Resume = {
     {
       name: "AI Roadmap Generator",
       description:
-        "Full-stack AI product generating personalized learning roadmaps with 5,600+ organic users",
+        "Full-stack AI product for generating personalized learning roadmaps",
+      role: "Engineer & Product Owner",
+      teamSize: "3",
+      duration: "Aug 2024 - Sept 2024",
+      status: "Live",
       highlights: [
-        "Developed end-to-end solution with prompt engineering, structured LLM output parsing, canvas-based visualization, and responsive UX",
-        "Generated 250+ career roadmaps using real-time streaming architecture with OpenAI API",
-        "Built custom canvas rendering engine for interactive node-based navigation with drag-and-drop functionality",
+        "Identified a gap in structured upskilling journeys and shipped a personalized roadmap generator with streaming AI responses and node-based learning flows",
+        "Built and owned the full stack end-to-end (prompt design, typed output parsing, canvas renderer, and responsive UX), reducing first roadmap generation to under 10 seconds",
+        "Reached 5,600+ all-time users and generated 250+ learning roadmaps through organic distribution as of Mar 2026",
+      ],
+      impactMetrics: [
+        {
+          label: "Users",
+          value: "5,600+",
+          window: "All-time (as of Mar 2026)",
+        },
+        {
+          label: "Roadmaps Generated",
+          value: "500+",
+          window: "All-time (as of Mar 2026)",
+        },
+      ],
+      proofLinks: [
+        {
+          type: "live",
+          label: "Live",
+          url: "airoadmapgenerator.com",
+        },
+        {
+          type: "source",
+          label: "Source",
+          url: "github.com/thatbeautifuldream",
+        },
+      ],
+      challenges: [
+        "Converting inconsistent LLM output into stable, typed roadmap nodes",
+        "Keeping canvas interactions smooth while rendering larger roadmap graphs",
       ],
       url: "airoadmapgenerator.com",
       keywords: ["Next.js", "React", "TypeScript", "Canvas", "LLMs"],
@@ -144,14 +323,119 @@ const resumeData: Resume = {
     {
       name: "JSON Visualiser",
       description:
-        "Open-source JSON debugging and visualization tool with tree and grid view options",
+        "JSON debugging and visualization tool with tree and grid views for nested data exploration",
+      role: "Creator",
+      teamSize: "1",
+      duration: "Oct 2024 - Present",
+      status: "Live",
       highlights: [
-        "Achieved 143 unique users with 43% return rate, including one power user with 49 sessions",
-        "Implemented JSON formatting, validation, and exploration with tree and grid visualization modes supporting deeply nested structures",
+        "Built the tool to reduce debugging time for deeply nested payloads by combining validation, formatting, and multi-view exploration in one interface",
+        "Implemented tree and grid renderers optimized for complex nested JSON structures with smooth expand/collapse navigation",
+        "Reached 143 unique users with 43% return rate, including one power user with 49 sessions as of Mar 2026",
+      ],
+      impactMetrics: [
+        {
+          label: "Unique Users",
+          value: "143",
+          window: "All-time (as of Mar 2026)",
+        },
+        {
+          label: "Return Rate",
+          value: "43%",
+          window: "All-time cohort (as of Mar 2026)",
+        },
+      ],
+      proofLinks: [
+        {
+          type: "live",
+          label: "Live",
+          url: "jsonvisualiser.com",
+        },
+        {
+          type: "source",
+          label: "Source",
+          url: "github.com/thatbeautifuldream/jsonvisualiser",
+        },
+      ],
+      challenges: [
+        "Making large JSON payload inspection usable on smaller screens",
+        "Balancing rendering performance with readability for deep hierarchies",
       ],
       url: "jsonvisualiser.com",
       keywords: ["React", "TypeScript", "D3.js"],
       date: "2024-10-01",
+    },
+    {
+      name: "models.surf",
+      description:
+        "AI model discovery platform to explore and filter models by capabilities and use cases",
+      role: "Founder & Product Engineer",
+      teamSize: "1",
+      duration: "Feb 2026 - Present",
+      status: "Live",
+      highlights: [
+        "Built a model discovery interface to reduce evaluation time for developers choosing across rapidly changing AI model options",
+        "Designed capability-first filtering workflows and ranking views to surface fit-for-purpose models faster",
+      ],
+      proofLinks: [
+        { type: "live", label: "Live", url: "models.surf" },
+        {
+          type: "source",
+          label: "Source",
+          url: "github.com/thatbeautifuldream",
+        },
+      ],
+      url: "models.surf",
+      keywords: ["Next.js", "React", "TypeScript", "AI Tooling"],
+      date: "2026-02-01",
+    },
+    {
+      name: "Markdown Visualizer",
+      description:
+        "Real-time markdown rendering and preview tool for fast writing and iteration",
+      role: "Creator",
+      teamSize: "1",
+      duration: "Dec 2025 - Present",
+      status: "Live",
+      highlights: [
+        "Built an instant preview workflow to reduce context switching while writing technical content",
+        "Implemented low-latency rendering and editing utilities for markdown-heavy developer workflows",
+      ],
+      proofLinks: [
+        { type: "live", label: "Live", url: "markdownvisualizer.com" },
+        {
+          type: "source",
+          label: "Source",
+          url: "github.com/thatbeautifuldream",
+        },
+      ],
+      url: "markdownvisualizer.com",
+      keywords: ["React", "TypeScript", "Markdown", "DX"],
+      date: "2025-12-01",
+    },
+    {
+      name: "attnui",
+      description:
+        "Attention-to-detail UI component collection focused on polished interaction design",
+      role: "Creator",
+      teamSize: "1",
+      duration: "Nov 2025 - Present",
+      status: "Live",
+      highlights: [
+        "Designed reusable UI patterns focused on motion quality and production-grade component ergonomics",
+        "Built component primitives that improve consistency and implementation speed for frontend builds",
+      ],
+      proofLinks: [
+        { type: "live", label: "Live", url: "attnui.com" },
+        {
+          type: "source",
+          label: "Source",
+          url: "github.com/thatbeautifuldream",
+        },
+      ],
+      url: "attnui.com",
+      keywords: ["Design Systems", "React", "UI Components", "Motion"],
+      date: "2025-11-01",
     },
   ],
   talks: [
@@ -202,11 +486,11 @@ const resumeData: Resume = {
   languages: [],
 };
 
-const result = validateResume(resumeData);
-if (!result.valid) {
+const result = ResumeSchema.safeParse(resumeData);
+if (!result.success) {
   throw new Error(
-    `Resume validation failed: ${JSON.stringify(result.error, null, 2)}`,
+    `Resume validation failed: ${JSON.stringify(result.error.format(), null, 2)}`,
   );
 }
 
-export const resume = withResumeDefaults(result.value);
+export const resume = withResumeDefaults(result.data);
