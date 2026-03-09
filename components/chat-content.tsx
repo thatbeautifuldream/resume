@@ -163,7 +163,7 @@ const Message = memo(function Message({
 	const isAssistant = message.role === "assistant";
 
 	const getToolName = (toolName: string): string => {
-		return toolName === "query_resume" ? "Query Resume" : toolName;
+		return toolName;
 	};
 
 	// Extract all text content from the message for TTS
