@@ -111,7 +111,7 @@ export function ChatSidebar() {
 						style={{
 							width: isDesktop ? "var(--sidebar-width)" : "100%",
 						}}
-						className="@container fixed top-0 right-0 bottom-0 bg-background border-l z-50 flex flex-col print:hidden"
+						className="@container fixed top-0 right-0 bottom-0 bg-background border-l z-50 flex flex-col print:hidden pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)] pr-[env(safe-area-inset-right)]"
 					>
 						{/* Resize handle - shows highlight on hover, overlays the border */}
 						{isDesktop && (

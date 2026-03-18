@@ -26,6 +26,7 @@ export const createMetadata = ({
     title: parsedTitle,
     description,
     applicationName,
+    manifest: "/manifest.json",
     authors: [author],
     creator: author.name,
     formatDetection: {
@@ -33,7 +34,7 @@ export const createMetadata = ({
     },
     appleWebApp: {
       capable: true,
-      statusBarStyle: "default",
+      statusBarStyle: "black-translucent",
       title: parsedTitle,
     },
     openGraph: {
@@ -74,6 +75,12 @@ export const createMetadata = ({
         },
         {
           media: "(prefers-color-scheme: dark)",
+          url: "/images/icon.png",
+          href: "/images/icon.png",
+        },
+      ],
+      apple: [
+        {
           url: "/images/icon.png",
           href: "/images/icon.png",
         },

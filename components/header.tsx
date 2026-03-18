@@ -24,7 +24,7 @@ export function Header() {
 	);
 
 	return (
-		<header className="fixed top-0 left-0 right-0 z-50 print:hidden bg-background border-b">
+		<header className="fixed top-0 left-0 right-0 z-50 print:hidden bg-background border-b pt-[env(safe-area-inset-top)]">
 			<div style={headerStyle} className="print:!mr-0">
 				<div className="container py-3">
 					<div className="flex justify-between items-center">
