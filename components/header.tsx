@@ -6,6 +6,7 @@ import {
 	useSidebarOpen,
 	useSidebarResizing,
 } from "@/components/providers/chat-sidebar-store";
+import { useAppHaptics } from "@/hooks/use-app-haptics";
 import { useIsDesktop } from "@/hooks/use-media-query";
 import Link from "next/link";
 import { useMemo } from "react";
@@ -14,6 +15,7 @@ export function Header() {
 	const isOpen = useSidebarOpen();
 	const isResizing = useSidebarResizing();
 	const { toggle } = useSidebarActions();
+	const { trigger } = useAppHaptics();
 	const isDesktop = useIsDesktop();
 
 	const headerStyle = useMemo(
@@ -65,7 +67,10 @@ export function Header() {
 							{!isOpen && (
 								<button
 									type="button"
-									onClick={toggle}
+									onClick={() => {
+										void trigger("medium", { intensity: 0.75 });
+										toggle();
+									}}
 									aria-label="Open chat sidebar"
 									aria-expanded={false}
 									className="font-medium hover:underline text-sm md:text-md cursor-pointer"

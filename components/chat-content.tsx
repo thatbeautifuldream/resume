@@ -10,6 +10,7 @@ import {
 import { useSidebarActions } from "@/components/providers/chat-sidebar-store";
 import { TTSClientButton } from "@/components/tts-client-button";
 import { Button } from "@/components/ui/button";
+import { useAppHaptics } from "@/hooks/use-app-haptics";
 import { clearMessages, loadMessages, saveMessages } from "@/lib/chat-storage";
 import { cn } from "@/lib/utils";
 import type { ChatItem, ExtendedUIMessage } from "@/types/chat";
@@ -319,13 +320,16 @@ const Message = memo(function Message({
 });
 
 function Messages() {
-	const { messages, status, hasMessages } = useChatContext();
+	const { messages, status, hasMessages, isLoaded } = useChatContext();
+	const { trigger } = useAppHaptics();
 	const messageCount = useMessageCount();
 	const messagesEndRef = useRef<HTMLDivElement>(null);
 	const scrollContainerRef = useRef<HTMLDivElement>(null);
 	const prevMessageCountRef = useRef(0);
 	const shouldAutoScrollRef = useRef(true);
 	const scrollTimeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
+	const lastAssistantMessageIdRef = useRef<string | null>(null);
+	const hasTrackedInitialAssistantRef = useRef(false);
 
 	// Compute chat items with date separators
 	const chatItems = useMemo((): ChatItem[] => {
@@ -424,6 +428,29 @@ function Messages() {
 		}
 	}, [hasMessages, messageCount, scrollToBottom]);
 
+	useEffect(() => {
+		const lastAssistantMessage = [...messages]
+			.reverse()
+			.find((message) => message.role === "assistant");
+
+		if (!isLoaded) return;
+
+		if (!hasTrackedInitialAssistantRef.current) {
+			lastAssistantMessageIdRef.current = lastAssistantMessage?.id ?? null;
+			hasTrackedInitialAssistantRef.current = true;
+			return;
+		}
+
+		if (
+			status === "ready" &&
+			lastAssistantMessage?.id &&
+			lastAssistantMessage.id !== lastAssistantMessageIdRef.current
+		) {
+			lastAssistantMessageIdRef.current = lastAssistantMessage.id;
+			void trigger("soft", { intensity: 0.5 });
+		}
+	}, [isLoaded, messages, status, trigger]);
+
 	if (!hasMessages) return null;
 
 	return (
@@ -457,6 +484,7 @@ function Messages() {
 
 function Welcome() {
 	const { hasMessages, sendMessage } = useChatContext();
+	const { trigger } = useAppHaptics();
 
 	if (hasMessages) return null;
 
@@ -469,6 +497,7 @@ function Welcome() {
 	];
 
 	const handlePromptClick = (prompt: string) => {
+		void trigger("rigid", { intensity: 0.9 });
 		sendMessage({ text: prompt });
 	};
 
@@ -524,6 +553,7 @@ function ClearButton() {
 function ChatSidebarHeader() {
 	const { hasMessages, clearChat } = useChatContext();
 	const { close } = useSidebarActions();
+	const { trigger } = useAppHaptics();
 
 	return (
 		<header className="shrink-0 bg-background border-b">
@@ -536,7 +566,10 @@ function ChatSidebarHeader() {
 						{hasMessages && (
 							<button
 								type="button"
-								onClick={clearChat}
+								onClick={() => {
+									void trigger("light", { intensity: 0.35 });
+									void clearChat();
+								}}
 								aria-label="Start new chat"
 								title="Start new chat"
 								className="font-medium hover:opacity-70 transition-opacity cursor-pointer p-1 -m-1"
@@ -546,7 +579,10 @@ function ChatSidebarHeader() {
 						)}
 						<button
 							type="button"
-							onClick={close}
+							onClick={() => {
+								void trigger("light", { intensity: 0.45 });
+								close();
+							}}
 							aria-label="Close chat sidebar"
 							title="Close chat sidebar"
 							className="flex shrink-0 p-1 -m-1 hover:opacity-70 transition-opacity cursor-pointer"
@@ -562,13 +598,15 @@ function ChatSidebarHeader() {
 
 function Input() {
 	const { sendMessage, status, stop, input, setInput } = useChatContext();
+	const { trigger } = useAppHaptics();
 
 	const handleSubmit = useCallback(() => {
 		if (input.trim() && status === "ready") {
+			void trigger("rigid", { intensity: 0.9 });
 			sendMessage({ text: input });
 			setInput("");
 		}
-	}, [input, status, sendMessage, setInput]);
+	}, [input, sendMessage, setInput, status, trigger]);
 
 	return (
 		<div>
@@ -602,6 +640,7 @@ function Input() {
 								onClick={(e) => {
 									if (status === "submitted") {
 										e.preventDefault();
+										void trigger("soft", { intensity: 0.7 });
 										stop();
 									}
 								}}

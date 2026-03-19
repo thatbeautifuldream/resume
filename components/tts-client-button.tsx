@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { useAppHaptics } from "@/hooks/use-app-haptics";
 import { markdownToSpeech } from "@/lib/markdown-to-speech";
 import { useSpeechSynthesis } from "@/hooks/use-speech-synthesis";
 import { Volume2, VolumeX } from "lucide-react";
@@ -16,9 +17,11 @@ interface TTSClientButtonProps {
  */
 export function TTSClientButton({ text }: TTSClientButtonProps) {
   const { speak, cancel, isSpeaking, isSupported } = useSpeechSynthesis();
+  const { trigger } = useAppHaptics();
 
   const handleToggle = useCallback(() => {
     if (isSpeaking) {
+      void trigger("soft", { intensity: 0.7 });
       cancel();
     } else {
       // Clean markdown formatting before speaking
@@ -29,9 +32,10 @@ export function TTSClientButton({ text }: TTSClientButtonProps) {
         return;
       }
 
+      void trigger("selection", { intensity: 0.55 });
       speak(cleanText);
     }
-  }, [isSpeaking, text, speak, cancel]);
+  }, [cancel, isSpeaking, speak, text, trigger]);
 
   // Hide button if browser doesn't support Web Speech API
   if (!isSupported) {
