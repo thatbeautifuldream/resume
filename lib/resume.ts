@@ -38,36 +38,23 @@ const resumeData: Resume = {
   },
   work: [
     {
-      name: "Thine",
+      name: "Thine / Merlin AI by Foyer",
       location: "Bangalore Urban, Karnataka, India (On-site)",
-      position: "Design Engineer",
-      workType: "Full Time",
-      startDate: "2025-10",
-      summary:
-        "Designing and shipping expressive product experiences for Thine AI.",
-      highlights: [
-        "Built interaction-heavy interfaces using React.js and Framer Motion for AI-native product flows",
-        "Focused on motion and UI systems that improved clarity and responsiveness in core experiences",
-      ],
-      proofLinks: [
-        { type: "live", label: "Thine's Website", url: "https://thine.com" },
-      ],
-    },
-    {
-      name: "Merlin AI by Foyer",
-      location: "Bangalore Urban, Karnataka, India (On-site)",
-      position: "Product Engineer",
+      position: "Product Engineer / Design Engineer",
       workType: "Full Time",
       startDate: "2025-02",
       summary:
-        "Built and scaled AI chat product experiences across core Merlin workflows.",
+        "Built and scaled AI-native product experiences across core Merlin workflows and Thine AI.",
       highlights: [
         "Developed and launched the UI for ChatGPT Imports to improve onboarding and migration experience",
         "Revamped chat history flow and optimized dynamic row heights to overcome library constraints and improve usability",
         "Implemented LLM selector with layout animations to enrich the core chat experience",
         "Refactored the frontend codebase to improve performance and maintainability",
+        "Built interaction-heavy interfaces using React.js and Framer Motion for AI-native product flows",
+        "Focused on motion and UI systems that improved clarity and responsiveness in core experiences",
       ],
       proofLinks: [
+        { type: "live", label: "Thine's Website", url: "https://thine.com" },
         {
           type: "live",
           label: "Merlin AI's Website",
@@ -117,21 +104,6 @@ const resumeData: Resume = {
       ],
     },
     {
-      name: "Milind Mishra Technologies",
-      location: "India",
-      position: "Freelance Software Engineer",
-      workType: "Freelance",
-      startDate: "2024-02",
-      endDate: "2024-05",
-      summary:
-        "Delivered custom hiring and assessment tooling for clients with AI-assisted workflows.",
-      highlights: [
-        "Built a recruiter-facing frontend in Next.js and Tailwind CSS for contractor search and insights",
-        "Created an AI-powered quiz system with Vercel AI SDK and OpenAI for dynamic assessment generation and evaluation",
-        "Adopted hourly pricing model to align client value with delivery effort",
-      ],
-    },
-    {
       name: "StartupHire",
       location: "Irvine, California, United States (Remote)",
       position: "Lead Frontend Engineer",
@@ -147,42 +119,20 @@ const resumeData: Resume = {
       ],
     },
     {
-      name: "National Yang Ming Chiao Tung University",
-      location: "Hsinchu City, Taiwan (On-site)",
-      position: "Research Assistant",
-      workType: "Full Time",
-      startDate: "2023-02",
-      endDate: "2023-07",
-      summary:
-        "Contributed to real-time indoor positioning research and visualization systems.",
-      highlights: [
-        "Maintained frontend systems for indoor positioning with integrated IoT data pipelines",
-        "Enhanced 3D visualization using React, GSAP, and Three.js",
-        "Improved HDOP calculations and z-index accuracy from around 20 cm to under 10 cm",
-        "Gained infrastructure experience deploying and maintaining services on bare metal",
-      ],
-      proofLinks: [
-        {
-          type: "live",
-          label: "University Website",
-          url: "https://www.nycu.edu.tw/",
-        },
-      ],
-    },
-    {
-      name: "Locus Connect",
-      location: "Bengaluru, Karnataka, India (Remote)",
-      position: "Frontend Engineer",
+      name: "Locus Connect / National Yang Ming Chiao Tung University",
+      location: "Bengaluru, Karnataka, India / Hsinchu City, Taiwan",
+      position: "Frontend Engineer / Research Assistant",
       workType: "Full Time",
       startDate: "2022-07",
       endDate: "2023-07",
       summary:
-        "Built product and marketing frontend systems for a 3D indoor positioning platform.",
+        "Built product, research, and visualization systems for a 3D indoor positioning platform across industry and university collaboration.",
       highlights: [
-        "Developed and maintained frontend for a 3D indoor positioning product",
-        "Built and optimized the marketing website to improve visibility and engagement",
-        "Managed infrastructure tasks including switch configuration and load balancer maintenance",
-        "Deployed services with Docker to improve reliability and scalability",
+        "Developed and maintained frontend for a 3D indoor positioning product and related marketing experiences",
+        "Maintained frontend systems for indoor positioning with integrated IoT data pipelines",
+        "Enhanced 3D visualization using React, GSAP, and Three.js",
+        "Improved HDOP calculations and z-index accuracy from around 20 cm to under 10 cm",
+        "Managed infrastructure tasks across switch configuration, load balancers, Docker deployments, and bare-metal services",
       ],
       proofLinks: [
         {
@@ -190,49 +140,10 @@ const resumeData: Resume = {
           label: "Locus Connect's Website",
           url: "https://locusconnect.com/",
         },
-      ],
-    },
-    {
-      name: "iNeuron.ai",
-      location: "Bengaluru, Karnataka, India (On-site)",
-      position: "UX Designer",
-      workType: "Internship",
-      startDate: "2022-05",
-      endDate: "2022-06",
-      summary:
-        "Worked on UX flows, design systems, and marketing assets for hiring products.",
-      highlights: [
-        "Designed user authentication flows for candidate and recruiter journeys",
-        "Maintained and updated design system for product consistency and usability",
-        "Created marketing posters and visual assets to support brand outreach",
-      ],
-      proofLinks: [
         {
           type: "live",
-          label: "iNeuron.ai's Website",
-          url: "placeholder.website",
-        },
-      ],
-    },
-    {
-      name: "Plusklass",
-      location: "Remote",
-      position: "Technical Writer",
-      workType: "Internship",
-      startDate: "2022-01",
-      endDate: "2022-04",
-      summary:
-        "Created foundational web development learning content for beginner audiences.",
-      highlights: [
-        "Authored technical courses on HTML, CSS, and JavaScript for aspiring developers",
-        "Developed structured learning materials that simplified complex concepts",
-        "Collaborated with team to keep content aligned with educational and industry standards",
-      ],
-      proofLinks: [
-        {
-          type: "live",
-          label: "PlusKlass's LinkedIn Page",
-          url: "https://www.linkedin.com/company/plusklass",
+          label: "University Website",
+          url: "https://www.nycu.edu.tw/",
         },
       ],
     },
