@@ -159,19 +159,30 @@
 
   html {
     scroll-behavior: smooth;
+    background-color: #ffffff;
   }
 
   body {
     @apply bg-background text-foreground text-sm md:text-base;
+    background-color: #ffffff;
     font-family: var(--font-sans), -apple-system, BlinkMacSystemFont,
       "Segoe UI", Roboto, sans-serif;
     line-height: 1.8;
-    min-height: 100vh;
+    min-height: 100dvh;
+    padding-bottom: env(safe-area-inset-bottom);
     overflow-x: hidden;
     text-rendering: optimizeLegibility;
     hyphens: auto;
     -webkit-hyphens: auto;
     -moz-hyphens: auto;
+  }
+
+  html.dark {
+    background-color: #171717;
+  }
+
+  .dark body {
+    background-color: #171717;
   }
 
   h1,

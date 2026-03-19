@@ -1,7 +1,9 @@
 import { ClarityProvider } from "@/components/providers/clarity-provider";
+import { ServiceWorkerProvider } from "@/components/providers/service-worker-provider";
 import { createMetadata } from "@/lib/metadata";
 import { GoogleAnalytics } from "@next/third-parties/google";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
+import Script from "next/script";
 import type React from "react";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { KeyboardShortcuts } from "@/components/providers/keyboard-shortcuts";
@@ -17,6 +19,17 @@ export const metadata: Metadata = createMetadata({
 	description: "Product Engineer based in India.",
 });
 
+export const viewport: Viewport = {
+	width: "device-width",
+	initialScale: 1,
+	maximumScale: 1,
+	viewportFit: "cover",
+	themeColor: [
+		{ media: "(prefers-color-scheme: light)", color: "#ffffff" },
+		{ media: "(prefers-color-scheme: dark)", color: "#171717" },
+	],
+};
+
 export default function RootLayout({
 	children,
 }: Readonly<{
@@ -28,16 +41,14 @@ export default function RootLayout({
 			suppressHydrationWarning
 			className={`${sans.variable} ${mono.variable}`}
 		>
-			<head>
-				<meta
-					name="viewport"
-					content="width=device-width, initial-scale=1, maximum-scale=1"
-				/>
-				<link rel="manifest" href="/manifest.json" />
-			</head>
+			<head />
 			<body className="@container min-h-screen bg-background text-foreground antialiased">
+				<Script id="theme-sync" strategy="beforeInteractive">
+					{`(function(){try{var t=localStorage.getItem('theme');var d=t==='dark';var h=document.documentElement;h.classList.toggle('dark',d);h.style.colorScheme=d?'dark':'light';h.style.backgroundColor=d?'#171717':'#ffffff'}catch(e){}})();`}
+				</Script>
 				<QueryProvider>
 					<ThemeProvider attribute="class" defaultTheme="light">
+						<ServiceWorkerProvider />
 						<KeyboardShortcuts />
 						<LayoutWrapper>
 							{children}
