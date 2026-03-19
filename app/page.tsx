@@ -8,7 +8,7 @@ export default function Page() {
 	return (
 		<>
 			<Header />
-			<main className="container pt-[calc(env(safe-area-inset-top)+3.75rem)] sm:pt-[calc(env(safe-area-inset-top)+4.75rem)] print:pt-0">
+			<main className="container pt-[calc(env(safe-area-inset-top)+3.75rem+var(--install-strip-height,0px))] sm:pt-[calc(env(safe-area-inset-top)+4.75rem+var(--install-strip-height,0px))] print:pt-0">
 				<ResumeView data={resume} />
 			</main>
 		</>

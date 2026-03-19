@@ -1,5 +1,6 @@
 "use client";
 
+import { InstallStrip } from "@/components/install-strip";
 import {
 	useSidebarActions,
 	useSidebarOpen,
@@ -75,6 +76,7 @@ export function Header() {
 						</div>
 					</div>
 				</div>
+				<InstallStrip />
 			</div>
 		</header>
 	);
