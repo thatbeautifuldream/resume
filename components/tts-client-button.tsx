@@ -1,11 +1,11 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useAppHaptics } from "@/hooks/use-app-haptics";
 import { markdownToSpeech } from "@/lib/markdown-to-speech";
 import { useSpeechSynthesis } from "@/hooks/use-speech-synthesis";
 import { Volume2, VolumeX } from "lucide-react";
 import { useCallback } from "react";
+import { useWebHaptics } from "web-haptics/react";
 
 interface TTSClientButtonProps {
   text: string;
@@ -17,7 +17,7 @@ interface TTSClientButtonProps {
  */
 export function TTSClientButton({ text }: TTSClientButtonProps) {
   const { speak, cancel, isSpeaking, isSupported } = useSpeechSynthesis();
-  const { trigger } = useAppHaptics();
+  const { trigger } = useWebHaptics();
 
   const handleToggle = useCallback(() => {
     if (isSpeaking) {

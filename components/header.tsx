@@ -6,16 +6,16 @@ import {
 	useSidebarOpen,
 	useSidebarResizing,
 } from "@/components/providers/chat-sidebar-store";
-import { useAppHaptics } from "@/hooks/use-app-haptics";
 import { useIsDesktop } from "@/hooks/use-media-query";
 import Link from "next/link";
 import { useMemo } from "react";
+import { useWebHaptics } from "web-haptics/react";
 
 export function Header() {
 	const isOpen = useSidebarOpen();
 	const isResizing = useSidebarResizing();
 	const { toggle } = useSidebarActions();
-	const { trigger } = useAppHaptics();
+	const { trigger } = useWebHaptics();
 	const isDesktop = useIsDesktop();
 
 	const headerStyle = useMemo(

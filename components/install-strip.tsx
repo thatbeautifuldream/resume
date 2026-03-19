@@ -1,18 +1,18 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useAppHaptics } from "@/hooks/use-app-haptics";
 import { usePwaInstall } from "@/hooks/use-pwa-install";
 import { cn } from "@/lib/utils";
 import { Download, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { useWebHaptics } from "web-haptics/react";
 
 const INSTALL_STRIP_HEIGHT_VAR = "--install-strip-height";
 
 export function InstallStrip() {
 	const { canInstall, dismiss, hasPrompt, isIos, promptToInstall } =
 		usePwaInstall();
-	const { trigger } = useAppHaptics();
+	const { trigger } = useWebHaptics();
 	const [showIosHelp, setShowIosHelp] = useState(false);
 	const ref = useRef<HTMLDivElement | null>(null);
 

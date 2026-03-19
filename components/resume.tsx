@@ -8,7 +8,6 @@ import {
 	registerJsonToggleHandler,
 	unregisterJsonToggleHandler,
 } from "@/components/providers/keyboard-shortcuts";
-import { useAppHaptics } from "@/hooks/use-app-haptics";
 import {
 	calculateDuration,
 	formatDate,
@@ -32,6 +31,7 @@ import { useTheme } from "next-themes";
 import Link from "next/link";
 import type * as React from "react";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { useWebHaptics } from "web-haptics/react";
 import { TextMorph } from "torph/react";
 import dynamic from "next/dynamic";
 
@@ -122,7 +122,7 @@ const COPIED_DISPLAY_DURATION_MS = 1800;
 
 function EmailWithCopy({ email }: { email: string }) {
 	const [displayText, setDisplayText] = useState(email);
-	const { trigger } = useAppHaptics();
+	const { trigger } = useWebHaptics();
 
 	const handleClick = useCallback(async () => {
 		try {
@@ -527,7 +527,7 @@ function TalkPresentationItem({ item }: { item: Talks }) {
 
 function SkillsProficiency({ skills }: { skills: Skill[] }) {
 	const { sendPromptToChat } = useSidebarActions();
-	const { trigger } = useAppHaptics();
+	const { trigger } = useWebHaptics();
 
 	if (!skills?.length) return null;
 

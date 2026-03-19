@@ -10,7 +10,6 @@ import {
 import { useSidebarActions } from "@/components/providers/chat-sidebar-store";
 import { TTSClientButton } from "@/components/tts-client-button";
 import { Button } from "@/components/ui/button";
-import { useAppHaptics } from "@/hooks/use-app-haptics";
 import { clearMessages, loadMessages, saveMessages } from "@/lib/chat-storage";
 import { cn } from "@/lib/utils";
 import type { ChatItem, ExtendedUIMessage } from "@/types/chat";
@@ -36,8 +35,8 @@ import {
 	useRef,
 	useState,
 } from "react";
-
 import { useHotkeys } from "react-hotkeys-hook";
+import { useWebHaptics } from "web-haptics/react";
 
 // Helper function to check if two timestamps are on the same day
 function isSameDay(timestamp1: number, timestamp2: number): boolean {
@@ -321,7 +320,7 @@ const Message = memo(function Message({
 
 function Messages() {
 	const { messages, status, hasMessages, isLoaded } = useChatContext();
-	const { trigger } = useAppHaptics();
+	const { trigger } = useWebHaptics();
 	const messageCount = useMessageCount();
 	const messagesEndRef = useRef<HTMLDivElement>(null);
 	const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -484,7 +483,7 @@ function Messages() {
 
 function Welcome() {
 	const { hasMessages, sendMessage } = useChatContext();
-	const { trigger } = useAppHaptics();
+	const { trigger } = useWebHaptics();
 
 	if (hasMessages) return null;
 
@@ -553,7 +552,7 @@ function ClearButton() {
 function ChatSidebarHeader() {
 	const { hasMessages, clearChat } = useChatContext();
 	const { close } = useSidebarActions();
-	const { trigger } = useAppHaptics();
+	const { trigger } = useWebHaptics();
 
 	return (
 		<header className="shrink-0 bg-background border-b">
@@ -598,7 +597,7 @@ function ChatSidebarHeader() {
 
 function Input() {
 	const { sendMessage, status, stop, input, setInput } = useChatContext();
-	const { trigger } = useAppHaptics();
+	const { trigger } = useWebHaptics();
 
 	const handleSubmit = useCallback(() => {
 		if (input.trim() && status === "ready") {
