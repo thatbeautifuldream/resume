@@ -59,6 +59,7 @@
     "tokenlens": "^1.3.1",
     "torph": "^0.0.5",
     "use-stick-to-bottom": "^1.1.1",
+    "web-haptics": "^0.0.6",
     "zod": "^4.3.6",
     "zustand": "^5.0.8"
   },

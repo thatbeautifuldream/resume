@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { useAppHaptics } from "@/hooks/use-app-haptics";
 import { usePwaInstall } from "@/hooks/use-pwa-install";
 import { cn } from "@/lib/utils";
 import { Download, X } from "lucide-react";
@@ -11,6 +12,7 @@ const INSTALL_STRIP_HEIGHT_VAR = "--install-strip-height";
 export function InstallStrip() {
 	const { canInstall, dismiss, hasPrompt, isIos, promptToInstall } =
 		usePwaInstall();
+	const { trigger } = useAppHaptics();
 	const [showIosHelp, setShowIosHelp] = useState(false);
 	const ref = useRef<HTMLDivElement | null>(null);
 
@@ -42,11 +44,15 @@ export function InstallStrip() {
 
 	const handlePrimaryAction = async () => {
 		if (hasPrompt) {
-			await promptToInstall();
+			const installed = await promptToInstall();
+			void trigger(installed ? "success" : "selection", {
+				intensity: installed ? 0.8 : 0.55,
+			});
 			return;
 		}
 
 		if (isIos) {
+			void trigger("selection", { intensity: 0.55 });
 			setShowIosHelp((current) => !current);
 		}
 	};
@@ -82,7 +88,10 @@ export function InstallStrip() {
 						variant="ghost"
 						size="icon-sm"
 						aria-label="Dismiss install prompt"
-						onClick={dismiss}
+						onClick={() => {
+							void trigger("light", { intensity: 0.35 });
+							dismiss();
+						}}
 					>
 						<X className="size-4" />
 					</Button>

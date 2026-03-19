@@ -8,6 +8,7 @@ import {
 	registerJsonToggleHandler,
 	unregisterJsonToggleHandler,
 } from "@/components/providers/keyboard-shortcuts";
+import { useAppHaptics } from "@/hooks/use-app-haptics";
 import {
 	calculateDuration,
 	formatDate,
@@ -121,11 +122,19 @@ const COPIED_DISPLAY_DURATION_MS = 1800;
 
 function EmailWithCopy({ email }: { email: string }) {
 	const [displayText, setDisplayText] = useState(email);
+	const { trigger } = useAppHaptics();
 
-	const handleClick = useCallback(() => {
-		void navigator.clipboard.writeText(email);
-		setDisplayText("Copied to clipboard!");
-	}, [email]);
+	const handleClick = useCallback(async () => {
+		try {
+			await navigator.clipboard.writeText(email);
+			void trigger("success", { intensity: 0.8 });
+			setDisplayText("Copied to clipboard!");
+		} catch (error) {
+			if (process.env.NODE_ENV !== "production") {
+				console.warn("Failed to copy email:", error);
+			}
+		}
+	}, [email, trigger]);
 
 	useEffect(() => {
 		if (displayText !== "Copied to clipboard!") return;
@@ -518,6 +527,7 @@ function TalkPresentationItem({ item }: { item: Talks }) {
 
 function SkillsProficiency({ skills }: { skills: Skill[] }) {
 	const { sendPromptToChat } = useSidebarActions();
+	const { trigger } = useAppHaptics();
 
 	if (!skills?.length) return null;
 
@@ -529,6 +539,7 @@ function SkillsProficiency({ skills }: { skills: Skill[] }) {
 					key={skill}
 					onClick={() => {
 						const prompt = `Tell me about ${skill} - what is it, and how has Milind used this skill in his work? How proficient is he with ${skill}?`;
+						void trigger("medium", { intensity: 0.75 });
 						sendPromptToChat(prompt);
 					}}
 					className="hover:underline cursor-pointer"
