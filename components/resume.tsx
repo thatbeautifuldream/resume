@@ -60,16 +60,23 @@ const loadThemes = async () => {
 
 function ResumeSection({
 	title,
+	rightContent,
 	children,
 }: {
 	title: string;
+	rightContent?: React.ReactNode;
 	children: React.ReactNode;
 }) {
 	return (
 		<section className="space-y-1.5 sm:space-y-2">
-			<h4 className="uppercase font-semibold border-b text-sm sm:text-base">
-				{title}
-			</h4>
+			<div className="flex items-end justify-between gap-3 border-b">
+				<h4 className="uppercase font-semibold text-sm sm:text-base">{title}</h4>
+				{rightContent ? (
+					<em className="pb-0.5 text-xs sm:text-sm text-muted-foreground whitespace-nowrap">
+						{rightContent}
+					</em>
+				) : null}
+			</div>
 			<div>{children}</div>
 		</section>
 	);
@@ -667,6 +674,17 @@ export function ResumeView({ data }: { data: Resume }) {
 	const { close } = useSidebarActions();
 	const { resolvedTheme } = useTheme();
 	const sectionOrder = useMemo(() => DEFAULT_SECTION_ORDER, []);
+	const totalExperience = useMemo(() => {
+		if (!data.work?.length) return undefined;
+
+		const earliestStartDate = data.work.reduce<string | undefined>((earliest, item) => {
+			if (!item.startDate) return earliest;
+			if (!earliest) return item.startDate;
+			return item.startDate < earliest ? item.startDate : earliest;
+		}, undefined);
+
+		return calculateDuration(earliestStartDate);
+	}, [data.work]);
 
 	// Load themes on mount
 	useEffect(() => {
@@ -751,7 +769,15 @@ export function ResumeView({ data }: { data: Resume }) {
 					return null;
 
 				return (
-					<ResumeSection key={sectionKey} title={section.title}>
+					<ResumeSection
+						key={sectionKey}
+						title={section.title}
+						rightContent={
+							sectionKey === "work" && totalExperience
+								? `(${totalExperience} total)`
+								: undefined
+						}
+					>
 						{section.render(sectionData)}
 					</ResumeSection>
 				);

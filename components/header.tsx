@@ -40,14 +40,6 @@ export function Header() {
 							</Link>
 						</div>
 						<div className="flex gap-x-3 items-center">
-							<Link
-								href="/api/plain"
-								className="font-medium hover:underline text-sm md:text-md"
-								target="_blank"
-								rel="noreferrer"
-							>
-								ATS TXT
-							</Link>
 							{/* <button
                 type="button"
                 onClick={openDialog}
