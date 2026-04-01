@@ -12,7 +12,6 @@ import {
 } from "ai";
 import { wrapAISDK } from "langsmith/experimental/vercel";
 import { NextRequest } from "next/server";
-import { MAX_CHAT_MESSAGES, validateChatMessages } from "@/lib/chat-validation";
 import { getRandomRateLimitMessage } from "@/lib/rate-limit-messages";
 import { notifyTelegram } from "@/lib/telegram";
 import { resume } from "@/lib/resume";
@@ -83,7 +82,6 @@ export async function POST(req: NextRequest) {
         type: "bad_request",
         ip,
         reason: "messages payload is not an array",
-        messageCount: null,
       });
       return new Response("Bad request", { status: 400 });
     }
@@ -94,7 +92,6 @@ export async function POST(req: NextRequest) {
       type: "bad_request",
       ip,
       reason: "request body could not be parsed as JSON",
-      messageCount: null,
     });
     return new Response("Bad request", { status: 400 });
   }
@@ -107,28 +104,6 @@ export async function POST(req: NextRequest) {
       getRandomRateLimitMessage(),
       messages,
     );
-  }
-
-  if (messages.length > MAX_CHAT_MESSAGES) {
-    void notifyTelegram({
-      type: "bad_request",
-      ip,
-      reason: `message count ${messages.length} exceeds ${MAX_CHAT_MESSAGES}`,
-      messageCount: messages.length,
-    });
-    return new Response("Bad request", { status: 400 });
-  }
-
-  const validation = validateChatMessages(messages);
-
-  if (!validation.valid) {
-    void notifyTelegram({
-      type: "validation_error",
-      ip,
-      reason: validation.reason,
-      messageCount: messages.length,
-    });
-    return new Response("Bad request", { status: 400 });
   }
 
   const modelMessages = await convertToModelMessages(messages);

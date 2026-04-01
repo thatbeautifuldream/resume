@@ -549,47 +549,6 @@ function ClearButton() {
 	);
 }
 
-function ChatErrorNotice() {
-	const { error, clearError, regenerate, messages, status } = useChatContext();
-
-	if (!error || status !== "error") {
-		return null;
-	}
-
-	const hasAssistantMessage = [...messages]
-		.reverse()
-		.some((message) => message.role === "assistant");
-
-	return (
-		<div className="mb-3 rounded-2xl border border-destructive/20 bg-destructive/5 px-3 py-2 text-sm">
-			<p className="text-foreground">
-				Something went wrong while generating a response.
-			</p>
-			<div className="mt-2 flex gap-3 text-xs">
-				<button
-					type="button"
-					onClick={() => {
-						clearError();
-						if (hasAssistantMessage) {
-							void regenerate();
-						}
-					}}
-					className="cursor-pointer font-medium text-foreground hover:underline"
-				>
-					Try again
-				</button>
-				<button
-					type="button"
-					onClick={clearError}
-					className="cursor-pointer text-muted-foreground hover:underline"
-				>
-					Dismiss
-				</button>
-			</div>
-		</div>
-	);
-}
-
 function ChatSidebarHeader() {
 	const { hasMessages, clearChat } = useChatContext();
 	const { close } = useSidebarActions();
@@ -895,7 +854,6 @@ function ChatContentLayout() {
 						</div>
 					) : (
 						<>
-							<ChatErrorNotice />
 							<Chat.Messages />
 							{!hasMessages && (
 								<div className="flex flex-col items-center justify-center p-3 sm:p-4 min-h-[60vh]">
