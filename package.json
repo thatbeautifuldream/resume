@@ -33,6 +33,8 @@
     "@radix-ui/react-use-controllable-state": "^1.2.2",
     "@supermemory/tools": "^1.4.0",
     "@tanstack/react-query": "^5.90.20",
+    "@upstash/ratelimit": "^2.0.8",
+    "@upstash/redis": "^1.37.0",
     "@xyflow/react": "^12.9.3",
     "ai": "^6.0.77",
     "class-variance-authority": "^0.7.1",

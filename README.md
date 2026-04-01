@@ -133,6 +133,19 @@ Type check:
 pnpm run typecheck
 ```
 
+## Environment variables
+
+The chat route now uses server-side rate limiting and Telegram monitoring.
+
+Required for `/api/chat`:
+
+- `UPSTASH_REDIS_REST_URL`
+- `UPSTASH_REDIS_REST_TOKEN`
+- `TELEGRAM_BOT_TOKEN`
+- `TELEGRAM_CHAT_ID`
+
+Existing chat/model integrations also still require their current provider env vars.
+
 ## Who this is for
 
 This project is useful for:
