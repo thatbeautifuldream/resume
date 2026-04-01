@@ -50,14 +50,20 @@ function getClientIp(req: NextRequest): string {
   return req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
 }
 
-function createAssistantMessageResponse(message: string): Response {
+function createAssistantMessageResponse(
+  message: string,
+  originalMessages: UIMessage[],
+): Response {
   const stream = createUIMessageStream({
+    originalMessages,
     execute({ writer }) {
       const textId = "chat-system-0";
       writer.write({ type: "start" });
+      writer.write({ type: "start-step" });
       writer.write({ type: "text-start", id: textId });
       writer.write({ type: "text-delta", id: textId, delta: message });
       writer.write({ type: "text-end", id: textId });
+      writer.write({ type: "finish-step" });
       writer.write({ type: "finish", finishReason: "stop" });
     },
   });
@@ -67,13 +73,6 @@ function createAssistantMessageResponse(message: string): Response {
 
 export async function POST(req: NextRequest) {
   const ip = getClientIp(req);
-  const { success, limit, remaining, reset } = await ratelimit.limit(ip);
-
-  if (!success) {
-    void notifyTelegram({ type: "rate_limit", ip, limit, remaining, reset });
-    return createAssistantMessageResponse(getRandomRateLimitMessage());
-  }
-
   let messages: UIMessage[];
 
   try {
@@ -98,6 +97,16 @@ export async function POST(req: NextRequest) {
       messageCount: null,
     });
     return new Response("Bad request", { status: 400 });
+  }
+
+  const { success, limit, remaining, reset } = await ratelimit.limit(ip);
+
+  if (!success) {
+    void notifyTelegram({ type: "rate_limit", ip, limit, remaining, reset });
+    return createAssistantMessageResponse(
+      getRandomRateLimitMessage(),
+      messages,
+    );
   }
 
   if (messages.length > MAX_CHAT_MESSAGES) {
