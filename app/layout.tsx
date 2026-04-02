@@ -42,7 +42,7 @@ export default function RootLayout({
 			className={`${sans.variable} ${mono.variable}`}
 		>
 			<head />
-			<body className="@container min-h-screen bg-background text-foreground antialiased">
+			<body className="@container isolate min-h-dvh bg-background text-foreground antialiased">
 				<Script id="theme-sync" strategy="beforeInteractive">
 					{`(function(){try{var t=localStorage.getItem('theme');var d=t==='dark';var h=document.documentElement;h.classList.toggle('dark',d);h.style.colorScheme=d?'dark':'light';h.style.backgroundColor=d?'#171717':'#ffffff'}catch(e){}})();`}
 				</Script>

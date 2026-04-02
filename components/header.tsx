@@ -6,7 +6,10 @@ import {
 	useSidebarOpen,
 	useSidebarResizing,
 } from "@/components/providers/chat-sidebar-store";
+import { Button } from "@/components/ui/button";
 import { useIsDesktop } from "@/hooks/use-media-query";
+import { cn } from "@/lib/utils";
+import { MessageSquareText, Sparkles } from "lucide-react";
 import Link from "next/link";
 import { useMemo } from "react";
 import { useWebHaptics } from "web-haptics/react";
@@ -23,57 +26,63 @@ export function Header() {
 			marginRight: isOpen && isDesktop ? "var(--sidebar-width)" : "0",
 			transition: isResizing ? "none" : "margin-right 0.3s ease-in-out",
 		}),
-		[isOpen, isDesktop, isResizing],
+		[isDesktop, isOpen, isResizing],
 	);
 
 	return (
-		<header className="fixed top-0 left-0 right-0 z-50 print:hidden bg-background border-b pt-[env(safe-area-inset-top)]">
+		<header className="fixed inset-x-0 top-0 z-50 print:hidden pt-[env(safe-area-inset-top)]">
 			<div style={headerStyle} className="print:!mr-0">
-				<div className="container py-3">
-					<div className="flex justify-between items-center">
-						<div className="flex gap-x-4 items-center">
-							<Link
-								href="/"
-								className="font-medium hover:underline text-sm md:text-md"
-							>
-								Milind's Resume
-							</Link>
-						</div>
-						<div className="flex gap-x-3 items-center">
-							{/* <button
-                type="button"
-                onClick={openDialog}
-                aria-label="Show keyboard shortcuts"
-                className="hidden md:flex items-center gap-1.5 hover:opacity-70 transition-opacity group cursor-pointer font-mono text-xs"
-                title="Keyboard shortcuts"
-              >
-                <span className="text-muted-foreground hidden lg:inline">
-                  Press
-                </span>
-                <Kbd className="group-hover:bg-muted/80 transition-colors">/</Kbd>
-                <span className="text-muted-foreground hidden lg:inline">
-                  for shortcuts
-                </span>
-              </button>
-              <TimezoneClock /> */}
-							{!isOpen && (
-								<button
+				<div className="container pt-3">
+					<div className="grain-overlay rounded-[1.6rem] border border-border/80 bg-background/88 shadow-[var(--page-shadow)] supports-[backdrop-filter]:bg-background/72 supports-[backdrop-filter]:backdrop-blur-xl">
+						<div className="flex items-center justify-between gap-3 px-4 py-3 sm:px-5">
+							<div className="min-w-0">
+								<Link
+									href="/"
+									aria-label="Homepage"
+									className="inline-flex min-w-0 items-center gap-3"
+								>
+									<span className="flex size-9 items-center justify-center rounded-full bg-primary/12 text-primary">
+										<Sparkles className="size-4" />
+									</span>
+									<span className="min-w-0">
+										<span className="block truncate text-base font-semibold tracking-tight text-foreground sm:text-sm">
+											Milind Mishra
+										</span>
+										<span className="block truncate font-mono text-[0.75rem] uppercase tracking-[0.22em] text-muted-foreground">
+											Product engineer, design systems, AI UI
+										</span>
+									</span>
+								</Link>
+							</div>
+
+							<div className="flex items-center gap-2">
+								<div className="hidden rounded-full border border-border/70 bg-muted/70 px-4 py-1.5 font-mono text-[0.68rem] uppercase tracking-[0.18em] text-muted-foreground lg:block">
+									Bengaluru • Available worldwide
+								</div>
+								<Button
 									type="button"
+									variant={isOpen ? "secondary" : "outline"}
+									size="sm"
 									onClick={() => {
 										void trigger("medium", { intensity: 0.75 });
 										toggle();
 									}}
-									aria-label="Open chat sidebar"
-									aria-expanded={false}
-									className="font-medium hover:underline text-sm md:text-md cursor-pointer"
+									aria-label={isOpen ? "Close chat sidebar" : "Open chat sidebar"}
+									aria-expanded={isOpen}
+									className={cn(
+										"rounded-full border-border/80 px-3.5 text-base sm:text-sm",
+										isOpen &&
+											"bg-primary text-primary-foreground hover:bg-primary/92",
+									)}
 								>
-									Chat
-								</button>
-							)}
+									<MessageSquareText className="size-4" />
+									<span>{isOpen ? "Close Milo" : "Ask Milo"}</span>
+								</Button>
+							</div>
 						</div>
+						<InstallStrip />
 					</div>
 				</div>
-				<InstallStrip />
 			</div>
 		</header>
 	);

@@ -23,7 +23,7 @@ import {
 	useMessageCount,
 } from "@ai-sdk-tools/store";
 import { DefaultChatTransport } from "ai";
-import { ArrowUp, Plus, Square, X } from "lucide-react";
+import { ArrowUp, MessageSquareText, Plus, Square, X } from "lucide-react";
 import { motion } from "motion/react";
 import {
 	createContext,
@@ -194,19 +194,19 @@ const Message = memo(function Message({
 			>
 				<div
 					className={cn(
-						"relative px-2.5 sm:px-3 py-1.5 sm:py-2 overflow-hidden",
+						"relative overflow-hidden border px-3 py-2.5 sm:px-3.5 sm:py-3",
 						isUser
-							? "rounded-2xl rounded-br-none bg-secondary border text-secondary-foreground"
-							: "rounded-2xl rounded-bl-none bg-background border text-foreground",
+							? "rounded-[1.4rem] rounded-br-md border-border/70 bg-primary text-primary-foreground"
+							: "rounded-[1.4rem] rounded-bl-md border-border/70 bg-card/96 text-foreground shadow-sm",
 					)}
 				>
 					{isAssistant && (
 						<span
 							className={cn(
-								"text-xs font-semibold block mb-1 px-1 text-muted-foreground text-left",
+								"mb-1 block px-1 font-mono text-[0.7rem] uppercase tracking-[0.22em] text-muted-foreground text-left",
 							)}
 						>
-							{ASSISTANT_NAME}
+							Milo
 						</span>
 					)}
 					<div className="break-words">
@@ -455,7 +455,7 @@ function Messages() {
 	return (
 		<div
 			ref={scrollContainerRef}
-			className="p-3 sm:p-4 pb-20 space-y-3 sm:space-y-4 w-full"
+			className="w-full space-y-4 px-2 pb-24 pt-2 sm:px-3"
 		>
 			{chatItems.map((item, index) => {
 				if (item.type === "date-separator") {
@@ -464,7 +464,7 @@ function Messages() {
 							key={`date-${item.timestamp}`}
 							className="flex justify-center py-2"
 						>
-							<div className="px-3 py-1 rounded-full bg-muted/50 text-xs text-muted-foreground font-medium">
+							<div className="rounded-full border border-border/60 bg-background/88 px-3 py-1 font-mono text-[0.7rem] uppercase tracking-[0.18em] text-muted-foreground shadow-sm">
 								{item.date}
 							</div>
 						</div>
@@ -502,24 +502,27 @@ function Welcome() {
 
 	return (
 		<motion.div
-			className="text-center mb-3 sm:mb-4"
+			className="mb-4 text-center sm:mb-5"
 			animate={{ opacity: hasMessages ? 0 : 1 }}
 			transition={{ duration: 0.3 }}
 		>
-			<h1 className="text-base @md:text-lg @lg:text-xl font-medium mb-1.5 sm:mb-2">
-				Chat with Milind's Resume
+			<div className="mx-auto mb-4 flex size-14 items-center justify-center rounded-full border border-border/70 bg-background/92 text-primary shadow-sm">
+				<MessageSquareText className="size-6" />
+			</div>
+			<h1 className="mb-2 text-2xl font-semibold tracking-tight text-foreground @md:text-[1.7rem]">
+				Ask Milo for context
 			</h1>
-			<p className="text-xs @md:text-sm opacity-60 mb-3 sm:mb-4">
-				Ask anything about my work, projects, or experience
+			<p className="mx-auto mb-4 max-w-[28ch] text-base text-muted-foreground @md:text-sm">
+				Ask about projects, metrics, design work, stack choices, or how each role connects.
 			</p>
 
-			<div className="flex flex-wrap gap-1.5 sm:gap-2 justify-center max-w-md mx-auto">
+			<div className="mx-auto flex max-w-lg flex-wrap justify-center gap-2">
 				{starterPrompts.map((prompt) => (
 					<button
 						type="button"
 						key={prompt}
 						onClick={() => handlePromptClick(prompt)}
-						className="text-xs @md:text-sm px-2.5 sm:px-3 py-1.5 rounded-full border border-border hover:bg-accent hover:border-accent-foreground/20 transition-colors cursor-pointer"
+						className="cursor-pointer rounded-full border border-border/70 bg-background/84 px-3.5 py-2 text-base text-foreground transition-colors hover:bg-accent hover:border-accent-foreground/20 sm:text-sm"
 					>
 						{prompt}
 					</button>
@@ -535,15 +538,15 @@ function ClearButton() {
 	if (!hasMessages) return null;
 
 	return (
-		<motion.div layout="position" className="mb-1.5 sm:mb-2 flex justify-end">
+		<motion.div layout="position" className="mb-2 flex justify-end">
 			<button
 				type="button"
 				onClick={clearChat}
 				aria-label="Clear chat history"
-				className="text-xs sm:text-sm cursor-pointer hover:underline opacity-60 hover:opacity-100 transition-opacity"
+				className="cursor-pointer rounded-full border border-border/70 bg-background/84 px-3 py-1.5 text-base text-muted-foreground transition-colors hover:bg-accent hover:text-foreground sm:text-sm"
 				title="Clear chat history"
 			>
-				start new ?
+				Start new chat
 			</button>
 		</motion.div>
 	);
@@ -555,13 +558,20 @@ function ChatSidebarHeader() {
 	const { trigger } = useWebHaptics();
 
 	return (
-		<header className="shrink-0 bg-background border-b">
-			<div className="px-3 sm:px-4 py-3">
+		<header className="shrink-0 border-b border-border/70 bg-background/82 supports-[backdrop-filter]:backdrop-blur-xl">
+			<div className="px-4 py-3">
 				<div className="flex justify-between items-center">
 					<div className="flex items-center gap-2 min-w-0">
-						<span className="font-medium text-sm md:text-md">Chat</span>
+						<div className="min-w-0">
+							<span className="block text-base font-semibold tracking-tight text-foreground sm:text-sm">
+								Milo
+							</span>
+							<span className="block font-mono text-[0.7rem] uppercase tracking-[0.2em] text-muted-foreground">
+								Resume copilot
+							</span>
+						</div>
 					</div>
-					<div className="flex gap-x-3 items-center">
+					<div className="flex items-center gap-2">
 						{hasMessages && (
 							<button
 								type="button"
@@ -571,7 +581,7 @@ function ChatSidebarHeader() {
 								}}
 								aria-label="Start new chat"
 								title="Start new chat"
-								className="font-medium hover:opacity-70 transition-opacity cursor-pointer p-1 -m-1"
+								className="flex size-9 cursor-pointer items-center justify-center rounded-full border border-border/70 bg-background/88 transition-colors hover:bg-accent"
 							>
 								<Plus className="size-4" />
 							</button>
@@ -584,7 +594,7 @@ function ChatSidebarHeader() {
 							}}
 							aria-label="Close chat sidebar"
 							title="Close chat sidebar"
-							className="flex shrink-0 p-1 -m-1 hover:opacity-70 transition-opacity cursor-pointer"
+							className="flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-full border border-border/70 bg-background/88 transition-colors hover:bg-accent"
 						>
 							<X className="size-4" />
 						</button>
@@ -623,13 +633,13 @@ function Input() {
 					disabled={status !== "ready"}
 					isLoading={status === "submitted"}
 					maxHeight={200}
-					className="py-1.5 pl-2 pr-2"
+					className="px-2 py-2"
 				>
-					<div className="flex items-end gap-1.5">
+					<div className="flex items-end gap-2">
 						<div className="flex-1 min-w-0">
 							<PromptInputTextarea
 								placeholder="Ask something about Milind's work..."
-								className="min-h-[32px] py-1 pl-2 pr-0"
+								className="min-h-10 px-2"
 							/>
 						</div>
 						<PromptInputActions>
@@ -644,7 +654,7 @@ function Input() {
 									}
 								}}
 								disabled={status === "ready" && !input.trim()}
-								className="rounded-full size-8 shrink-0 shadow cursor-pointer disabled:cursor-not-allowed"
+								className="size-10 shrink-0 cursor-pointer shadow-sm disabled:cursor-not-allowed"
 							>
 								{status === "submitted" ? (
 									<Square className="size-4" fill="currentColor" />
@@ -845,18 +855,17 @@ function ChatContentLayout() {
 
 	return (
 		<div className="@container h-full flex flex-col relative">
-			{/* Messages - Scrollable area with padding for input + gradient */}
-			<div className="flex-1 overflow-y-auto pt-3 sm:pt-4 pb-32">
-				<div className="px-3 sm:px-4">
+			<div className="flex-1 overflow-y-auto pb-36 pt-4">
+				<div className="px-4">
 					{!isLoaded ? (
-						<div className="flex items-center justify-center p-3 sm:p-4 min-h-[60vh]">
+						<div className="flex min-h-[60vh] items-center justify-center p-4">
 							<Loading />
 						</div>
 					) : (
 						<>
 							<Chat.Messages />
 							{!hasMessages && (
-								<div className="flex flex-col items-center justify-center p-3 sm:p-4 min-h-[60vh]">
+								<div className="flex min-h-[60vh] flex-col items-center justify-center p-4">
 									<Chat.Welcome />
 								</div>
 							)}
@@ -865,12 +874,10 @@ function ChatContentLayout() {
 				</div>
 			</div>
 
-			{/* Input - Fixed at bottom with gradient fade */}
 			<div className="absolute bottom-0 left-0 right-0 z-40 pointer-events-none">
-				{/* Smooth gradient fade from transparent to bg */}
-				<div className="h-12 bg-gradient-to-t from-background via-background/60 to-transparent" />
+				<div className="h-16 bg-linear-to-t from-background via-background/70 to-transparent" />
 
-				<div className="bg-background px-3 sm:px-4 pb-2 sm:pb-3 pointer-events-auto">
+				<div className="bg-background/90 px-4 pb-3 pointer-events-auto supports-[backdrop-filter]:backdrop-blur-xl">
 					<Chat.Input />
 				</div>
 			</div>
@@ -881,9 +888,9 @@ function ChatContentLayout() {
 export function ChatContent() {
 	return (
 		<Chat>
-			<div className="flex flex-col h-full min-h-0">
+			<div className="flex h-full min-h-0 flex-col">
 				<ChatSidebarHeader />
-				<div className="chat-sidebar-scroll flex-1 min-h-0 overflow-y-auto">
+				<div className="chat-sidebar-scroll flex-1 min-h-0 overflow-y-auto bg-sidebar">
 					<ChatContentLayout />
 				</div>
 			</div>

@@ -111,7 +111,7 @@ export function ChatSidebar() {
 						style={{
 							width: isDesktop ? "var(--sidebar-width)" : "100%",
 						}}
-						className="@container fixed top-0 right-0 bottom-0 bg-background border-l z-50 flex flex-col print:hidden pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)] pr-[env(safe-area-inset-right)]"
+						className="@container fixed bottom-0 right-0 top-0 z-50 flex flex-col border-l border-sidebar-border bg-sidebar/96 print:hidden pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)] pr-[env(safe-area-inset-right)] shadow-[-24px_0_60px_rgba(15,23,42,0.12)] supports-[backdrop-filter]:bg-sidebar/82 supports-[backdrop-filter]:backdrop-blur-2xl"
 					>
 						{/* Resize handle - shows highlight on hover, overlays the border */}
 						{isDesktop && (
@@ -119,12 +119,12 @@ export function ChatSidebar() {
 								type="button"
 								aria-label="Resize chat sidebar"
 								onMouseDown={handleMouseDown}
-								className="absolute left-[-8.5px] top-0 bottom-0 w-[17px] cursor-ew-resize z-[60] transition-all duration-200 hover:bg-muted-foreground/20 border-0 bg-transparent p-0"
+								className="absolute bottom-0 left-[-8.5px] top-0 z-[60] w-[17px] cursor-ew-resize border-0 bg-transparent p-0 transition-all duration-200 hover:bg-muted-foreground/12"
 							>
 								<div
 									className={cn(
-										"absolute left-1/2 top-0 bottom-0 -translate-x-1/2 transition-all duration-200",
-										isResizing ? "w-1 bg-foreground" : "w-[0.5px] bg-border",
+										"absolute bottom-4 left-1/2 top-4 -translate-x-1/2 rounded-full transition-all duration-200",
+										isResizing ? "w-1 bg-primary" : "w-px bg-border",
 									)}
 								/>
 							</button>

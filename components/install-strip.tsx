@@ -60,16 +60,16 @@ export function InstallStrip() {
 	return (
 		<div
 			ref={ref}
-			className="border-t bg-muted/60 supports-[backdrop-filter]:bg-background/80 supports-[backdrop-filter]:backdrop-blur"
+			className="border-t border-border/70 bg-muted/35"
 		>
-			<div className="container flex flex-col gap-3 py-3 sm:flex-row sm:items-center sm:justify-between">
+			<div className="flex flex-col gap-3 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-5">
 				<div className="min-w-0">
-					<p className="text-sm font-medium">
+					<p className="text-base font-medium tracking-tight sm:text-sm">
 						Install this resume as an app for faster launch and offline access.
 					</p>
 					<p
 						className={cn(
-							"text-xs text-muted-foreground",
+							"text-base text-muted-foreground sm:text-sm",
 							!showIosHelp && isIos && "hidden",
 						)}
 					>
@@ -79,7 +79,11 @@ export function InstallStrip() {
 					</p>
 				</div>
 				<div className="flex items-center gap-2 self-end sm:self-auto">
-					<Button size="sm" onClick={handlePrimaryAction}>
+					<Button
+						size="sm"
+						onClick={handlePrimaryAction}
+						className="rounded-full px-4"
+					>
 						<Download className="size-4" />
 						{hasPrompt ? "Install App" : "How to Install"}
 					</Button>
@@ -92,6 +96,7 @@ export function InstallStrip() {
 							void trigger("light", { intensity: 0.35 });
 							dismiss();
 						}}
+						className="rounded-full"
 					>
 						<X className="size-4" />
 					</Button>

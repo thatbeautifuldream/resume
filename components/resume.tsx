@@ -8,12 +8,7 @@ import {
 	registerJsonToggleHandler,
 	unregisterJsonToggleHandler,
 } from "@/components/providers/keyboard-shortcuts";
-import {
-	calculateDuration,
-	formatDate,
-	range,
-	rangeCompact,
-} from "@/lib/format";
+import { calculateDuration, formatDate, range, rangeCompact } from "@/lib/format";
 import type {
 	Basics,
 	Certificates,
@@ -27,24 +22,24 @@ import type {
 	Talks,
 	Work,
 } from "@/lib/resume-schema";
-import { useTheme } from "next-themes";
+import dynamic from "next/dynamic";
 import Link from "next/link";
+import { useTheme } from "next-themes";
 import type * as React from "react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useWebHaptics } from "web-haptics/react";
-import { TextMorph } from "torph/react";
-import dynamic from "next/dynamic";
 
 const SyntaxHighlighter = dynamic(
-	() => import("react-syntax-highlighter").then((mod) => ({ default: mod.Prism })),
-	{ 
+	() =>
+		import("react-syntax-highlighter").then((mod) => ({ default: mod.Prism })),
+	{
 		ssr: false,
 		loading: () => (
-			<div className="flex items-center justify-center py-12 text-sm text-muted-foreground">
+			<div className="flex items-center justify-center py-12 text-base text-muted-foreground sm:text-sm">
 				Loading code viewer...
 			</div>
-		)
-	}
+		),
+	},
 );
 
 let vsTheme: typeof import("react-syntax-highlighter/dist/esm/styles/prism").vs;
@@ -58,6 +53,32 @@ const loadThemes = async () => {
 	}
 };
 
+const COPIED_DISPLAY_DURATION_MS = 1800;
+
+function SectionEyebrow({
+	title,
+	rightContent,
+}: {
+	title: string;
+	rightContent?: React.ReactNode;
+}) {
+	return (
+		<div className="flex flex-col gap-3 border-b border-border/80 pb-4 sm:flex-row sm:items-end sm:justify-between">
+			<div className="space-y-2">
+				<div className="font-mono text-[0.72rem] uppercase tracking-[0.24em] text-primary">
+					{title}
+				</div>
+				<div className="h-px w-16 bg-primary/45" />
+			</div>
+			{rightContent ? (
+				<div className="text-base text-muted-foreground sm:text-sm">
+					{rightContent}
+				</div>
+			) : null}
+		</div>
+	);
+}
+
 function ResumeSection({
 	title,
 	rightContent,
@@ -68,26 +89,22 @@ function ResumeSection({
 	children: React.ReactNode;
 }) {
 	return (
-		<section className="space-y-1.5 sm:space-y-2">
-			<div className="flex items-end justify-between gap-3 border-b">
-				<h4 className="uppercase font-semibold text-sm sm:text-base">{title}</h4>
-				{rightContent ? (
-					<em className="pb-0.5 text-xs sm:text-sm text-muted-foreground whitespace-nowrap">
-						{rightContent}
-					</em>
-				) : null}
+		<section className="rounded-[1.85rem] border border-border/75 bg-card/92 p-5 shadow-[0_12px_40px_rgba(15,23,42,0.05)] sm:p-6">
+			<div className="space-y-5">
+				<SectionEyebrow title={title} rightContent={rightContent} />
+				<div>{children}</div>
 			</div>
-			<div>{children}</div>
 		</section>
 	);
 }
 
 function ResumeFooter({ source }: { source: string }) {
 	const sourceLink = source.startsWith("http") ? source : `https://${source}`;
+
 	return (
-		<footer className="mt-6 sm:mt-8 pt-3 sm:pt-4 text-center text-xs md:text-sm print:hidden">
-			<p className="text-muted-foreground">
-				Source :{" "}
+		<footer className="pb-4 pt-2 text-center">
+			<p className="text-base text-muted-foreground sm:text-sm">
+				Source:{" "}
 				<a href={sourceLink} target="_blank" rel="noopener noreferrer">
 					{source}
 				</a>
@@ -125,8 +142,6 @@ function ProfileLinkWithNetwork({ profile }: { profile: Profile }) {
 	);
 }
 
-const COPIED_DISPLAY_DURATION_MS = 1800;
-
 function EmailWithCopy({ email }: { email: string }) {
 	const [displayText, setDisplayText] = useState(email);
 	const { trigger } = useWebHaptics();
@@ -135,7 +150,7 @@ function EmailWithCopy({ email }: { email: string }) {
 		try {
 			await navigator.clipboard.writeText(email);
 			void trigger("success", { intensity: 0.8 });
-			setDisplayText("Copied to clipboard!");
+			setDisplayText("Copied to clipboard");
 		} catch (error) {
 			if (process.env.NODE_ENV !== "production") {
 				console.warn("Failed to copy email:", error);
@@ -144,26 +159,35 @@ function EmailWithCopy({ email }: { email: string }) {
 	}, [email, trigger]);
 
 	useEffect(() => {
-		if (displayText !== "Copied to clipboard!") return;
-		const t = setTimeout(() => setDisplayText(email), COPIED_DISPLAY_DURATION_MS);
-		return () => clearTimeout(t);
+		if (displayText !== "Copied to clipboard") return;
+		const timeout = setTimeout(
+			() => setDisplayText(email),
+			COPIED_DISPLAY_DURATION_MS,
+		);
+		return () => clearTimeout(timeout);
 	}, [displayText, email]);
 
 	return (
 		<button
 			type="button"
 			onClick={handleClick}
-			className="bg-transparent border-none p-0 font-inherit text-inherit cursor-pointer hover:underline"
+			className="cursor-pointer bg-transparent p-0 text-inherit transition-colors hover:text-foreground"
 			title={`Copy ${email}`}
 		>
-			<TextMorph duration={300} as="span" className="inline">
-				{displayText}
-			</TextMorph>
+			{displayText}
 		</button>
 	);
 }
 
-function ResumeHeaderItem({ basics }: { basics: Basics }) {
+function ResumeHeaderItem({
+	basics,
+	totalExperience,
+	projectCount,
+}: {
+	basics: Basics;
+	totalExperience?: string;
+	projectCount: number;
+}) {
 	const contactItems: { key: string; element: React.ReactNode }[] = [];
 
 	if (basics.email) {
@@ -188,112 +212,170 @@ function ResumeHeaderItem({ basics }: { basics: Basics }) {
 	}
 
 	if (basics.profiles) {
-		basics.profiles.forEach((p) => {
+		basics.profiles.forEach((profile) => {
 			contactItems.push({
-				key: p.network || p.url || "",
-				element: <ProfileLinkWithNetwork profile={p} />,
+				key: profile.network || profile.url || "",
+				element: <ProfileLinkWithNetwork profile={profile} />,
 			});
 		});
 	}
 
-	return (
-		<header className="text-center space-y-1.5 sm:space-y-2">
-			<h1 className="font-semibold text-xl sm:text-2xl md:text-3xl uppercase">
-				{basics.name}
-			</h1>
+	const metaItems = [
+		basics.label,
+		basics.location?.city ? `${basics.location.city}, ${basics.location.countryCode}` : undefined,
+		basics.timezone,
+	].filter(Boolean);
 
-			<div className="text-sm md:text-base flex flex-wrap justify-center items-center gap-x-2 sm:gap-x-3 md:gap-x-4 gap-y-1">
-				{contactItems.map((item) => (
-					<div key={item.key}>{item.element}</div>
-				))}
+	const statCards = [
+		{ label: "Experience", value: totalExperience || "3+ years" },
+		{ label: "Projects", value: `${projectCount}` },
+		{ label: "Focus", value: "AI-native product UI" },
+	];
+
+	return (
+		<section className="grain-overlay overflow-hidden rounded-[2rem] border border-border/75 bg-card/96 shadow-[var(--page-shadow)]">
+			<div className="grid gap-8 p-6 sm:p-8 lg:grid-cols-[minmax(0,3fr)_minmax(17rem,1.4fr)] lg:gap-10">
+				<div className="space-y-6">
+					<div className="space-y-4">
+						<div className="font-mono text-[0.72rem] uppercase tracking-[0.24em] text-primary">
+							Product engineer • design systems • motion
+						</div>
+						<div className="space-y-3">
+							<h1 className="max-w-[14ch] text-4xl font-semibold tracking-tight text-foreground sm:text-[2.8rem]">
+								{basics.name}
+							</h1>
+							<p className="max-w-[48ch] text-base text-muted-foreground sm:text-sm">
+								I design and ship ambitious product interfaces that make AI
+								workflows feel clear, quick, and deeply usable.
+							</p>
+						</div>
+					</div>
+
+					<div className="flex flex-wrap gap-2">
+						{metaItems.map((item) => (
+							<div
+								key={item}
+								className="rounded-full border border-border/70 bg-background/72 px-3 py-1.5 font-mono text-[0.72rem] uppercase tracking-[0.18em] text-muted-foreground"
+							>
+								{item}
+							</div>
+						))}
+					</div>
+
+					<div className="flex flex-wrap gap-2.5 text-base text-muted-foreground sm:text-sm">
+						{contactItems.map((item) => (
+							<div
+								key={item.key}
+								className="rounded-full border border-border/70 bg-background/72 px-3 py-2 transition-colors hover:border-primary/35 hover:text-foreground"
+							>
+								{item.element}
+							</div>
+						))}
+					</div>
+				</div>
+
+				<div className="space-y-3 self-end">
+					{statCards.map((stat) => (
+						<div
+							key={stat.label}
+							className="rounded-[1.4rem] border border-border/70 bg-background/82 p-4"
+						>
+							<div className="text-[0.72rem] font-mono uppercase tracking-[0.2em] text-muted-foreground">
+								{stat.label}
+							</div>
+							<div className="mt-2 text-2xl font-semibold tracking-tight text-foreground">
+								{stat.value}
+							</div>
+						</div>
+					))}
+				</div>
 			</div>
-		</header>
+		</section>
+	);
+}
+
+function ProofLinks({
+	itemName,
+	links,
+}: {
+	itemName: string;
+	links?: Array<{ label: string; url: string }>;
+}) {
+	if (!links?.length) return null;
+
+	return (
+		<div className="flex flex-wrap gap-2">
+			{links.map((link) => {
+				const href = link.url.startsWith("http")
+					? link.url
+					: `https://${link.url}`;
+				return (
+					<a
+						key={`${itemName}-${link.label}`}
+						href={href}
+						target="_blank"
+						rel="noopener noreferrer"
+						className="rounded-full border border-border/70 bg-background/76 px-3 py-1.5 text-base text-muted-foreground transition-colors hover:border-primary/30 hover:text-foreground sm:text-sm"
+					>
+						{link.label}
+					</a>
+				);
+			})}
+		</div>
 	);
 }
 
 function WorkExperienceItem({ item }: { item: Work }) {
 	const duration = calculateDuration(item.startDate, item.endDate);
 	const isPresent = !item.endDate;
+
 	return (
-		<div className="space-y-2 sm:space-y-3">
-			<div className="space-y-0.5 sm:space-y-1">
-				<div className="flex gap-2 sm:gap-3 items-start print:gap-2 print:items-center">
-					<div className="flex-1 min-w-0">
-						<div className="flex justify-between items-baseline gap-2">
-							<strong className="text-sm md:text-base print:text-sm">
-								{item.position || "Role"}
-							</strong>
-							{item.workType && (
-								<em className="text-xs md:text-sm print:text-xs text-muted-foreground">
-									{item.workType}
-								</em>
-							)}
-						</div>
-						<div className="flex justify-between items-baseline gap-2">
-							<span className="italic text-sm md:text-base print:text-sm">
-								{item.name}
-							</span>
-							<em className="text-xs md:text-sm print:text-xs whitespace-nowrap">
-								<span className="sm:hidden">
-									{rangeCompact(item.startDate, item.endDate)}
-									{duration && (
-										<span className={isPresent ? "print:hidden" : ""}>
-											{` (${duration})`}
-										</span>
-									)}
-								</span>
-								<span className="hidden sm:inline">
-									{range(item.startDate, item.endDate)}
-									{duration && (
-										<span className={isPresent ? "print:hidden" : ""}>
-											{` (${duration})`}
-										</span>
-									)}
-								</span>
-							</em>
-						</div>
-					</div>
+		<article className="grid gap-4 border-b border-border/65 pb-6 last:border-b-0 last:pb-0 lg:grid-cols-[minmax(0,1fr)_minmax(0,3fr)]">
+			<div className="space-y-2">
+				<div className="text-[0.72rem] font-mono uppercase tracking-[0.22em] text-primary">
+					{item.workType || "Role"}
+				</div>
+				<div className="space-y-1 text-base text-muted-foreground sm:text-sm">
+					<div>{range(item.startDate, item.endDate)}</div>
+					{duration ? (
+						<div className={isPresent ? "print:hidden" : undefined}>{duration}</div>
+					) : null}
+					{item.location ? <div>{item.location}</div> : null}
 				</div>
 			</div>
 
-			<div className="space-y-1.5 sm:space-y-2">
-				{item.summary && <p className="text-sm md:text-base">{item.summary}</p>}
+			<div className="space-y-4">
+				<div className="space-y-2">
+					<h3 className="text-2xl font-semibold tracking-tight text-foreground sm:text-xl">
+						{item.position || "Role"}
+					</h3>
+					<div className="text-lg text-muted-foreground sm:text-base">
+						{item.name}
+					</div>
+					{item.summary ? (
+						<p className="max-w-[64ch] text-base text-foreground/88 sm:text-sm">
+							{item.summary}
+						</p>
+					) : null}
+				</div>
+
 				{!!item.highlights?.length && (
-					<ul className="list-disc pl-4 sm:pl-5 space-y-0.5 sm:space-y-1 text-sm md:text-base">
-						{item.highlights.map((h) => (
-							<li key={h} className="text-justify">
-								{h}
+					<ul className="list-disc space-y-2 pl-5 text-base text-foreground/88 sm:text-sm" role="list">
+						{item.highlights.map((highlight) => (
+							<li key={highlight} className="text-pretty">
+								{highlight}
 							</li>
 						))}
 					</ul>
 				)}
-				{!!item.proofLinks?.length && (
-					<div className="flex flex-wrap gap-x-3 gap-y-1 text-xs md:text-sm font-medium">
-						{item.proofLinks.map((link) => {
-							const href = link.url.startsWith("http")
-								? link.url
-								: `https://${link.url}`;
-							return (
-								<a
-									key={`${item.name}-${link.label}`}
-									href={href}
-									target="_blank"
-									rel="noopener noreferrer"
-									className="underline underline-offset-2"
-								>
-									{link.label}
-								</a>
-							);
-						})}
-					</div>
-				)}
+
+				<ProofLinks itemName={item.name || item.position || "work"} links={item.proofLinks} />
 			</div>
-		</div>
+		</article>
 	);
 }
 
 function ProjectPortfolioItem({ item }: { item: Project }) {
-	// Use single date if available, otherwise fall back to date range
 	const dateDisplay = item.date
 		? formatDate(item.date)
 		: range(item.startDate, item.endDate);
@@ -304,87 +386,98 @@ function ProjectPortfolioItem({ item }: { item: Project }) {
 		: undefined;
 
 	return (
-		<div className="space-y-2 sm:space-y-3">
-			<div className="space-y-0.5 sm:space-y-1">
-				<div className="flex gap-2 sm:gap-3 items-start print:gap-2 print:items-center">
-					<div className="flex-1 min-w-0">
-						<div className="flex justify-between sm:flex-row flex-col sm:items-baseline items-start print:flex-row print:items-baseline">
-							{urlHref ? (
-								<a
-									href={urlHref}
-									target="_blank"
-									rel="noreferrer"
-									className="text-sm md:text-base print:text-sm font-bold hover:underline"
-								>
-									{item.name}
-								</a>
-							) : (
-								<strong className="text-sm md:text-base print:text-sm">
-									{item.name}
-								</strong>
-							)}
-							<em className="sm:mt-0 mt-0.5 text-xs md:text-sm print:text-xs print:mt-0">
-								{dateDisplay}
-							</em>
-						</div>
+		<article className="rounded-[1.5rem] border border-border/70 bg-background/72 p-5">
+			<div className="flex flex-col gap-3 border-b border-border/60 pb-4 sm:flex-row sm:items-start sm:justify-between">
+				<div className="space-y-2">
+					<div className="font-mono text-[0.72rem] uppercase tracking-[0.22em] text-primary">
+						Selected build
 					</div>
+					{urlHref ? (
+						<a
+							href={urlHref}
+							target="_blank"
+							rel="noreferrer"
+							className="text-2xl font-semibold tracking-tight text-foreground hover:text-primary sm:text-xl"
+						>
+							{item.name}
+						</a>
+					) : (
+						<h3 className="text-2xl font-semibold tracking-tight text-foreground sm:text-xl">
+							{item.name}
+						</h3>
+					)}
+					{item.description ? (
+						<p className="max-w-[62ch] text-base text-muted-foreground sm:text-sm">
+							{item.description}
+						</p>
+					) : null}
+				</div>
+				<div className="rounded-full border border-border/65 bg-card/80 px-3 py-1.5 text-base text-muted-foreground sm:text-sm">
+					{dateDisplay}
 				</div>
 			</div>
 
-			<div className="space-y-1.5 sm:space-y-2">
-				{item.description && (
-					<p className="text-sm md:text-base">{item.description}</p>
-				)}
-				<div className="flex flex-wrap gap-x-2 gap-y-1 text-xs md:text-sm text-muted-foreground">
-					{item.role && <span>Role: {item.role}</span>}
-					{item.teamSize && <span>Team: {item.teamSize}</span>}
-					{item.duration && <span>Duration: {item.duration}</span>}
-					{item.status && <span>Status: {item.status}</span>}
+			<div className="mt-4 space-y-4">
+				<div className="flex flex-wrap gap-2 text-base text-muted-foreground sm:text-sm">
+					{item.role ? (
+						<div className="rounded-full border border-border/65 px-3 py-1.5">
+							Role · {item.role}
+						</div>
+					) : null}
+					{item.teamSize ? (
+						<div className="rounded-full border border-border/65 px-3 py-1.5">
+							Team · {item.teamSize}
+						</div>
+					) : null}
+					{item.duration ? (
+						<div className="rounded-full border border-border/65 px-3 py-1.5">
+							Duration · {item.duration}
+						</div>
+					) : null}
+					{item.status ? (
+						<div className="rounded-full border border-border/65 px-3 py-1.5">
+							Status · {item.status}
+						</div>
+					) : null}
 				</div>
+
 				{!!item.impactMetrics?.length && (
-					<div className="flex flex-wrap gap-2">
+					<div className="grid gap-3 sm:grid-cols-2">
 						{item.impactMetrics.map((metric) => (
-							<span
+							<div
 								key={`${item.name}-${metric.label}`}
-								className="rounded-full border px-2 py-0.5 text-xs md:text-sm"
+								className="rounded-[1.2rem] border border-border/65 bg-card/84 p-4"
 								title={metric.window}
 							>
-								{metric.label}: {metric.value}
-							</span>
+								<div className="font-mono text-[0.72rem] uppercase tracking-[0.2em] text-muted-foreground">
+									{metric.label}
+								</div>
+								<div className="mt-2 text-2xl font-semibold tracking-tight text-foreground">
+									{metric.value}
+								</div>
+								{metric.window ? (
+									<div className="mt-1 text-base text-muted-foreground sm:text-sm">
+										{metric.window}
+									</div>
+								) : null}
+							</div>
 						))}
 					</div>
 				)}
+
 				{!!item.highlights?.length && (
-					<ul className="list-disc pl-4 sm:pl-5 space-y-0.5 sm:space-y-1 text-sm md:text-base">
-						{item.highlights.map((h) => (
-							<li key={h} className="text-justify">
-								{h}
+					<ul className="list-disc space-y-2 pl-5 text-base text-foreground/88 sm:text-sm" role="list">
+						{item.highlights.map((highlight) => (
+							<li key={highlight} className="text-pretty">
+								{highlight}
 							</li>
 						))}
 					</ul>
 				)}
-				{!!item.proofLinks?.length && (
-					<div className="flex flex-wrap gap-x-3 gap-y-1 text-xs md:text-sm font-medium">
-						{item.proofLinks.map((link) => {
-							const href = link.url.startsWith("http")
-								? link.url
-								: `https://${link.url}`;
-							return (
-								<a
-									key={`${item.name}-${link.label}`}
-									href={href}
-									target="_blank"
-									rel="noopener noreferrer"
-									className="underline underline-offset-2"
-								>
-									{link.label}
-								</a>
-							);
-						})}
-					</div>
-				)}
+
+				<ProofLinks itemName={item.name} links={item.proofLinks} />
 			</div>
-		</div>
+		</article>
 	);
 }
 
@@ -399,26 +492,23 @@ function EducationCredentialItem({ item }: { item: Education }) {
 		: undefined;
 
 	return (
-		<div className="flex justify-between items-center gap-2">
-			<div className="flex-1 min-w-0 truncate text-sm md:text-base print:text-sm leading-tight">
-				{urlHref ? (
-					<a
-						href={urlHref}
-						target="_blank"
-						rel="noopener noreferrer"
-						className="font-semibold hover:underline"
-					>
-						{item.institution}
-					</a>
-				) : (
-					<strong>{item.institution}</strong>
-				)}
-				{item.studyType && <span className="italic"> - {item.studyType}</span>}
+		<article className="flex flex-col gap-3 rounded-[1.4rem] border border-border/70 bg-background/72 p-4 sm:flex-row sm:items-center sm:justify-between">
+			<div className="space-y-1">
+				<div className="text-lg font-semibold tracking-tight text-foreground sm:text-base">
+					{urlHref ? (
+						<a href={urlHref} target="_blank" rel="noopener noreferrer">
+							{item.institution}
+						</a>
+					) : (
+						item.institution
+					)}
+				</div>
+				<div className="text-base text-muted-foreground sm:text-sm">
+					{item.studyType}
+				</div>
 			</div>
-			<em className="text-xs md:text-sm print:text-xs whitespace-nowrap flex-shrink-0">
-				{dateDisplay}
-			</em>
-		</div>
+			<div className="text-base text-muted-foreground sm:text-sm">{dateDisplay}</div>
+		</article>
 	);
 }
 
@@ -430,73 +520,37 @@ function CertificateAchievementItem({ item }: { item: Certificates }) {
 		: undefined;
 
 	return (
-		<span className="inline-flex items-baseline gap-1 text-sm md:text-base">
+		<div className="rounded-full border border-border/70 bg-background/76 px-3 py-2 text-base text-foreground sm:text-sm">
 			{urlHref ? (
-				<a
-					href={urlHref}
-					target="_blank"
-					rel="noopener noreferrer"
-					className="font-semibold hover:underline"
-				>
+				<a href={urlHref} target="_blank" rel="noopener noreferrer">
 					{item.name}
 				</a>
 			) : (
-				<span className="font-semibold">{item.name}</span>
+				item.name
 			)}
-			{item.issuer && <span className="italic">({item.issuer})</span>}
-			{item.date && (
-				<span className="text-xs md:text-sm text-muted-foreground">
-					[{item.date}]
-				</span>
-			)}
-		</span>
+			{item.issuer ? ` · ${item.issuer}` : ""}
+			{item.date ? ` · ${item.date}` : ""}
+		</div>
 	);
 }
 
 function OpenSourceContributionItem({ item }: { item: Contribution }) {
-	const extractOrgAndRepo = (url: string) => {
-		try {
-			const urlWithProtocol = url.startsWith("http") ? url : `https://${url}`;
-			const parsedUrl = new URL(urlWithProtocol);
-			const pathParts = parsedUrl.pathname.split("/").filter(Boolean);
-			// URL format: github.com/org/repo/pull/123
-			if (pathParts.length >= 2) {
-				return {
-					org: pathParts[0],
-					orgRepo: `${pathParts[0]}/${pathParts[1]}`,
-				};
-			}
-			return { org: "", orgRepo: "" };
-		} catch {
-			return { org: "", orgRepo: "" };
-		}
-	};
-
-	const { org, orgRepo } = extractOrgAndRepo(item.url);
-
 	const href = item.url.startsWith("http") ? item.url : `https://${item.url}`;
 
 	return (
-		<div className="flex justify-between items-center gap-2">
+		<article className="flex flex-col gap-2 rounded-[1.3rem] border border-border/70 bg-background/72 p-4 sm:flex-row sm:items-center sm:justify-between">
 			<a
 				href={href}
 				target="_blank"
 				rel="noopener noreferrer"
-				className="text-sm md:text-base hover:underline flex-1 leading-tight truncate"
+				className="text-base text-foreground hover:text-primary sm:text-sm"
 			>
 				{item.title}
 			</a>
-			{orgRepo && (
-				<>
-					<span className="text-xs text-muted-foreground whitespace-nowrap md:hidden flex-shrink-0">
-						[{org}]
-					</span>
-					<span className="hidden md:inline text-sm text-muted-foreground whitespace-nowrap flex-shrink-0">
-						[{orgRepo}]
-					</span>
-				</>
-			)}
-		</div>
+			<div className="font-mono text-[0.72rem] uppercase tracking-[0.18em] text-muted-foreground">
+				OSS contribution
+			</div>
+		</article>
 	);
 }
 
@@ -508,27 +562,22 @@ function TalkPresentationItem({ item }: { item: Talks }) {
 		: undefined;
 
 	return (
-		<div className="flex justify-between items-center gap-2">
-			{href ? (
-				<a
-					href={href}
-					target="_blank"
-					rel="noopener noreferrer"
-					className="text-sm md:text-base hover:underline flex-1 leading-tight truncate"
-				>
-					{item.title}
-				</a>
-			) : (
-				<span className="text-sm md:text-base flex-1 leading-tight truncate">
-					{item.title}
-				</span>
-			)}
-			{item.organiser && (
-				<span className="text-xs md:text-sm text-muted-foreground whitespace-nowrap flex-shrink-0">
-					[{item.organiser}]
-				</span>
-			)}
-		</div>
+		<article className="flex flex-col gap-2 rounded-[1.3rem] border border-border/70 bg-background/72 p-4 sm:flex-row sm:items-center sm:justify-between">
+			<div className="space-y-1">
+				<div className="text-base font-medium text-foreground sm:text-sm">
+					{href ? (
+						<a href={href} target="_blank" rel="noopener noreferrer">
+							{item.title}
+						</a>
+					) : (
+						item.title
+					)}
+				</div>
+				<div className="text-base text-muted-foreground sm:text-sm">
+					{item.organiser}
+				</div>
+			</div>
+		</article>
 	);
 }
 
@@ -539,7 +588,7 @@ function SkillsProficiency({ skills }: { skills: Skill[] }) {
 	if (!skills?.length) return null;
 
 	return (
-		<div className="flex flex-wrap gap-x-3 text-sm md:text-base font-semibold">
+		<div className="flex flex-wrap gap-2">
 			{skills.map((skill) => (
 				<button
 					type="button"
@@ -549,7 +598,7 @@ function SkillsProficiency({ skills }: { skills: Skill[] }) {
 						void trigger("medium", { intensity: 0.75 });
 						sendPromptToChat(prompt);
 					}}
-					className="hover:underline cursor-pointer"
+					className="cursor-pointer rounded-full border border-border/70 bg-background/76 px-3 py-2 text-base text-foreground transition-colors hover:border-primary/30 hover:text-primary sm:text-sm"
 				>
 					{skill}
 				</button>
@@ -560,17 +609,22 @@ function SkillsProficiency({ skills }: { skills: Skill[] }) {
 
 function ReferenceTestimonial({ items }: { items: Reference[] }) {
 	if (!items?.length) return null;
+
 	return (
-		<div className="space-y-3 sm:space-y-4">
-			{items.map((r) => (
+		<div className="space-y-4">
+			{items.map((reference) => (
 				<blockquote
-					key={r.name}
-					className="italic border-l-4 border-border pl-3 sm:pl-4 space-y-1.5 sm:space-y-2 text-sm md:text-base"
+					key={reference.name}
+					className="rounded-[1.4rem] border border-border/70 bg-background/72 p-5"
 				>
-					<div>{r.reference}</div>
-					<footer className="text-xs md:text-sm font-semibold">
-						— {r.name} ({r.title})
-					</footer>
+					<div className="space-y-3">
+						<p className="text-base italic text-foreground/88 sm:text-sm">
+							{reference.reference}
+						</p>
+						<footer className="text-base text-muted-foreground sm:text-sm">
+							{reference.name} · {reference.title}
+						</footer>
+					</div>
 				</blockquote>
 			))}
 		</div>
@@ -578,7 +632,6 @@ function ReferenceTestimonial({ items }: { items: Reference[] }) {
 }
 
 const DEFAULT_SECTION_ORDER: (keyof Resume)[] = [
-	"basics",
 	"work",
 	"projects",
 	"talks",
@@ -594,15 +647,13 @@ type ResumeSectionConfig = {
 	render: (items: unknown) => React.ReactNode;
 };
 
-const SECTION_CONFIG: Partial<
-	Record<keyof Resume, ResumeSectionConfig>
-> = {
+const SECTION_CONFIG: Partial<Record<keyof Resume, ResumeSectionConfig>> = {
 	work: {
 		title: "Experience",
 		render: (items) => (
-			<div className="space-y-5 sm:space-y-8">
-				{(items as Work[]).map((w) => (
-					<WorkExperienceItem key={w.name} item={w} />
+			<div className="space-y-6">
+				{(items as Work[]).map((workItem) => (
+					<WorkExperienceItem key={`${workItem.name}-${workItem.startDate}`} item={workItem} />
 				))}
 			</div>
 		),
@@ -610,9 +661,9 @@ const SECTION_CONFIG: Partial<
 	projects: {
 		title: "Selected Projects",
 		render: (items) => (
-			<div className="space-y-5 sm:space-y-8">
-				{(items as Project[]).map((p) => (
-					<ProjectPortfolioItem key={p.name} item={p} />
+			<div className="space-y-4">
+				{(items as Project[]).map((project) => (
+					<ProjectPortfolioItem key={project.name} item={project} />
 				))}
 			</div>
 		),
@@ -620,9 +671,12 @@ const SECTION_CONFIG: Partial<
 	education: {
 		title: "Education",
 		render: (items) => (
-			<div className="space-y-2 sm:space-y-3">
-				{(items as Education[]).map((e) => (
-					<EducationCredentialItem key={e.institution} item={e} />
+			<div className="space-y-3">
+				{(items as Education[]).map((educationItem) => (
+					<EducationCredentialItem
+						key={educationItem.institution}
+						item={educationItem}
+					/>
 				))}
 			</div>
 		),
@@ -630,19 +684,19 @@ const SECTION_CONFIG: Partial<
 	talks: {
 		title: "Talks",
 		render: (items) => (
-			<div className="space-y-1.5 sm:space-y-2">
-				{(items as Talks[]).map((t) => (
-					<TalkPresentationItem key={t.title} item={t} />
+			<div className="space-y-3">
+				{(items as Talks[]).map((talk) => (
+					<TalkPresentationItem key={talk.title} item={talk} />
 				))}
 			</div>
 		),
 	},
 	contributions: {
-		title: "Open Source Contributions",
+		title: "Open Source",
 		render: (items) => (
-			<div className="space-y-1.5 sm:space-y-2">
-				{(items as Contribution[]).map((c) => (
-					<OpenSourceContributionItem key={c.url} item={c} />
+			<div className="space-y-3">
+				{(items as Contribution[]).map((contribution) => (
+					<OpenSourceContributionItem key={contribution.url} item={contribution} />
 				))}
 			</div>
 		),
@@ -650,9 +704,9 @@ const SECTION_CONFIG: Partial<
 	certificates: {
 		title: "Certificates",
 		render: (items) => (
-			<div className="flex flex-wrap gap-x-3 sm:gap-x-4 gap-y-1.5 sm:gap-y-2 items-baseline">
-				{(items as Certificates[]).map((c) => (
-					<CertificateAchievementItem key={c.name} item={c} />
+			<div className="flex flex-wrap gap-2">
+				{(items as Certificates[]).map((certificate) => (
+					<CertificateAchievementItem key={certificate.name} item={certificate} />
 				))}
 			</div>
 		),
@@ -673,49 +727,48 @@ export function ResumeView({ data }: { data: Resume }) {
 	const isOpen = useSidebarOpen();
 	const { close } = useSidebarActions();
 	const { resolvedTheme } = useTheme();
+
 	const sectionOrder = useMemo(() => DEFAULT_SECTION_ORDER, []);
 	const totalExperience = useMemo(() => {
 		if (!data.work?.length) return undefined;
 
-		const earliestStartDate = data.work.reduce<string | undefined>((earliest, item) => {
-			if (!item.startDate) return earliest;
-			if (!earliest) return item.startDate;
-			return item.startDate < earliest ? item.startDate : earliest;
-		}, undefined);
+		const earliestStartDate = data.work.reduce<string | undefined>(
+			(earliest, item) => {
+				if (!item.startDate) return earliest;
+				if (!earliest) return item.startDate;
+				return item.startDate < earliest ? item.startDate : earliest;
+			},
+			undefined,
+		);
 
 		return calculateDuration(earliestStartDate);
 	}, [data.work]);
 
-	// Load themes on mount
 	useEffect(() => {
 		if (!themesLoaded) {
 			loadThemes().then(() => setThemesLoaded(true));
 		}
 	}, [themesLoaded]);
 
-	// Register JSON toggle handler for centralized keyboard shortcuts
 	useEffect(() => {
-		registerJsonToggleHandler(() => setShowJson((prev) => !prev));
+		registerJsonToggleHandler(() => setShowJson((previous) => !previous));
 		return () => unregisterJsonToggleHandler();
 	}, []);
 
-	// Handle print from any source (browser menu, Ctrl+P, etc.)
 	useEffect(() => {
 		const handleBeforePrint = () => {
-			if (isOpen) {
-				close();
-			}
+			if (isOpen) close();
 		};
 
 		window.addEventListener("beforeprint", handleBeforePrint);
 		return () => window.removeEventListener("beforeprint", handleBeforePrint);
-	}, [isOpen, close]);
+	}, [close, isOpen]);
 
 	if (showJson) {
 		if (!themesLoaded) {
 			return (
-				<article className="py-3 sm:py-4 md:py-8">
-					<div className="flex items-center justify-center py-12 text-sm text-muted-foreground">
+				<article className="py-4 sm:py-6">
+					<div className="flex items-center justify-center py-12 text-base text-muted-foreground sm:text-sm">
 						Loading themes...
 					</div>
 				</article>
@@ -727,46 +780,52 @@ export function ResumeView({ data }: { data: Resume }) {
 		const syntaxTheme = isDark ? vscDarkPlusTheme! : vsTheme!;
 
 		return (
-			<article className="py-3 sm:py-4 md:py-8">
-				<SyntaxHighlighter
-					language="json"
-					style={syntaxTheme}
-					customStyle={{
-						margin: 0,
-						borderRadius: "0.5rem",
-						maxHeight: "calc(100vh - 8rem)",
-						fontSize: "0.75rem",
-						fontFamily:
-							"ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace",
-						lineHeight: "1.6",
-						padding: "0.75rem",
-					}}
-					codeTagProps={{
-						style: {
-							fontFamily: "inherit",
-							fontSize: "inherit",
-							lineHeight: "inherit",
-						},
-					}}
-					className="md:text-sm border border-border shadow-sm md:!p-6"
-				>
-					{jsonString}
-				</SyntaxHighlighter>
+			<article className="py-4 sm:py-6">
+				<div className="overflow-hidden rounded-[1.8rem] border border-border/75 bg-card/94 p-3 shadow-[var(--page-shadow)] sm:p-4">
+					<SyntaxHighlighter
+						language="json"
+						style={syntaxTheme}
+						customStyle={{
+							margin: 0,
+							borderRadius: "1rem",
+							maxHeight: "calc(100vh - 8rem)",
+							fontSize: "0.8rem",
+							fontFamily:
+								"ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace",
+							lineHeight: "1.6",
+							padding: "1rem",
+						}}
+						codeTagProps={{
+							style: {
+								fontFamily: "inherit",
+								fontSize: "inherit",
+								lineHeight: "inherit",
+							},
+						}}
+					>
+						{jsonString}
+					</SyntaxHighlighter>
+				</div>
 			</article>
 		);
 	}
 
 	return (
-		<article className="space-y-4 sm:space-y-6 py-3 sm:py-4 md:py-8">
-			<ResumeHeaderItem basics={data.basics} />
+		<article className="space-y-5 py-4 sm:space-y-6 sm:py-6">
+			<ResumeHeaderItem
+				basics={data.basics}
+				totalExperience={totalExperience}
+				projectCount={data.projects?.length || 0}
+			/>
 
 			{sectionOrder.map((sectionKey) => {
 				const section = SECTION_CONFIG[sectionKey];
 				const sectionData = data[sectionKey];
 
 				if (!section) return null;
-				if (!sectionData || (Array.isArray(sectionData) && !sectionData.length))
+				if (!sectionData || (Array.isArray(sectionData) && !sectionData.length)) {
 					return null;
+				}
 
 				return (
 					<ResumeSection
@@ -774,7 +833,7 @@ export function ResumeView({ data }: { data: Resume }) {
 						title={section.title}
 						rightContent={
 							sectionKey === "work" && totalExperience
-								? `(${totalExperience} total)`
+								? `${totalExperience} of hands-on product work`
 								: undefined
 						}
 					>

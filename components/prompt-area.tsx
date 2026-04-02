@@ -90,7 +90,7 @@ function PromptInput({
         <div
           onClick={handleClick}
           className={cn(
-            "border-input bg-background cursor-text rounded-3xl border p-2 shadow-xs",
+            "cursor-text rounded-[1.75rem] border border-border/80 bg-background/95 p-2 shadow-[0_16px_40px_rgba(15,23,42,0.08)] supports-[backdrop-filter]:bg-background/82 supports-[backdrop-filter]:backdrop-blur",
             disabled && "cursor-not-allowed opacity-60",
             className,
           )}
@@ -167,7 +167,7 @@ function PromptInputTextarea({
       onChange={handleChange}
       onKeyDown={handleKeyDown}
       className={cn(
-        "text-foreground placeholder:text-muted-foreground min-h-[44px] w-full resize-none border-none !bg-transparent dark:!bg-transparent shadow-none outline-none focus-visible:ring-0 focus-visible:ring-offset-0 px-0 py-0",
+        "min-h-11 w-full resize-none border-none !bg-transparent px-1 py-1 text-base text-foreground shadow-none outline-none placeholder:text-muted-foreground focus-visible:ring-0 focus-visible:ring-offset-0 sm:text-sm dark:!bg-transparent",
         className,
       )}
       rows={1}
