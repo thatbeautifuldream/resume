@@ -13,17 +13,6 @@ import {
 } from "@/components/providers/keyboard-shortcuts-store";
 import { KeyboardShortcutsDialog } from "@/components/keyboard-shortcuts-dialog";
 
-// Registry for callbacks
-let registeredJsonToggleHandler: (() => void) | null = null;
-
-export function registerJsonToggleHandler(handler: () => void) {
-  registeredJsonToggleHandler = handler;
-}
-
-export function unregisterJsonToggleHandler() {
-  registeredJsonToggleHandler = null;
-}
-
 export function useGlobalKeyboardShortcuts() {
   const { close: closeSidebar } = useSidebarActions();
   const isOpen = useSidebarOpen();
@@ -57,15 +46,6 @@ export function useGlobalKeyboardShortcuts() {
       } else {
         window.print();
       }
-    },
-    { preventDefault: true }
-  );
-
-  // Toggle JSON view: J
-  useHotkeys(
-    "j",
-    () => {
-      registeredJsonToggleHandler?.();
     },
     { preventDefault: true }
   );

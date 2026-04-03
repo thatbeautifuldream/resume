@@ -5,10 +5,6 @@ import {
 	useSidebarOpen,
 } from "@/components/providers/chat-sidebar-store";
 import {
-	registerJsonToggleHandler,
-	unregisterJsonToggleHandler,
-} from "@/components/providers/keyboard-shortcuts";
-import {
 	calculateDuration,
 	formatDate,
 	range,
@@ -27,36 +23,11 @@ import type {
 	Talks,
 	Work,
 } from "@/lib/resume-schema";
-import { useTheme } from "next-themes";
 import Link from "next/link";
 import type * as React from "react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useWebHaptics } from "web-haptics/react";
 import { TextMorph } from "torph/react";
-import dynamic from "next/dynamic";
-
-const SyntaxHighlighter = dynamic(
-	() => import("react-syntax-highlighter").then((mod) => ({ default: mod.Prism })),
-	{ 
-		ssr: false,
-		loading: () => (
-			<div className="flex items-center justify-center py-12 text-sm text-muted-foreground">
-				Loading code viewer...
-			</div>
-		)
-	}
-);
-
-let vsTheme: typeof import("react-syntax-highlighter/dist/esm/styles/prism").vs;
-let vscDarkPlusTheme: typeof import("react-syntax-highlighter/dist/esm/styles/prism").vscDarkPlus;
-
-const loadThemes = async () => {
-	if (!vsTheme || !vscDarkPlusTheme) {
-		const themes = await import("react-syntax-highlighter/dist/esm/styles/prism");
-		vsTheme = themes.vs;
-		vscDarkPlusTheme = themes.vscDarkPlus;
-	}
-};
 
 function ResumeSection({
 	title,
@@ -68,13 +39,13 @@ function ResumeSection({
 	children: React.ReactNode;
 }) {
 	return (
-		<section className="space-y-1.5 sm:space-y-2">
-			<div className="flex items-end justify-between gap-3 border-b">
-				<h4 className="uppercase font-semibold text-sm sm:text-base">{title}</h4>
+		<section className="space-y-1.5 sm:space-y-2 print:space-y-1">
+			<div className="flex items-end justify-between gap-3 border-b pb-1 print:pb-0.5">
+				<h4 className="font-medium text-xs sm:text-sm uppercase tracking-wide font-mono text-balance">{title}</h4>
 				{rightContent ? (
-					<em className="pb-0.5 text-xs sm:text-sm text-muted-foreground whitespace-nowrap">
+					<span className="pb-0.5 text-xs text-muted-foreground whitespace-nowrap font-mono tabular-nums">
 						{rightContent}
-					</em>
+					</span>
 				) : null}
 			</div>
 			<div>{children}</div>
@@ -85,7 +56,7 @@ function ResumeSection({
 function ResumeFooter({ source }: { source: string }) {
 	const sourceLink = source.startsWith("http") ? source : `https://${source}`;
 	return (
-		<footer className="mt-6 sm:mt-8 pt-3 sm:pt-4 text-center text-xs md:text-sm print:hidden">
+		<footer className="mt-6 sm:mt-8 pt-3 sm:pt-4 text-center text-xs print:hidden">
 			<p className="text-muted-foreground">
 				Source :{" "}
 				<a href={sourceLink} target="_blank" rel="noopener noreferrer">
@@ -197,12 +168,12 @@ function ResumeHeaderItem({ basics }: { basics: Basics }) {
 	}
 
 	return (
-		<header className="text-center space-y-1.5 sm:space-y-2">
-			<h1 className="font-semibold text-xl sm:text-2xl md:text-3xl uppercase">
+		<header className="text-center space-y-1.5 sm:space-y-2 print:space-y-0.5">
+			<h1 className="font-medium text-lg sm:text-xl md:text-2xl uppercase tracking-wide font-mono text-balance">
 				{basics.name}
 			</h1>
 
-			<div className="text-sm md:text-base flex flex-wrap justify-center items-center gap-x-2 sm:gap-x-3 md:gap-x-4 gap-y-1">
+			<div className="text-xs sm:text-sm flex flex-wrap justify-center items-center gap-x-2 sm:gap-x-3 md:gap-x-4 gap-y-1">
 				{contactItems.map((item) => (
 					<div key={item.key}>{item.element}</div>
 				))}
@@ -215,25 +186,25 @@ function WorkExperienceItem({ item }: { item: Work }) {
 	const duration = calculateDuration(item.startDate, item.endDate);
 	const isPresent = !item.endDate;
 	return (
-		<div className="space-y-2 sm:space-y-3">
-			<div className="space-y-0.5 sm:space-y-1">
-				<div className="flex gap-2 sm:gap-3 items-start print:gap-2 print:items-center">
+		<div className="space-y-2 sm:space-y-3 print:space-y-0.5">
+			<div className="space-y-0.5 sm:space-y-1 print:space-y-0">
+				<div className="flex gap-2 sm:gap-3 items-start print:gap-1 print:items-center">
 					<div className="flex-1 min-w-0">
-						<div className="flex justify-between items-baseline gap-2">
-							<strong className="text-sm md:text-base print:text-sm">
+						<div className="flex justify-between items-baseline gap-2 text-sm md:text-base print:text-sm">
+							<strong>
 								{item.position || "Role"}
 							</strong>
 							{item.workType && (
-								<em className="text-xs md:text-sm print:text-xs text-muted-foreground">
+								<span className="text-muted-foreground text-xs print:text-xs">
 									{item.workType}
-								</em>
+								</span>
 							)}
 						</div>
-						<div className="flex justify-between items-baseline gap-2">
-							<span className="italic text-sm md:text-base print:text-sm">
+						<div className="flex justify-between items-baseline gap-2 text-sm md:text-base print:text-sm">
+							<span className="text-muted-foreground font-medium">
 								{item.name}
 							</span>
-							<em className="text-xs md:text-sm print:text-xs whitespace-nowrap">
+							<span className="text-xs print:text-xs text-muted-foreground whitespace-nowrap tabular-nums">
 								<span className="sm:hidden">
 									{rangeCompact(item.startDate, item.endDate)}
 									{duration && (
@@ -250,16 +221,16 @@ function WorkExperienceItem({ item }: { item: Work }) {
 										</span>
 									)}
 								</span>
-							</em>
+							</span>
 						</div>
 					</div>
 				</div>
 			</div>
 
-			<div className="space-y-1.5 sm:space-y-2">
-				{item.summary && <p className="text-sm md:text-base">{item.summary}</p>}
+			<div className="space-y-1.5 sm:space-y-2 print:space-y-0.5">
+				{item.summary && <p className="text-sm md:text-base text-pretty print:text-xs">{item.summary}</p>}
 				{!!item.highlights?.length && (
-					<ul className="list-disc pl-4 sm:pl-5 space-y-0.5 sm:space-y-1 text-sm md:text-base">
+					<ul className="list-disc pl-4 sm:pl-5 space-y-0.5 sm:space-y-1 print:space-y-0 text-sm md:text-base print:text-xs">
 						{item.highlights.map((h) => (
 							<li key={h} className="text-justify">
 								{h}
@@ -268,7 +239,7 @@ function WorkExperienceItem({ item }: { item: Work }) {
 					</ul>
 				)}
 				{!!item.proofLinks?.length && (
-					<div className="flex flex-wrap gap-x-3 gap-y-1 text-xs md:text-sm font-medium">
+					<div className="flex flex-wrap gap-x-3 gap-y-1 print:gap-x-2 text-xs font-medium">
 						{item.proofLinks.map((link) => {
 							const href = link.url.startsWith("http")
 								? link.url
@@ -304,38 +275,38 @@ function ProjectPortfolioItem({ item }: { item: Project }) {
 		: undefined;
 
 	return (
-		<div className="space-y-2 sm:space-y-3">
-			<div className="space-y-0.5 sm:space-y-1">
-				<div className="flex gap-2 sm:gap-3 items-start print:gap-2 print:items-center">
+		<div className="space-y-2 sm:space-y-3 print:space-y-0.5">
+			<div className="space-y-0.5 sm:space-y-1 print:space-y-0">
+				<div className="flex gap-2 sm:gap-3 items-start print:gap-1 print:items-center">
 					<div className="flex-1 min-w-0">
-						<div className="flex justify-between sm:flex-row flex-col sm:items-baseline items-start print:flex-row print:items-baseline">
+						<div className="flex justify-between sm:flex-row flex-col sm:items-baseline items-start print:flex-row print:items-baseline text-sm md:text-base print:text-sm">
 							{urlHref ? (
 								<a
 									href={urlHref}
 									target="_blank"
 									rel="noreferrer"
-									className="text-sm md:text-base print:text-sm font-bold hover:underline"
+									className="font-semibold hover:underline"
 								>
 									{item.name}
 								</a>
 							) : (
-								<strong className="text-sm md:text-base print:text-sm">
+								<strong>
 									{item.name}
 								</strong>
 							)}
-							<em className="sm:mt-0 mt-0.5 text-xs md:text-sm print:text-xs print:mt-0">
+							<span className="sm:mt-0 mt-0.5 text-xs print:text-xs print:mt-0 text-muted-foreground tabular-nums">
 								{dateDisplay}
-							</em>
+							</span>
 						</div>
 					</div>
 				</div>
 			</div>
 
-			<div className="space-y-1.5 sm:space-y-2">
+			<div className="space-y-1.5 sm:space-y-2 print:space-y-0.5">
 				{item.description && (
-					<p className="text-sm md:text-base">{item.description}</p>
+					<p className="text-sm md:text-base text-pretty print:text-xs">{item.description}</p>
 				)}
-				<div className="flex flex-wrap gap-x-2 gap-y-1 text-xs md:text-sm text-muted-foreground">
+				<div className="flex flex-wrap gap-x-3 gap-y-1 text-xs text-muted-foreground">
 					{item.role && <span>Role: {item.role}</span>}
 					{item.teamSize && <span>Team: {item.teamSize}</span>}
 					{item.duration && <span>Duration: {item.duration}</span>}
@@ -346,7 +317,7 @@ function ProjectPortfolioItem({ item }: { item: Project }) {
 						{item.impactMetrics.map((metric) => (
 							<span
 								key={`${item.name}-${metric.label}`}
-								className="rounded-full border px-2 py-0.5 text-xs md:text-sm"
+								className="rounded-full border px-2 py-0.5 text-xs tabular-nums"
 								title={metric.window}
 							>
 								{metric.label}: {metric.value}
@@ -355,7 +326,7 @@ function ProjectPortfolioItem({ item }: { item: Project }) {
 					</div>
 				)}
 				{!!item.highlights?.length && (
-					<ul className="list-disc pl-4 sm:pl-5 space-y-0.5 sm:space-y-1 text-sm md:text-base">
+					<ul className="list-disc pl-4 sm:pl-5 space-y-0.5 sm:space-y-1 print:space-y-0 text-sm md:text-base print:text-xs">
 						{item.highlights.map((h) => (
 							<li key={h} className="text-justify">
 								{h}
@@ -364,7 +335,7 @@ function ProjectPortfolioItem({ item }: { item: Project }) {
 					</ul>
 				)}
 				{!!item.proofLinks?.length && (
-					<div className="flex flex-wrap gap-x-3 gap-y-1 text-xs md:text-sm font-medium">
+					<div className="flex flex-wrap gap-x-3 gap-y-1 print:gap-x-2 text-xs font-medium">
 						{item.proofLinks.map((link) => {
 							const href = link.url.startsWith("http")
 								? link.url
@@ -399,8 +370,8 @@ function EducationCredentialItem({ item }: { item: Education }) {
 		: undefined;
 
 	return (
-		<div className="flex justify-between items-center gap-2">
-			<div className="flex-1 min-w-0 truncate text-sm md:text-base print:text-sm leading-tight">
+		<div className="flex justify-between items-center gap-2 text-sm md:text-base print:text-sm">
+			<div className="flex-1 min-w-0 truncate">
 				{urlHref ? (
 					<a
 						href={urlHref}
@@ -413,11 +384,11 @@ function EducationCredentialItem({ item }: { item: Education }) {
 				) : (
 					<strong>{item.institution}</strong>
 				)}
-				{item.studyType && <span className="italic"> - {item.studyType}</span>}
+				{item.studyType && <span className="text-muted-foreground"> - {item.studyType}</span>}
 			</div>
-			<em className="text-xs md:text-sm print:text-xs whitespace-nowrap flex-shrink-0">
+			<span className="text-xs print:text-xs text-muted-foreground whitespace-nowrap flex-shrink-0 tabular-nums">
 				{dateDisplay}
-			</em>
+			</span>
 		</div>
 	);
 }
@@ -443,9 +414,9 @@ function CertificateAchievementItem({ item }: { item: Certificates }) {
 			) : (
 				<span className="font-semibold">{item.name}</span>
 			)}
-			{item.issuer && <span className="italic">({item.issuer})</span>}
+			{item.issuer && <span className="text-muted-foreground">({item.issuer})</span>}
 			{item.date && (
-				<span className="text-xs md:text-sm text-muted-foreground">
+				<span className="text-xs text-muted-foreground tabular-nums">
 					[{item.date}]
 				</span>
 			)}
@@ -491,7 +462,7 @@ function OpenSourceContributionItem({ item }: { item: Contribution }) {
 					<span className="text-xs text-muted-foreground whitespace-nowrap md:hidden flex-shrink-0">
 						[{org}]
 					</span>
-					<span className="hidden md:inline text-sm text-muted-foreground whitespace-nowrap flex-shrink-0">
+					<span className="hidden md:inline text-xs text-muted-foreground whitespace-nowrap flex-shrink-0">
 						[{orgRepo}]
 					</span>
 				</>
@@ -524,7 +495,7 @@ function TalkPresentationItem({ item }: { item: Talks }) {
 				</span>
 			)}
 			{item.organiser && (
-				<span className="text-xs md:text-sm text-muted-foreground whitespace-nowrap flex-shrink-0">
+				<span className="text-xs text-muted-foreground whitespace-nowrap flex-shrink-0">
 					[{item.organiser}]
 				</span>
 			)}
@@ -539,7 +510,7 @@ function SkillsProficiency({ skills }: { skills: Skill[] }) {
 	if (!skills?.length) return null;
 
 	return (
-		<div className="flex flex-wrap gap-x-3 text-sm md:text-base font-semibold">
+		<div className="flex flex-wrap gap-x-3 text-sm md:text-base font-medium">
 			{skills.map((skill) => (
 				<button
 					type="button"
@@ -565,10 +536,10 @@ function ReferenceTestimonial({ items }: { items: Reference[] }) {
 			{items.map((r) => (
 				<blockquote
 					key={r.name}
-					className="italic border-l-4 border-border pl-3 sm:pl-4 space-y-1.5 sm:space-y-2 text-sm md:text-base"
+					className="border-l-4 border-border pl-3 sm:pl-4 space-y-1.5 sm:space-y-2 text-sm md:text-base text-muted-foreground"
 				>
 					<div>{r.reference}</div>
-					<footer className="text-xs md:text-sm font-semibold">
+					<footer className="text-xs md:text-sm font-semibold text-foreground">
 						— {r.name} ({r.title})
 					</footer>
 				</blockquote>
@@ -600,7 +571,7 @@ const SECTION_CONFIG: Partial<
 	work: {
 		title: "Experience",
 		render: (items) => (
-			<div className="space-y-5 sm:space-y-8">
+			<div className="space-y-5 sm:space-y-8 print:space-y-2">
 				{(items as Work[]).map((w) => (
 					<WorkExperienceItem key={w.name} item={w} />
 				))}
@@ -610,7 +581,7 @@ const SECTION_CONFIG: Partial<
 	projects: {
 		title: "Selected Projects",
 		render: (items) => (
-			<div className="space-y-5 sm:space-y-8">
+			<div className="space-y-5 sm:space-y-8 print:space-y-2">
 				{(items as Project[]).map((p) => (
 					<ProjectPortfolioItem key={p.name} item={p} />
 				))}
@@ -668,11 +639,8 @@ const SECTION_CONFIG: Partial<
 };
 
 export function ResumeView({ data }: { data: Resume }) {
-	const [showJson, setShowJson] = useState(false);
-	const [themesLoaded, setThemesLoaded] = useState(false);
 	const isOpen = useSidebarOpen();
 	const { close } = useSidebarActions();
-	const { resolvedTheme } = useTheme();
 	const sectionOrder = useMemo(() => DEFAULT_SECTION_ORDER, []);
 	const totalExperience = useMemo(() => {
 		if (!data.work?.length) return undefined;
@@ -686,19 +654,6 @@ export function ResumeView({ data }: { data: Resume }) {
 		return calculateDuration(earliestStartDate);
 	}, [data.work]);
 
-	// Load themes on mount
-	useEffect(() => {
-		if (!themesLoaded) {
-			loadThemes().then(() => setThemesLoaded(true));
-		}
-	}, [themesLoaded]);
-
-	// Register JSON toggle handler for centralized keyboard shortcuts
-	useEffect(() => {
-		registerJsonToggleHandler(() => setShowJson((prev) => !prev));
-		return () => unregisterJsonToggleHandler();
-	}, []);
-
 	// Handle print from any source (browser menu, Ctrl+P, etc.)
 	useEffect(() => {
 		const handleBeforePrint = () => {
@@ -711,53 +666,8 @@ export function ResumeView({ data }: { data: Resume }) {
 		return () => window.removeEventListener("beforeprint", handleBeforePrint);
 	}, [isOpen, close]);
 
-	if (showJson) {
-		if (!themesLoaded) {
-			return (
-				<article className="py-3 sm:py-4 md:py-8">
-					<div className="flex items-center justify-center py-12 text-sm text-muted-foreground">
-						Loading themes...
-					</div>
-				</article>
-			);
-		}
-
-		const jsonString = JSON.stringify(data, null, 2);
-		const isDark = resolvedTheme === "dark";
-		const syntaxTheme = isDark ? vscDarkPlusTheme! : vsTheme!;
-
-		return (
-			<article className="py-3 sm:py-4 md:py-8">
-				<SyntaxHighlighter
-					language="json"
-					style={syntaxTheme}
-					customStyle={{
-						margin: 0,
-						borderRadius: "0.5rem",
-						maxHeight: "calc(100vh - 8rem)",
-						fontSize: "0.75rem",
-						fontFamily:
-							"ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace",
-						lineHeight: "1.6",
-						padding: "0.75rem",
-					}}
-					codeTagProps={{
-						style: {
-							fontFamily: "inherit",
-							fontSize: "inherit",
-							lineHeight: "inherit",
-						},
-					}}
-					className="md:text-sm border border-border shadow-sm md:!p-6"
-				>
-					{jsonString}
-				</SyntaxHighlighter>
-			</article>
-		);
-	}
-
 	return (
-		<article className="space-y-4 sm:space-y-6 py-3 sm:py-4 md:py-8">
+		<article className="space-y-4 sm:space-y-6 py-3 sm:py-4 md:py-8 print:space-y-2 print:py-0">
 			<ResumeHeaderItem basics={data.basics} />
 
 			{sectionOrder.map((sectionKey) => {

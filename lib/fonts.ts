@@ -1,15 +1,12 @@
-import { Familjen_Grotesk, Fira_Code } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 
-export const sans = Familjen_Grotesk({
-  weight: ["400", "500", "600", "700"],
-  style: ["normal", "italic"],
+export const sans = Geist({
   subsets: ["latin"],
   variable: "--font-sans",
   display: "swap",
 });
 
-export const mono = Fira_Code({
-  weight: ["400", "500", "600", "700"],
+export const mono = Geist_Mono({
   subsets: ["latin"],
   variable: "--font-mono",
   display: "swap",

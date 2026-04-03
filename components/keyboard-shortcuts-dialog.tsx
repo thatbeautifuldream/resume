@@ -17,7 +17,6 @@ interface KeyboardShortcut {
 const shortcuts: KeyboardShortcut[] = [
   { keys: ["⌘", "K"], description: "Toggle chat sidebar" },
   { keys: ["Esc"], description: "Close sidebar" },
-  { keys: ["J"], description: "Toggle JSON view" },
   { keys: ["T"], description: "Toggle theme" },
   { keys: ["P"], description: "Print resume" },
   { keys: ["/"], description: "Show keyboard shortcuts" },
