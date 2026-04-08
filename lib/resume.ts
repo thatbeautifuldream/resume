@@ -44,14 +44,14 @@ const resumeData: Resume = {
       workType: "Full Time",
       startDate: "2025-02",
       summary:
-        "Built and scaled AI-native product experiences across core Merlin workflows and Thine AI.",
+        "Own frontend execution across Merlin's customer-facing product surfaces and Thine's web experiences, spanning product engineering, UX systems, payments, and AI-native interfaces.",
       highlights: [
-        "Developed and launched the UI for ChatGPT Imports to improve onboarding and migration experience",
-        "Revamped chat history flow and optimized dynamic row heights to overcome library constraints and improve usability",
-        "Implemented LLM selector with layout animations to enrich the core chat experience",
-        "Refactored the frontend codebase to improve performance and maintainability",
-        "Built interaction-heavy interfaces using React.js and Framer Motion for AI-native product flows",
-        "Focused on motion and UI systems that improved clarity and responsiveness in core experiences",
+        "Owned product experience, user experience, and frontend implementation for a browser agent built inside a Chrome extension sidebar",
+        "Led design system improvements across the Merlin website to raise UI consistency, implementation speed, and overall product quality",
+        "Maintained various payment flows for the Merlin website, ensuring a smoother purchase and subscription experience for customers and better campaign outcomes for the marketing team",
+        "Owned the frontend for Merlin's customer-facing web product, delivering core user journeys across merlin projects, engagement, retention and support experiences",
+        "Built interaction-heavy AI product flows for Merlin, including imports, chat history improvements, merlin projects, and responsive motion systems",
+        "Developed the Thine website and shaped its product storytelling through a polished, image sequence scroll experience",
       ],
       proofLinks: [
         { type: "live", label: "Thine's Website", url: "https://thine.com" },
@@ -59,6 +59,11 @@ const resumeData: Resume = {
           type: "live",
           label: "Merlin AI's Website",
           url: "https://getmerlin.in/chat",
+        },
+        {
+          type: "live",
+          label: "Merlin's Chrome Extension",
+          url: "https://chromewebstore.google.com/detail/merlin-ask-ai-to-research/camppjleccjaphfdbohjdohecfnoikec",
         },
       ],
     },
