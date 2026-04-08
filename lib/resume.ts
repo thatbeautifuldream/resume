@@ -192,62 +192,41 @@ const resumeData: Resume = {
   ],
   projects: [
     {
-      name: "AI Roadmap Generator",
+      name: "attnui",
       description:
-        "Full-stack AI product for generating personalized learning roadmaps",
-      role: "Engineer & Product Owner",
-      teamSize: "3",
-      duration: "Aug 2024 - Sept 2024",
+        "UI component library focused on polished interaction design, motion systems, and production-ready frontend primitives",
+      role: "Product Engineer",
+      teamSize: "1",
+      duration: "Nov 2025 - Present",
       status: "Live",
       highlights: [
-        "Identified a gap in structured upskilling journeys and shipped a personalized roadmap generator with streaming AI responses and node-based learning flows",
-        "Built and owned the full stack end-to-end (prompt design, typed output parsing, canvas renderer, and responsive UX), reducing first roadmap generation to under 10 seconds",
-        "Reached 5,600+ all-time users and generated 250+ learning roadmaps through organic distribution as of Mar 2026",
-      ],
-      impactMetrics: [
-        {
-          label: "Users",
-          value: "5,600+",
-          window: "All-time (as of Mar 2026)",
-        },
-        {
-          label: "Roadmaps Generated",
-          value: "500+",
-          window: "All-time (as of Mar 2026)",
-        },
+        "Designed reusable component patterns with an emphasis on motion quality, visual consistency, and implementation ergonomics",
+        "Built production-ready primitives that improve delivery speed while maintaining a higher UI quality bar across frontend builds",
       ],
       proofLinks: [
-        {
-          type: "live",
-          label: "Live",
-          url: "airoadmapgenerator.com",
-        },
+        { type: "live", label: "Live", url: "attnui.com" },
         {
           type: "source",
           label: "Source",
           url: "github.com/thatbeautifuldream",
         },
       ],
-      challenges: [
-        "Converting inconsistent LLM output into stable, typed roadmap nodes",
-        "Keeping canvas interactions smooth while rendering larger roadmap graphs",
-      ],
-      url: "airoadmapgenerator.com",
-      keywords: ["Next.js", "React", "TypeScript", "Canvas", "LLMs"],
-      date: "2024-08-01",
+      url: "attnui.com",
+      keywords: ["Design Systems", "React", "UI Components", "Motion"],
+      date: "2025-11-01",
     },
     {
       name: "JSON Visualiser",
       description:
-        "JSON debugging and visualization tool with tree and grid views for nested data exploration",
-      role: "Creator",
+        "JSON inspection and visualization tool for debugging deeply nested payloads across tree and grid views",
+      role: "Product Engineer",
       teamSize: "1",
       duration: "Oct 2024 - Present",
       status: "Live",
       highlights: [
-        "Built the tool to reduce debugging time for deeply nested payloads by combining validation, formatting, and multi-view exploration in one interface",
-        "Implemented tree and grid renderers optimized for complex nested JSON structures with smooth expand/collapse navigation",
-        "Reached 143 unique users with 43% return rate, including one power user with 49 sessions as of Mar 2026",
+        "Built a unified inspection workflow that combines validation, formatting, and multi-view exploration for complex payloads",
+        "Implemented tree and grid renderers optimized for nested JSON structures with efficient expand and collapse interactions",
+        "Reached 143 unique users with a 43% return rate, including one user with 49 sessions as of Mar 2026",
       ],
       impactMetrics: [
         {
@@ -282,40 +261,16 @@ const resumeData: Resume = {
       date: "2024-10-01",
     },
     {
-      name: "models.surf",
-      description:
-        "AI model discovery platform to explore and filter models by capabilities and use cases",
-      role: "Founder & Product Engineer",
-      teamSize: "1",
-      duration: "Feb 2026 - Present",
-      status: "Live",
-      highlights: [
-        "Built a model discovery interface to reduce evaluation time for developers choosing across rapidly changing AI model options",
-        "Designed capability-first filtering workflows and ranking views to surface fit-for-purpose models faster",
-      ],
-      proofLinks: [
-        { type: "live", label: "Live", url: "models.surf" },
-        {
-          type: "source",
-          label: "Source",
-          url: "github.com/thatbeautifuldream",
-        },
-      ],
-      url: "models.surf",
-      keywords: ["Next.js", "React", "TypeScript", "AI Tooling"],
-      date: "2026-02-01",
-    },
-    {
       name: "Markdown Visualizer",
       description:
-        "Real-time markdown rendering and preview tool for fast writing and iteration",
-      role: "Creator",
+        "Markdown editing and preview tool for fast iteration on technical writing workflows",
+      role: "Product Engineer",
       teamSize: "1",
       duration: "Dec 2025 - Present",
       status: "Live",
       highlights: [
-        "Built an instant preview workflow to reduce context switching while writing technical content",
-        "Implemented low-latency rendering and editing utilities for markdown-heavy developer workflows",
+        "Built a low-latency editing and preview workflow to reduce context switching while drafting markdown-heavy content",
+        "Implemented rendering and editing utilities that keep technical writing workflows responsive and predictable",
       ],
       proofLinks: [
         { type: "live", label: "Live", url: "markdownvisualizer.com" },
@@ -328,30 +283,6 @@ const resumeData: Resume = {
       url: "markdownvisualizer.com",
       keywords: ["React", "TypeScript", "Markdown", "DX"],
       date: "2025-12-01",
-    },
-    {
-      name: "attnui",
-      description:
-        "Attention-to-detail UI component collection focused on polished interaction design",
-      role: "Creator",
-      teamSize: "1",
-      duration: "Nov 2025 - Present",
-      status: "Live",
-      highlights: [
-        "Designed reusable UI patterns focused on motion quality and production-grade component ergonomics",
-        "Built component primitives that improve consistency and implementation speed for frontend builds",
-      ],
-      proofLinks: [
-        { type: "live", label: "Live", url: "attnui.com" },
-        {
-          type: "source",
-          label: "Source",
-          url: "github.com/thatbeautifuldream",
-        },
-      ],
-      url: "attnui.com",
-      keywords: ["Design Systems", "React", "UI Components", "Motion"],
-      date: "2025-11-01",
     },
   ],
   talks: [

@@ -39,8 +39,8 @@ function ResumeSection({
 	children: React.ReactNode;
 }) {
 	return (
-		<section className="space-y-1.5 sm:space-y-2 print:space-y-1">
-			<div className="flex items-end justify-between gap-3 border-b pb-1 print:pb-0.5">
+		<section className="space-y-1.5 sm:space-y-2">
+			<div className="flex items-end justify-between gap-3 border-b pb-1">
 				<h4 className="font-medium text-xs sm:text-sm uppercase tracking-wide font-mono text-balance">{title}</h4>
 				{rightContent ? (
 					<span className="pb-0.5 text-xs text-muted-foreground whitespace-nowrap font-mono tabular-nums">
@@ -168,7 +168,7 @@ function ResumeHeaderItem({ basics }: { basics: Basics }) {
 	}
 
 	return (
-		<header className="text-center space-y-1.5 sm:space-y-2 print:space-y-0.5">
+		<header className="text-center space-y-1.5 sm:space-y-2">
 			<h1 className="font-medium text-lg sm:text-xl md:text-2xl uppercase tracking-wide font-mono text-balance">
 				{basics.name}
 			</h1>
@@ -186,40 +186,32 @@ function WorkExperienceItem({ item }: { item: Work }) {
 	const duration = calculateDuration(item.startDate, item.endDate);
 	const isPresent = !item.endDate;
 	return (
-		<div className="space-y-2 sm:space-y-3 print:space-y-0.5">
-			<div className="space-y-0.5 sm:space-y-1 print:space-y-0">
-				<div className="flex gap-2 sm:gap-3 items-start print:gap-1 print:items-center">
+		<div className="space-y-2 sm:space-y-3">
+			<div className="space-y-0.5 sm:space-y-1">
+				<div className="flex gap-2 sm:gap-3 items-start">
 					<div className="flex-1 min-w-0">
-						<div className="flex justify-between items-baseline gap-2 text-sm md:text-base print:text-sm">
+						<div className="flex justify-between items-baseline gap-2 text-sm md:text-base">
 							<strong>
 								{item.position || "Role"}
 							</strong>
 							{item.workType && (
-								<span className="text-muted-foreground text-xs print:text-xs">
+								<span className="text-muted-foreground text-xs">
 									{item.workType}
 								</span>
 							)}
 						</div>
-						<div className="flex justify-between items-baseline gap-2 text-sm md:text-base print:text-sm">
+						<div className="flex justify-between items-baseline gap-2 text-sm md:text-base">
 							<span className="text-muted-foreground font-medium">
 								{item.name}
 							</span>
-							<span className="text-xs print:text-xs text-muted-foreground whitespace-nowrap tabular-nums">
+							<span className="text-xs text-muted-foreground whitespace-nowrap tabular-nums">
 								<span className="sm:hidden">
 									{rangeCompact(item.startDate, item.endDate)}
-									{duration && (
-										<span className={isPresent ? "print:hidden" : ""}>
-											{` (${duration})`}
-										</span>
-									)}
+									{duration && ` (${duration})`}
 								</span>
 								<span className="hidden sm:inline">
 									{range(item.startDate, item.endDate)}
-									{duration && (
-										<span className={isPresent ? "print:hidden" : ""}>
-											{` (${duration})`}
-										</span>
-									)}
+									{duration && ` (${duration})`}
 								</span>
 							</span>
 						</div>
@@ -227,10 +219,10 @@ function WorkExperienceItem({ item }: { item: Work }) {
 				</div>
 			</div>
 
-			<div className="space-y-1.5 sm:space-y-2 print:space-y-0.5">
-				{item.summary && <p className="text-sm md:text-base text-pretty print:text-xs">{item.summary}</p>}
+			<div className="space-y-1.5 sm:space-y-2">
+				{item.summary && <p className="text-sm md:text-base text-pretty">{item.summary}</p>}
 				{!!item.highlights?.length && (
-					<ul className="list-disc pl-4 sm:pl-5 space-y-0.5 sm:space-y-1 print:space-y-0 text-sm md:text-base print:text-xs">
+					<ul className="list-disc pl-4 sm:pl-5 space-y-0.5 sm:space-y-1 text-sm md:text-base">
 						{item.highlights.map((h) => (
 							<li key={h} className="text-justify">
 								{h}
@@ -239,7 +231,7 @@ function WorkExperienceItem({ item }: { item: Work }) {
 					</ul>
 				)}
 				{!!item.proofLinks?.length && (
-					<div className="flex flex-wrap gap-x-3 gap-y-1 print:gap-x-2 text-xs font-medium">
+					<div className="flex flex-wrap gap-x-3 gap-y-1  text-xs font-medium">
 						{item.proofLinks.map((link) => {
 							const href = link.url.startsWith("http")
 								? link.url
@@ -275,11 +267,11 @@ function ProjectPortfolioItem({ item }: { item: Project }) {
 		: undefined;
 
 	return (
-		<div className="space-y-2 sm:space-y-3 print:space-y-0.5">
-			<div className="space-y-0.5 sm:space-y-1 print:space-y-0">
-				<div className="flex gap-2 sm:gap-3 items-start print:gap-1 print:items-center">
+		<div className="space-y-2 sm:space-y-3">
+			<div className="space-y-0.5 sm:space-y-1">
+				<div className="flex gap-2 sm:gap-3 items-start">
 					<div className="flex-1 min-w-0">
-						<div className="flex justify-between sm:flex-row flex-col sm:items-baseline items-start print:flex-row print:items-baseline text-sm md:text-base print:text-sm">
+						<div className="flex justify-between sm:flex-row flex-col sm:items-baseline items-start text-sm md:text-base">
 							{urlHref ? (
 								<a
 									href={urlHref}
@@ -294,7 +286,7 @@ function ProjectPortfolioItem({ item }: { item: Project }) {
 									{item.name}
 								</strong>
 							)}
-							<span className="sm:mt-0 mt-0.5 text-xs print:text-xs print:mt-0 text-muted-foreground tabular-nums">
+							<span className="sm:mt-0 mt-0.5 text-xs text-muted-foreground tabular-nums">
 								{dateDisplay}
 							</span>
 						</div>
@@ -302,9 +294,9 @@ function ProjectPortfolioItem({ item }: { item: Project }) {
 				</div>
 			</div>
 
-			<div className="space-y-1.5 sm:space-y-2 print:space-y-0.5">
+			<div className="space-y-1.5 sm:space-y-2">
 				{item.description && (
-					<p className="text-sm md:text-base text-pretty print:text-xs">{item.description}</p>
+					<p className="text-sm md:text-base text-pretty">{item.description}</p>
 				)}
 				<div className="flex flex-wrap gap-x-3 gap-y-1 text-xs text-muted-foreground">
 					{item.role && <span>Role: {item.role}</span>}
@@ -326,7 +318,7 @@ function ProjectPortfolioItem({ item }: { item: Project }) {
 					</div>
 				)}
 				{!!item.highlights?.length && (
-					<ul className="list-disc pl-4 sm:pl-5 space-y-0.5 sm:space-y-1 print:space-y-0 text-sm md:text-base print:text-xs">
+					<ul className="list-disc pl-4 sm:pl-5 space-y-0.5 sm:space-y-1 text-sm md:text-base">
 						{item.highlights.map((h) => (
 							<li key={h} className="text-justify">
 								{h}
@@ -335,7 +327,7 @@ function ProjectPortfolioItem({ item }: { item: Project }) {
 					</ul>
 				)}
 				{!!item.proofLinks?.length && (
-					<div className="flex flex-wrap gap-x-3 gap-y-1 print:gap-x-2 text-xs font-medium">
+					<div className="flex flex-wrap gap-x-3 gap-y-1 text-xs font-medium">
 						{item.proofLinks.map((link) => {
 							const href = link.url.startsWith("http")
 								? link.url
@@ -370,7 +362,7 @@ function EducationCredentialItem({ item }: { item: Education }) {
 		: undefined;
 
 	return (
-		<div className="flex justify-between items-center gap-2 text-sm md:text-base print:text-sm">
+		<div className="flex justify-between items-center gap-2 text-sm md:text-base">
 			<div className="flex-1 min-w-0 truncate">
 				{urlHref ? (
 					<a
@@ -386,7 +378,7 @@ function EducationCredentialItem({ item }: { item: Education }) {
 				)}
 				{item.studyType && <span className="text-muted-foreground"> - {item.studyType}</span>}
 			</div>
-			<span className="text-xs print:text-xs text-muted-foreground whitespace-nowrap flex-shrink-0 tabular-nums">
+			<span className="text-xs text-muted-foreground whitespace-nowrap flex-shrink-0 tabular-nums">
 				{dateDisplay}
 			</span>
 		</div>
@@ -571,7 +563,7 @@ const SECTION_CONFIG: Partial<
 	work: {
 		title: "Experience",
 		render: (items) => (
-			<div className="space-y-5 sm:space-y-8 print:space-y-2">
+			<div className="space-y-5 sm:space-y-8">
 				{(items as Work[]).map((w) => (
 					<WorkExperienceItem key={w.name} item={w} />
 				))}
@@ -581,9 +573,9 @@ const SECTION_CONFIG: Partial<
 	projects: {
 		title: "Selected Projects",
 		render: (items) => (
-			<div className="space-y-5 sm:space-y-8 print:space-y-2">
+			<div className="space-y-5 sm:space-y-8">
 				{(items as Project[]).map((p) => (
-					<ProjectPortfolioItem key={p.name} item={p} />
+					<ProjectPortfolioItem key={`${p.url || p.name}-${p.date || "project"}`} item={p} />
 				))}
 			</div>
 		),
@@ -667,7 +659,7 @@ export function ResumeView({ data }: { data: Resume }) {
 	}, [isOpen, close]);
 
 	return (
-		<article className="space-y-4 sm:space-y-6 py-3 sm:py-4 md:py-8 print:space-y-2 print:py-0">
+		<article className="space-y-4 sm:space-y-6 py-3 sm:py-4 md:py-8 print:py-0">
 			<ResumeHeaderItem basics={data.basics} />
 
 			{sectionOrder.map((sectionKey) => {
