@@ -6,6 +6,14 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  --font-sans: "InterVariable", sans-serif;
+  --font-sans--font-feature-settings:
+    "cv02", "cv03", "cv04", "cv11", "ss01", "ss03";
+  --font-sans--font-optical-sizing: auto;
+  --font-mono: "InterVariable", sans-serif;
+  --font-mono--font-feature-settings:
+    "cv02", "cv03", "cv04", "cv11", "ss01", "ss03";
+  --font-mono--font-optical-sizing: auto;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-sidebar-ring: var(--sidebar-ring);
@@ -95,7 +103,7 @@
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
+  --background: oklch(0 0 0);
   --foreground: oklch(0.985 0 0);
   --link-color: hsl(196, 80%, 77%);
   --link-visited: hsl(196, 80%, 77%);
@@ -159,14 +167,14 @@
 
   html {
     scroll-behavior: smooth;
-    background-color: #ffffff;
+    background-color: var(--background);
   }
 
   body {
-    @apply bg-background text-foreground text-base;
-    background-color: #ffffff;
-    font-family: var(--font-sans), -apple-system, BlinkMacSystemFont,
-      "Segoe UI", Roboto, sans-serif;
+    @apply text-foreground text-base;
+    font-family: var(--font-sans), sans-serif;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11", "ss01", "ss03";
+    font-optical-sizing: auto;
     line-height: 1.7;
     min-height: 100dvh;
     padding-bottom: env(safe-area-inset-bottom);
@@ -177,22 +185,14 @@
     -moz-hyphens: auto;
   }
 
-  html.dark {
-    background-color: #171717;
-  }
-
-  .dark body {
-    background-color: #171717;
-  }
-
   h1,
   h2,
   h3,
   h4,
   h5,
   h6 {
-    font-family: var(--font-sans), -apple-system, BlinkMacSystemFont,
-      "Segoe UI", Roboto, sans-serif;
+    font-family: var(--font-sans), sans-serif;
+    font-optical-sizing: auto;
   }
 
   a:not([class]) {
@@ -228,8 +228,9 @@
 
   code,
   pre {
-    font-family: var(--font-mono), Menlo, Monaco, Consolas,
-      "Liberation Mono", "Courier New", monospace;
+    font-family: var(--font-mono), sans-serif;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11", "ss01", "ss03";
+    font-optical-sizing: auto;
     font-size: 85%;
     hyphens: none;
   }
