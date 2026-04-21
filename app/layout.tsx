@@ -9,7 +9,7 @@ import { KeyboardShortcuts } from "@/components/providers/keyboard-shortcuts";
 import { ChatSidebar } from "@/components/chat-sidebar";
 import { LayoutWrapper } from "@/components/layout-wrapper";
 import { QueryProvider } from "@/components/providers/query-provider";
-import { inter } from "@/lib/fonts";
+import { inter, newsreader } from "@/lib/fonts";
 
 import "./globals.css";
 
@@ -35,7 +35,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className={`${inter.variable}`}>
+    <html lang="en" suppressHydrationWarning className={`${inter.variable} ${newsreader.variable}`}>
       <head />
       <body className="@container min-h-screen bg-background text-foreground antialiased">
         <QueryProvider>

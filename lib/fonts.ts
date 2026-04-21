@@ -14,3 +14,15 @@ export const inter = localFont({
   variable: "--font-sans",
   display: "swap",
 });
+
+export const newsreader = localFont({
+  src: [
+    {
+      path: "../public/fonts/Newsreader.woff2",
+      style: "normal",
+      weight: "400 500",
+    },
+  ],
+  variable: "--font-serif",
+  display: "swap",
+});

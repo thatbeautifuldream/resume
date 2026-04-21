@@ -39,11 +39,13 @@ function ResumeSection({
 	children: React.ReactNode;
 }) {
 	return (
-		<section className="space-y-1.5 sm:space-y-2">
-			<div className="flex items-end justify-between gap-3 border-b pb-1">
-				<h4 className="font-medium text-xs sm:text-sm uppercase tracking-wide font-mono text-balance">{title}</h4>
+		<section className="space-y-3 sm:space-y-4">
+			<div className="flex items-baseline justify-between gap-3 border-l-[2.5px] border-primary pl-2.5 rounded-r-sm">
+				<h4 className="font-serif font-medium text-base sm:text-lg text-balance leading-tight">
+					{title}
+				</h4>
 				{rightContent ? (
-					<span className="pb-0.5 text-xs text-muted-foreground whitespace-nowrap font-mono tabular-nums">
+					<span className="text-xs font-sans text-stone whitespace-nowrap tabular-nums tracking-wide">
 						{rightContent}
 					</span>
 				) : null}
@@ -56,10 +58,15 @@ function ResumeSection({
 function ResumeFooter({ source }: { source: string }) {
 	const sourceLink = source.startsWith("http") ? source : `https://${source}`;
 	return (
-		<footer className="mt-6 sm:mt-8 pt-3 sm:pt-4 text-center text-xs print:hidden">
-			<p className="text-muted-foreground">
-				Source :{" "}
-				<a href={sourceLink} target="_blank" rel="noopener noreferrer">
+		<footer className="mt-6 sm:mt-8 pt-3 sm:pt-4 text-center text-xs font-sans print:hidden border-t border-border/60">
+			<p className="text-stone">
+				Source ·{" "}
+				<a
+					href={sourceLink}
+					target="_blank"
+					rel="noopener noreferrer"
+					className="text-primary underline underline-offset-[3px] decoration-primary/40 hover:decoration-primary"
+				>
 					{source}
 				</a>
 			</p>
@@ -168,14 +175,22 @@ function ResumeHeaderItem({ basics }: { basics: Basics }) {
 	}
 
 	return (
-		<header className="text-center space-y-1.5 sm:space-y-2">
-			<h1 className="font-medium text-lg sm:text-xl md:text-2xl uppercase tracking-wide font-mono text-balance">
+		<header className="border-l-[2.5px] border-primary pl-3 rounded-r-sm space-y-1">
+			<h1 className="font-serif font-medium text-3xl sm:text-4xl md:text-5xl tracking-tight text-balance leading-none">
 				{basics.name}
 			</h1>
+			{basics.label && (
+				<p className="font-serif text-primary text-base sm:text-lg font-medium">
+					{basics.label}
+				</p>
+			)}
 
-			<div className="text-xs sm:text-sm flex flex-wrap justify-center items-center gap-x-2 sm:gap-x-3 md:gap-x-4 gap-y-1">
-				{contactItems.map((item) => (
-					<div key={item.key}>{item.element}</div>
+			<div className="text-xs sm:text-sm font-sans text-olive flex flex-wrap items-center gap-x-2 sm:gap-x-3 md:gap-x-4 gap-y-1 pt-1">
+				{contactItems.map((item, i) => (
+					<div key={item.key} className="flex items-center gap-x-2 sm:gap-x-3 md:gap-x-4">
+						{i > 0 && <span className="text-border select-none" aria-hidden>·</span>}
+						{item.element}
+					</div>
 				))}
 			</div>
 		</header>
@@ -184,34 +199,33 @@ function ResumeHeaderItem({ basics }: { basics: Basics }) {
 
 function WorkExperienceItem({ item }: { item: Work }) {
 	const duration = calculateDuration(item.startDate, item.endDate);
-	const isPresent = !item.endDate;
 	return (
-		<div className="space-y-2 sm:space-y-3">
+		<div className="space-y-2 sm:space-y-3 border-t border-border/70 pt-3 sm:pt-4 first:border-t-0 first:pt-0">
 			<div className="space-y-0.5 sm:space-y-1">
 				<div className="flex gap-2 sm:gap-3 items-start">
 					<div className="flex-1 min-w-0">
 						<div className="flex justify-between items-baseline gap-2 text-sm md:text-base">
-							<strong>
+							<strong className="font-serif font-medium text-foreground">
 								{item.position || "Role"}
 							</strong>
 							{item.workType && (
-								<span className="text-muted-foreground text-xs">
+								<span className="font-sans text-stone text-[10px] uppercase tracking-wider">
 									{item.workType}
 								</span>
 							)}
 						</div>
 						<div className="flex justify-between items-baseline gap-2 text-sm md:text-base">
-							<span className="text-muted-foreground font-medium">
+							<span className="font-serif text-primary">
 								{item.name}
 							</span>
-							<span className="text-xs text-muted-foreground whitespace-nowrap tabular-nums">
+							<span className="font-sans text-xs text-stone whitespace-nowrap tabular-nums">
 								<span className="sm:hidden">
 									{rangeCompact(item.startDate, item.endDate)}
-									{duration && ` (${duration})`}
+									{duration && ` · ${duration}`}
 								</span>
 								<span className="hidden sm:inline">
 									{range(item.startDate, item.endDate)}
-									{duration && ` (${duration})`}
+									{duration && ` · ${duration}`}
 								</span>
 							</span>
 						</div>
@@ -220,18 +234,22 @@ function WorkExperienceItem({ item }: { item: Work }) {
 			</div>
 
 			<div className="space-y-1.5 sm:space-y-2">
-				{item.summary && <p className="text-sm md:text-base text-pretty">{item.summary}</p>}
+				{item.summary && (
+					<p className="text-sm md:text-base text-pretty text-olive leading-relaxed">
+						{item.summary}
+					</p>
+				)}
 				{!!item.highlights?.length && (
-					<ul className="list-disc pl-4 sm:pl-5 space-y-0.5 sm:space-y-1 text-sm md:text-base">
+					<ul className="list-disc pl-4 sm:pl-5 space-y-0.5 sm:space-y-1 text-sm md:text-base marker:text-primary/60">
 						{item.highlights.map((h) => (
-							<li key={h} className="text-justify">
+							<li key={h} className="text-pretty leading-relaxed">
 								{h}
 							</li>
 						))}
 					</ul>
 				)}
 				{!!item.proofLinks?.length && (
-					<div className="flex flex-wrap gap-x-3 gap-y-1  text-xs font-medium">
+					<div className="flex flex-wrap gap-x-3 gap-y-1 text-xs font-sans font-medium pt-0.5">
 						{item.proofLinks.map((link) => {
 							const href = link.url.startsWith("http")
 								? link.url
@@ -242,7 +260,7 @@ function WorkExperienceItem({ item }: { item: Work }) {
 									href={href}
 									target="_blank"
 									rel="noopener noreferrer"
-									className="underline underline-offset-2"
+									className="text-primary underline underline-offset-[3px] decoration-primary/40 hover:decoration-primary"
 								>
 									{link.label}
 								</a>
@@ -267,7 +285,7 @@ function ProjectPortfolioItem({ item }: { item: Project }) {
 		: undefined;
 
 	return (
-		<div className="space-y-2 sm:space-y-3">
+		<div className="space-y-2 sm:space-y-3 border-t border-border/70 pt-3 sm:pt-4 first:border-t-0 first:pt-0">
 			<div className="space-y-0.5 sm:space-y-1">
 				<div className="flex gap-2 sm:gap-3 items-start">
 					<div className="flex-1 min-w-0">
@@ -277,16 +295,16 @@ function ProjectPortfolioItem({ item }: { item: Project }) {
 									href={urlHref}
 									target="_blank"
 									rel="noreferrer"
-									className="font-semibold hover:underline"
+									className="font-serif font-medium text-foreground hover:underline underline-offset-4 decoration-primary/40"
 								>
 									{item.name}
 								</a>
 							) : (
-								<strong>
+								<strong className="font-serif font-medium text-foreground">
 									{item.name}
 								</strong>
 							)}
-							<span className="sm:mt-0 mt-0.5 text-xs text-muted-foreground tabular-nums">
+							<span className="sm:mt-0 mt-0.5 font-sans text-xs text-stone tabular-nums">
 								{dateDisplay}
 							</span>
 						</div>
@@ -296,38 +314,63 @@ function ProjectPortfolioItem({ item }: { item: Project }) {
 
 			<div className="space-y-1.5 sm:space-y-2">
 				{item.description && (
-					<p className="text-sm md:text-base text-pretty">{item.description}</p>
+					<p className="text-sm md:text-base text-pretty text-olive leading-relaxed">
+						{item.description}
+					</p>
 				)}
-				<div className="flex flex-wrap gap-x-3 gap-y-1 text-xs text-muted-foreground">
-					{item.role && <span>Role: {item.role}</span>}
-					{item.teamSize && <span>Team: {item.teamSize}</span>}
-					{item.duration && <span>Duration: {item.duration}</span>}
-					{item.status && <span>Status: {item.status}</span>}
+				<div className="flex flex-wrap gap-x-3 gap-y-1 text-xs font-sans text-stone">
+					{item.role && (
+						<span>
+							<span className="uppercase tracking-wider text-primary font-semibold text-[10px]">Role</span>{" "}
+							{item.role}
+						</span>
+					)}
+					{item.teamSize && (
+						<span>
+							<span className="uppercase tracking-wider text-primary font-semibold text-[10px]">Team</span>{" "}
+							{item.teamSize}
+						</span>
+					)}
+					{item.duration && (
+						<span>
+							<span className="uppercase tracking-wider text-primary font-semibold text-[10px]">Duration</span>{" "}
+							{item.duration}
+						</span>
+					)}
+					{item.status && (
+						<span>
+							<span className="uppercase tracking-wider text-primary font-semibold text-[10px]">Status</span>{" "}
+							{item.status}
+						</span>
+					)}
 				</div>
 				{!!item.impactMetrics?.length && (
-					<div className="flex flex-wrap gap-2">
+					<div className="flex flex-wrap gap-1.5">
 						{item.impactMetrics.map((metric) => (
 							<span
 								key={`${item.name}-${metric.label}`}
-								className="rounded-full border px-2 py-0.5 text-xs tabular-nums"
+								className="rounded-sm bg-accent text-primary px-2 py-0.5 text-[11px] font-sans font-medium tabular-nums"
 								title={metric.window}
 							>
-								{metric.label}: {metric.value}
+								<span className="uppercase tracking-wider text-[10px] font-semibold">
+									{metric.label}
+								</span>{" "}
+								{metric.value}
 							</span>
 						))}
 					</div>
 				)}
 				{!!item.highlights?.length && (
-					<ul className="list-disc pl-4 sm:pl-5 space-y-0.5 sm:space-y-1 text-sm md:text-base">
+					<ul className="list-disc pl-4 sm:pl-5 space-y-0.5 sm:space-y-1 text-sm md:text-base marker:text-primary/60">
 						{item.highlights.map((h) => (
-							<li key={h} className="text-justify">
+							<li key={h} className="text-pretty leading-relaxed">
 								{h}
 							</li>
 						))}
 					</ul>
 				)}
 				{!!item.proofLinks?.length && (
-					<div className="flex flex-wrap gap-x-3 gap-y-1 text-xs font-medium">
+					<div className="flex flex-wrap gap-x-3 gap-y-1 text-xs font-sans font-medium pt-0.5">
 						{item.proofLinks.map((link) => {
 							const href = link.url.startsWith("http")
 								? link.url
@@ -338,7 +381,7 @@ function ProjectPortfolioItem({ item }: { item: Project }) {
 									href={href}
 									target="_blank"
 									rel="noopener noreferrer"
-									className="underline underline-offset-2"
+									className="text-primary underline underline-offset-[3px] decoration-primary/40 hover:decoration-primary"
 								>
 									{link.label}
 								</a>
@@ -362,23 +405,23 @@ function EducationCredentialItem({ item }: { item: Education }) {
 		: undefined;
 
 	return (
-		<div className="flex justify-between items-center gap-2 text-sm md:text-base">
+		<div className="flex justify-between items-baseline gap-2 text-sm md:text-base">
 			<div className="flex-1 min-w-0 truncate">
 				{urlHref ? (
 					<a
 						href={urlHref}
 						target="_blank"
 						rel="noopener noreferrer"
-						className="font-semibold hover:underline"
+						className="font-serif font-medium hover:underline underline-offset-4 decoration-primary/40"
 					>
 						{item.institution}
 					</a>
 				) : (
-					<strong>{item.institution}</strong>
+					<strong className="font-serif font-medium">{item.institution}</strong>
 				)}
-				{item.studyType && <span className="text-muted-foreground"> - {item.studyType}</span>}
+				{item.studyType && <span className="text-olive"> · {item.studyType}</span>}
 			</div>
-			<span className="text-xs text-muted-foreground whitespace-nowrap flex-shrink-0 tabular-nums">
+			<span className="font-sans text-xs text-stone whitespace-nowrap flex-shrink-0 tabular-nums">
 				{dateDisplay}
 			</span>
 		</div>
@@ -399,17 +442,19 @@ function CertificateAchievementItem({ item }: { item: Certificates }) {
 					href={urlHref}
 					target="_blank"
 					rel="noopener noreferrer"
-					className="font-semibold hover:underline"
+					className="font-serif font-medium hover:underline underline-offset-4 decoration-primary/40"
 				>
 					{item.name}
 				</a>
 			) : (
-				<span className="font-semibold">{item.name}</span>
+				<span className="font-serif font-medium">{item.name}</span>
 			)}
-			{item.issuer && <span className="text-muted-foreground">({item.issuer})</span>}
+			{item.issuer && (
+				<span className="text-olive font-sans text-xs">· {item.issuer}</span>
+			)}
 			{item.date && (
-				<span className="text-xs text-muted-foreground tabular-nums">
-					[{item.date}]
+				<span className="font-sans text-xs text-stone tabular-nums">
+					· {item.date}
 				</span>
 			)}
 		</span>
@@ -440,22 +485,22 @@ function OpenSourceContributionItem({ item }: { item: Contribution }) {
 	const href = item.url.startsWith("http") ? item.url : `https://${item.url}`;
 
 	return (
-		<div className="flex justify-between items-center gap-2">
+		<div className="flex justify-between items-baseline gap-2">
 			<a
 				href={href}
 				target="_blank"
 				rel="noopener noreferrer"
-				className="text-sm md:text-base hover:underline flex-1 leading-tight truncate"
+				className="text-sm md:text-base hover:underline underline-offset-4 decoration-primary/40 flex-1 leading-tight truncate text-foreground"
 			>
 				{item.title}
 			</a>
 			{orgRepo && (
 				<>
-					<span className="text-xs text-muted-foreground whitespace-nowrap md:hidden flex-shrink-0">
-						[{org}]
+					<span className="font-sans text-xs text-stone whitespace-nowrap md:hidden flex-shrink-0 tabular-nums">
+						{org}
 					</span>
-					<span className="hidden md:inline text-xs text-muted-foreground whitespace-nowrap flex-shrink-0">
-						[{orgRepo}]
+					<span className="hidden md:inline font-sans text-xs text-stone whitespace-nowrap flex-shrink-0 tabular-nums">
+						{orgRepo}
 					</span>
 				</>
 			)}
@@ -471,13 +516,13 @@ function TalkPresentationItem({ item }: { item: Talks }) {
 		: undefined;
 
 	return (
-		<div className="flex justify-between items-center gap-2">
+		<div className="flex justify-between items-baseline gap-2">
 			{href ? (
 				<a
 					href={href}
 					target="_blank"
 					rel="noopener noreferrer"
-					className="text-sm md:text-base hover:underline flex-1 leading-tight truncate"
+					className="text-sm md:text-base hover:underline underline-offset-4 decoration-primary/40 flex-1 leading-tight truncate text-foreground"
 				>
 					{item.title}
 				</a>
@@ -487,8 +532,8 @@ function TalkPresentationItem({ item }: { item: Talks }) {
 				</span>
 			)}
 			{item.organiser && (
-				<span className="text-xs text-muted-foreground whitespace-nowrap flex-shrink-0">
-					[{item.organiser}]
+				<span className="font-sans text-xs text-stone whitespace-nowrap flex-shrink-0">
+					{item.organiser}
 				</span>
 			)}
 		</div>
@@ -502,7 +547,7 @@ function SkillsProficiency({ skills }: { skills: Skill[] }) {
 	if (!skills?.length) return null;
 
 	return (
-		<div className="flex flex-wrap gap-x-3 text-sm md:text-base font-medium">
+		<div className="flex flex-wrap gap-1.5 text-xs font-sans">
 			{skills.map((skill) => (
 				<button
 					type="button"
@@ -512,7 +557,7 @@ function SkillsProficiency({ skills }: { skills: Skill[] }) {
 						void trigger("medium", { intensity: 0.75 });
 						sendPromptToChat(prompt);
 					}}
-					className="hover:underline cursor-pointer"
+					className="rounded-sm bg-accent text-primary px-2 py-0.5 font-medium hover:bg-brand-tint-strong/80 cursor-pointer transition-colors"
 				>
 					{skill}
 				</button>
@@ -524,15 +569,15 @@ function SkillsProficiency({ skills }: { skills: Skill[] }) {
 function ReferenceTestimonial({ items }: { items: Reference[] }) {
 	if (!items?.length) return null;
 	return (
-		<div className="space-y-3 sm:space-y-4">
+		<div className="space-y-4 sm:space-y-5">
 			{items.map((r) => (
 				<blockquote
 					key={r.name}
-					className="border-l-4 border-border pl-3 sm:pl-4 space-y-1.5 sm:space-y-2 text-sm md:text-base text-muted-foreground"
+					className="border-l-[2px] border-primary pl-4 space-y-1.5 sm:space-y-2 text-sm md:text-base text-olive italic leading-relaxed"
 				>
 					<div>{r.reference}</div>
-					<footer className="text-xs md:text-sm font-semibold text-foreground">
-						— {r.name} ({r.title})
+					<footer className="text-xs md:text-sm font-medium not-italic text-foreground font-sans">
+						— {r.name}, <span className="text-olive">{r.title}</span>
 					</footer>
 				</blockquote>
 			))}
@@ -659,7 +704,7 @@ export function ResumeView({ data }: { data: Resume }) {
 	}, [isOpen, close]);
 
 	return (
-		<article className="space-y-4 sm:space-y-6 py-3 sm:py-4 md:py-8 print:py-0">
+		<article className="space-y-6 sm:space-y-8 py-3 sm:py-4 md:py-8 print:py-0 max-w-[62ch] md:max-w-none mx-auto">
 			<ResumeHeaderItem basics={data.basics} />
 
 			{sectionOrder.map((sectionKey) => {
