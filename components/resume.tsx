@@ -704,7 +704,7 @@ export function ResumeView({ data }: { data: Resume }) {
 	}, [isOpen, close]);
 
 	return (
-		<article className="space-y-6 sm:space-y-8 py-3 sm:py-4 md:py-8 print:py-0 max-w-[62ch] md:max-w-none mx-auto">
+		<article className="space-y-6 sm:space-y-8 py-3 sm:py-4 md:py-8 print:py-0 max-w-[62ch] md:max-w-none print:max-w-none mx-auto">
 			<ResumeHeaderItem basics={data.basics} />
 
 			{sectionOrder.map((sectionKey) => {

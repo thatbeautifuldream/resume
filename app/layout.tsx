@@ -38,7 +38,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning className={cn(tsanger.variable)}>
       <head />
-      <body className="@container min-h-screen bg-background text-foreground antialiased">
+      <body className="min-h-screen bg-background text-foreground antialiased">
         <QueryProvider>
           <ThemeProvider attribute="class" defaultTheme="light">
             <ServiceWorkerProvider />
