@@ -41,7 +41,7 @@ function ResumeSection({
 	return (
 		<section className="space-y-3 sm:space-y-4">
 			<div className="flex items-baseline justify-between gap-3 border-l-[2.5px] border-primary pl-2.5 rounded-r-sm">
-				<h4 className="font-serif font-medium text-base sm:text-lg text-balance leading-tight">
+				<h4 className="font-medium text-base sm:text-lg text-balance leading-tight">
 					{title}
 				</h4>
 				{rightContent ? (
@@ -176,11 +176,11 @@ function ResumeHeaderItem({ basics }: { basics: Basics }) {
 
 	return (
 		<header className="border-l-[2.5px] border-primary pl-3 rounded-r-sm space-y-1">
-			<h1 className="font-serif font-medium text-3xl sm:text-4xl md:text-5xl tracking-tight text-balance leading-none">
+			<h1 className="font-medium text-3xl sm:text-4xl md:text-5xl tracking-tight text-balance leading-none">
 				{basics.name}
 			</h1>
 			{basics.label && (
-				<p className="font-serif text-primary text-base sm:text-lg font-medium">
+				<p className="text-primary text-base sm:text-lg font-medium">
 					{basics.label}
 				</p>
 			)}
@@ -205,7 +205,7 @@ function WorkExperienceItem({ item }: { item: Work }) {
 				<div className="flex gap-2 sm:gap-3 items-start">
 					<div className="flex-1 min-w-0">
 						<div className="flex justify-between items-baseline gap-2 text-sm md:text-base">
-							<strong className="font-serif font-medium text-foreground">
+							<strong className="font-medium text-foreground">
 								{item.position || "Role"}
 							</strong>
 							{item.workType && (
@@ -215,7 +215,7 @@ function WorkExperienceItem({ item }: { item: Work }) {
 							)}
 						</div>
 						<div className="flex justify-between items-baseline gap-2 text-sm md:text-base">
-							<span className="font-serif text-primary">
+							<span className="text-primary">
 								{item.name}
 							</span>
 							<span className="font-sans text-xs text-stone whitespace-nowrap tabular-nums">
@@ -235,14 +235,14 @@ function WorkExperienceItem({ item }: { item: Work }) {
 
 			<div className="space-y-1.5 sm:space-y-2">
 				{item.summary && (
-					<p className="text-sm md:text-base text-pretty text-olive leading-relaxed">
+					<p className="text-sm md:text-base text-pretty text-olive leading-normal">
 						{item.summary}
 					</p>
 				)}
 				{!!item.highlights?.length && (
 					<ul className="list-disc pl-4 sm:pl-5 space-y-0.5 sm:space-y-1 text-sm md:text-base marker:text-primary/60">
 						{item.highlights.map((h) => (
-							<li key={h} className="text-pretty leading-relaxed">
+							<li key={h} className="text-pretty leading-normal">
 								{h}
 							</li>
 						))}
@@ -295,12 +295,12 @@ function ProjectPortfolioItem({ item }: { item: Project }) {
 									href={urlHref}
 									target="_blank"
 									rel="noreferrer"
-									className="font-serif font-medium text-foreground hover:underline underline-offset-4 decoration-primary/40"
+									className="font-medium text-foreground hover:underline underline-offset-4 decoration-primary/40"
 								>
 									{item.name}
 								</a>
 							) : (
-								<strong className="font-serif font-medium text-foreground">
+								<strong className="font-medium text-foreground">
 									{item.name}
 								</strong>
 							)}
@@ -314,7 +314,7 @@ function ProjectPortfolioItem({ item }: { item: Project }) {
 
 			<div className="space-y-1.5 sm:space-y-2">
 				{item.description && (
-					<p className="text-sm md:text-base text-pretty text-olive leading-relaxed">
+					<p className="text-sm md:text-base text-pretty text-olive leading-normal">
 						{item.description}
 					</p>
 				)}
@@ -412,12 +412,12 @@ function EducationCredentialItem({ item }: { item: Education }) {
 						href={urlHref}
 						target="_blank"
 						rel="noopener noreferrer"
-						className="font-serif font-medium hover:underline underline-offset-4 decoration-primary/40"
+						className="font-medium hover:underline underline-offset-4 decoration-primary/40"
 					>
 						{item.institution}
 					</a>
 				) : (
-					<strong className="font-serif font-medium">{item.institution}</strong>
+					<strong className="font-medium">{item.institution}</strong>
 				)}
 				{item.studyType && <span className="text-olive"> · {item.studyType}</span>}
 			</div>
@@ -442,12 +442,12 @@ function CertificateAchievementItem({ item }: { item: Certificates }) {
 					href={urlHref}
 					target="_blank"
 					rel="noopener noreferrer"
-					className="font-serif font-medium hover:underline underline-offset-4 decoration-primary/40"
+					className="font-medium hover:underline underline-offset-4 decoration-primary/40"
 				>
 					{item.name}
 				</a>
 			) : (
-				<span className="font-serif font-medium">{item.name}</span>
+				<span className="font-medium">{item.name}</span>
 			)}
 			{item.issuer && (
 				<span className="text-olive font-sans text-xs">· {item.issuer}</span>
@@ -573,7 +573,7 @@ function ReferenceTestimonial({ items }: { items: Reference[] }) {
 			{items.map((r) => (
 				<blockquote
 					key={r.name}
-					className="border-l-[2px] border-primary pl-4 space-y-1.5 sm:space-y-2 text-sm md:text-base text-olive italic leading-relaxed"
+					className="border-l-[2px] border-primary pl-4 space-y-1.5 sm:space-y-2 text-sm md:text-base text-olive leading-relaxed"
 				>
 					<div>{r.reference}</div>
 					<footer className="text-xs md:text-sm font-medium not-italic text-foreground font-sans">

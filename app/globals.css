@@ -6,17 +6,6 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --font-sans: "InterVariable", sans-serif;
-  --font-sans--font-feature-settings:
-    "cv02", "cv03", "cv04", "cv11", "ss01", "ss03";
-  --font-sans--font-optical-sizing: auto;
-  --font-serif: "Newsreader", "Source Serif 4", "Charter", Georgia,
-    "Times New Roman", serif;
-  --font-serif--font-optical-sizing: auto;
-  --font-mono: "InterVariable", sans-serif;
-  --font-mono--font-feature-settings:
-    "cv02", "cv03", "cv04", "cv11", "ss01", "ss03";
-  --font-mono--font-optical-sizing: auto;
   --color-brand: var(--brand);
   --color-brand-tint: var(--brand-tint);
   --color-brand-tint-strong: var(--brand-tint-strong);
@@ -73,8 +62,8 @@
   --sand: #e8e6dc;
   --near-black: #141413;
   --dark-warm: #3d3d3a;
-  --olive: #5e5d59;
-  --stone: #87867f;
+  --olive: #4a4a47;
+  --stone: #6b6b65;
   --brand: #1b365d;
   --brand-tint: #eef2f7;
   --brand-tint-strong: #e4ecf5;
@@ -136,9 +125,9 @@
   --ivory: #1d1d1b;
   --sand: #2a2a27;
   --near-black: #f0ede3;
-  --dark-warm: #d8d4c6;
-  --olive: #b0aea5;
-  --stone: #87867f;
+  --dark-warm: #c9c5ba;
+  --olive: #a8a89f;
+  --stone: #9a9a95;
   --brand: #9bb4d6;
   --brand-tint: #1f2a3d;
   --brand-tint-strong: #263351;
@@ -214,9 +203,9 @@
 
   body {
     @apply text-foreground text-base;
-    font-family: var(--font-serif), Georgia, serif;
+    font-family: var(--font-sans);
     font-optical-sizing: auto;
-    line-height: 1.55;
+    line-height: 1.45;
     min-height: 100dvh;
     padding-bottom: env(safe-area-inset-bottom);
     overflow-x: hidden;
@@ -232,10 +221,15 @@
   h4,
   h5,
   h6 {
-    font-family: var(--font-serif), Georgia, serif;
     font-weight: 500;
     font-optical-sizing: auto;
     letter-spacing: -0.01em;
+    line-height: 1.2;
+  }
+
+  p,
+  li {
+    line-height: 1.45;
   }
 
   a:not([class]) {
@@ -271,7 +265,6 @@
 
   code,
   pre {
-    font-family: var(--font-mono), sans-serif;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11", "ss01", "ss03";
     font-optical-sizing: auto;
     font-size: 85%;
@@ -338,13 +331,23 @@
   }
 
   @media print {
+    :root {
+      --parchment: #f5f4ed;
+      --near-black: #141413;
+      --brand: #1b365d;
+      --olive: #4a4a47;
+      --stone: #6b6b65;
+      --border-warm: #e0ddd2;
+    }
+
     body {
       max-width: 100% !important;
       margin: 0 !important;
-      padding: 1rem 1.5rem !important;
-      line-height: 1.6 !important;
-      color: black !important;
-      background: white !important;
+      padding: 11mm 13mm !important;
+      line-height: 1.42 !important;
+      color: var(--near-black) !important;
+      background: var(--parchment) !important;
+      font-size: 9pt !important;
     }
 
     .container {
@@ -361,17 +364,32 @@
     h1,
     h2,
     h3,
-    h4 {
+    h4,
+    h5,
+    h6 {
       page-break-after: avoid;
+      font-weight: 500;
     }
 
     p,
     li {
       page-break-inside: avoid;
+      line-height: 1.42;
+    }
+
+    a {
+      color: var(--brand) !important;
+      text-decoration: none !important;
     }
 
     .no-print {
       display: none !important;
+    }
+
+    @page {
+      size: A4;
+      margin: 11mm 13mm;
+      background: var(--parchment);
     }
   }
 

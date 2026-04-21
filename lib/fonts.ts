@@ -1,28 +1,12 @@
 import localFont from "next/font/local";
 
-export const inter = localFont({
+export const tsanger = localFont({
   src: [
     {
-      path: "../public/fonts/InterVariable.woff2",
+      path: "../public/fonts/TsangerJinKai02-W04.ttf",
       style: "normal",
-    },
-    {
-      path: "../public/fonts/InterVariable-Italic.woff2",
-      style: "italic",
     },
   ],
   variable: "--font-sans",
-  display: "swap",
-});
-
-export const newsreader = localFont({
-  src: [
-    {
-      path: "../public/fonts/Newsreader.woff2",
-      style: "normal",
-      weight: "400 500",
-    },
-  ],
-  variable: "--font-serif",
   display: "swap",
 });
