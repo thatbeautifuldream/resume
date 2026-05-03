@@ -5,7 +5,7 @@ import { KeyboardShortcuts } from "@/components/providers/keyboard-shortcuts";
 import { QueryProvider } from "@/components/providers/query-provider";
 import { ServiceWorkerProvider } from "@/components/providers/service-worker-provider";
 import { ThemeProvider } from "@/components/providers/theme-provider";
-import { tsanger } from "@/lib/fonts";
+import { openRunde } from "@/lib/fonts";
 import { createMetadata } from "@/lib/metadata";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import type { Metadata, Viewport } from "next";
@@ -36,7 +36,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className={cn(tsanger.variable)}>
+    <html lang="en" suppressHydrationWarning className={cn(openRunde.variable)}>
       <head />
       <body className="min-h-screen bg-background text-foreground antialiased">
         <QueryProvider>

@@ -25,9 +25,8 @@ import type {
 } from "@/lib/resume-schema";
 import Link from "next/link";
 import type * as React from "react";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { useWebHaptics } from "web-haptics/react";
-import { TextMorph } from "torph/react";
 
 function ResumeSection({
 	title,
@@ -103,29 +102,19 @@ function ProfileLinkWithNetwork({ profile }: { profile: Profile }) {
 	);
 }
 
-const COPIED_DISPLAY_DURATION_MS = 1800;
-
 function EmailWithCopy({ email }: { email: string }) {
-	const [displayText, setDisplayText] = useState(email);
 	const { trigger } = useWebHaptics();
 
 	const handleClick = useCallback(async () => {
 		try {
 			await navigator.clipboard.writeText(email);
 			void trigger("success", { intensity: 0.8 });
-			setDisplayText("Copied to clipboard!");
 		} catch (error) {
 			if (process.env.NODE_ENV !== "production") {
 				console.warn("Failed to copy email:", error);
 			}
 		}
 	}, [email, trigger]);
-
-	useEffect(() => {
-		if (displayText !== "Copied to clipboard!") return;
-		const t = setTimeout(() => setDisplayText(email), COPIED_DISPLAY_DURATION_MS);
-		return () => clearTimeout(t);
-	}, [displayText, email]);
 
 	return (
 		<button
@@ -134,9 +123,7 @@ function EmailWithCopy({ email }: { email: string }) {
 			className="bg-transparent border-none p-0 font-inherit text-inherit cursor-pointer hover:underline"
 			title={`Copy ${email}`}
 		>
-			<TextMorph duration={300} as="span" className="inline">
-				{displayText}
-			</TextMorph>
+			{email}
 		</button>
 	);
 }
