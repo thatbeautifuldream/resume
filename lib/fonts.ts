@@ -1,28 +1,8 @@
-import localFont from "next/font/local";
+import { Familjen_Grotesk } from "next/font/google";
 
-export const openRunde = localFont({
-  src: [
-    {
-      path: "../public/fonts/OpenRunde-Regular.woff2",
-      weight: "400",
-      style: "normal",
-    },
-    {
-      path: "../public/fonts/OpenRunde-Medium.woff2",
-      weight: "500",
-      style: "normal",
-    },
-    {
-      path: "../public/fonts/OpenRunde-Semibold.woff2",
-      weight: "600",
-      style: "normal",
-    },
-    {
-      path: "../public/fonts/OpenRunde-Bold.woff2",
-      weight: "700",
-      style: "normal",
-    },
-  ],
+export const familjenGrotesk = Familjen_Grotesk({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
   variable: "--font-sans",
   display: "swap",
 });
